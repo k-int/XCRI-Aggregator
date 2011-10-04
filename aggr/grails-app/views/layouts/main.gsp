@@ -5,13 +5,27 @@
         <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <g:layoutHead />
-        <g:javascript library="application" />
+        <g:javascript library="jquery-1.6.2.min" />
     </head>
     <body>
-        <div id="spinner" class="spinner" style="display:none;">
-            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
-        </div>
-        <div id="grailsLogo"><a href="http://grails.org"><img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails" border="0" /></a></div>
+      <div id="container">
+       <header>
+        <g:applyLayout name="header" >
+         <content tag="header">
+          <g:pageProperty name="page.header" />
+         </content>
+        </g:applyLayout>
+       </header>
+       <div id="main">
         <g:layoutBody />
+       </div>
+       <footer>
+        <g:applyLayout name="footer">
+         <content tag="footer">
+          <g:pageProperty name="page.footer" />
+         </content>
+        </g:applyLayout>
+       </footer>
+      </div>
     </body>
 </html>
