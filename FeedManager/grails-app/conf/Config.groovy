@@ -78,8 +78,16 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
+
     appenders {
-        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        file name:'file', file:'/tmp/FeedManager.log'
+        // file name:'file', file:'/tmp/FeedManager.log', threshold: org.apache.log4j.Level.ALL
+        // console name: "stdout", threshold: org.apache.log4j.Level.ALL
+    }
+
+    root {
+        // debug 'stdout', 'file'
+        warn 'file'
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
@@ -94,9 +102,12 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 
-    // debug  'grails.app'
-    debug  'grails.app.controller',
-           'grails.app.service',
+    //debug  'grails.app',
+    debug  'grails.app.controllers',
+           'grails.app.conf',
+           //'grails.app.filters',
+           //'grails.app.taglib',
+           'grails.app.services',
            'grails.app.domain'
 
 }
