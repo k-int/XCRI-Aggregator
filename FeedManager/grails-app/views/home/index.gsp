@@ -6,5 +6,20 @@
 
   <body>
 User Home Page
+
+<a href="">Register New Feed</a>
+
+Your Feeds
+
+<table>
+  <tr>
+    <th>Feed ID</th>
+    <th>Feed Name</th>
+    <th>Status</th>
+    <th>Last Run</th>
+    <th>Next Scheduled Harvest</th>
+  </tr>
+</table>
+
   </body>
 </html>
