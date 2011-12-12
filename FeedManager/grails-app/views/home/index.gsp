@@ -5,7 +5,6 @@
   </head>
 
   <body>
-Registered...
+User Home Page
   </body>
 </html>
-
