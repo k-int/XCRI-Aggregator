@@ -1,3 +1,4 @@
+
 class ShiroUser {
     String username
     String passwordHash
