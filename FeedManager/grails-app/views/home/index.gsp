@@ -22,8 +22,8 @@ Your Feeds
   </tr>
   <g:each in="${user_feeds}" var="feed">
     <tr>
-      <td><g:link controller="feed" action="index">${feed.id}</g:link></td>
-      <td><g:link controller="feed" action="index">${feed.feedname}</g:link></td>
+      <td><g:link controller="feed" action="index" id="${feed.id}">${feed.id}</g:link></td>
+      <td><g:link controller="feed" action="index" id="${feed.id}">${feed.feedname}</g:link></td>
       <td>${feed.feedtype}</td>
       <td></td>
       <td></td>

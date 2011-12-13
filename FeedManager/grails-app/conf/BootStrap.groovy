@@ -4,6 +4,7 @@ import ShiroUser
 
 
 class BootStrap {
+
     def init = { servletContext ->
       log.debug("Verify default Shiro User");
       def user = ShiroUser.findByUsername("admin")
