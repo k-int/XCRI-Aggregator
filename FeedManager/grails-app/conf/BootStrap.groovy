@@ -12,6 +12,11 @@ class BootStrap {
         user = new ShiroUser(username: "admin", passwordHash: new Sha256Hash("password").toHex())
         user.addToPermissions("*:*")
         user.save()
+
+        def testfeed = new com.k_int.feedmanager.SingleFileDatafeed(owner:user, 
+                                                                    feedname:'University Of Lincoln Programmes', 
+                                                                    baseurl:'http://www.lincoln.ac.uk/componants/xml/ULprogrammes_xcri.xml')
+        testfeed.save()
       }
       else {
         log.debug("Admin user verified");

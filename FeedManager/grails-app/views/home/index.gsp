@@ -7,7 +7,7 @@
   <body>
 User Home Page
 
-<a href="">Register New Feed</a>
+<g:link controller="registerFeed" action="index">Register New Feed</g:link>
 
 Your Feeds
 
@@ -15,10 +15,21 @@ Your Feeds
   <tr>
     <th>Feed ID</th>
     <th>Feed Name</th>
+    <th>Feed Type</th>
     <th>Status</th>
     <th>Last Run</th>
     <th>Next Scheduled Harvest</th>
   </tr>
+  <g:each in="${user_feeds}" var="feed">
+    <tr>
+      <td><g:link controller="feed" action="index">${feed.id}</g:link></td>
+      <td><g:link controller="feed" action="index">${feed.feedname}</g:link></td>
+      <td>${feed.feedtype}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </g:each>
 </table>
 
   </body>
