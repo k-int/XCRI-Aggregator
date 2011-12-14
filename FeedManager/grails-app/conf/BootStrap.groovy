@@ -16,7 +16,8 @@ class BootStrap {
 
         def testfeed = new com.k_int.feedmanager.SingleFileDatafeed(owner:user, 
                                                                     feedname:'University Of Lincoln Programmes', 
-                                                                    baseurl:'http://www.lincoln.ac.uk/componants/xml/ULprogrammes_xcri.xml')
+                                                                    baseurl:'http://www.lincoln.ac.uk/componants/xml/ULprogrammes_xcri.xml',
+                                                                    status:1)
         testfeed.save()
       }
       else {

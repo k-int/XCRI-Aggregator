@@ -19,15 +19,20 @@ Your Feeds
     <th>Status</th>
     <th>Last Run</th>
     <th>Next Scheduled Harvest</th>
+    <th>Actions</th>
   </tr>
   <g:each in="${user_feeds}" var="feed">
     <tr>
       <td><g:link controller="feed" action="index" id="${feed.id}">${feed.id}</g:link></td>
       <td><g:link controller="feed" action="index" id="${feed.id}">${feed.feedname}</g:link></td>
       <td>${feed.feedtype}</td>
+      <td>${feed.status}</td>
       <td></td>
       <td></td>
-      <td></td>
+      <td>
+        <g:if test="${feed.status == 1}">
+          <g:link controller="feed" action="collect" id="${feed.id}">Collect Now</g:link>
+        </g:if>
     </tr>
   </g:each>
 </table>
