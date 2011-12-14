@@ -6,6 +6,8 @@ class Datafeed {
 
     static belongsTo = [owner:ShiroUser]
 
+    AggregationService target
+
     String feedname
     String feedtype
 

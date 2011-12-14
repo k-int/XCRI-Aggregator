@@ -2,6 +2,8 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import grails.util.GrailsUtil
 import ShiroUser
 
+import com.k_int.feedmanager.*
+
 
 class BootStrap {
 
@@ -14,16 +16,29 @@ class BootStrap {
         user.addToPermissions("*:*")
         user.save()
 
+        def test_aggr = new AggregationService(baseurl:'http://localhost:8080/repository/upload',
+                                               identity:'Admin',
+                                               credentials:'password',
+                                               owner:user);
+
+        test_aggr.save()
+
         def testfeed = new com.k_int.feedmanager.SingleFileDatafeed(owner:user, 
                                                                     feedname:'University Of Lincoln Programmes', 
                                                                     baseurl:'http://www.lincoln.ac.uk/componants/xml/ULprogrammes_xcri.xml',
-                                                                    status:1)
+                                                                    status:1,
+                                                                    target:test_aggr)
         testfeed.save()
       }
       else {
         log.debug("Admin user verified");
       }
+
     }
+
+
     def destroy = {
     }
+
+
 }

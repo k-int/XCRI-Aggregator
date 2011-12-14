@@ -34,6 +34,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.16'
+	runtime 'commons-fileupload:commons-fileupload:1.2.2'
+	// runtime 'org.apache.httpcomponents:httpcomponents-client:4.1.2'
+	runtime 'org.apache.httpcomponents:httpmime:4.1.2'
     }
 
     plugins {

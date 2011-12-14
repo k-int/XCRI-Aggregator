@@ -3,3 +3,9 @@ Experimenting with
 https://github.com/ausaccessfed/federatedgrails
 
 as a means of supplying shibboleth authentication.
+
+When running in dev env, the three component apps are run in their own grails envs as
+
+grails -Dserver.port=8090 run-app  (HandlerRegistry)
+grails -Dserver.port=8080 run-app  (Repository)
+grails -Dserver.port=8081 run-app  (FeedManager)
