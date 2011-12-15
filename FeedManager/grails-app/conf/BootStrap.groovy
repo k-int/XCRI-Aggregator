@@ -16,7 +16,7 @@ class BootStrap {
         user.addToPermissions("*:*")
         user.save()
 
-        def test_aggr = new AggregationService(baseurl:'http://localhost:8080/repository/upload',
+        def test_aggr = new AggregationService(baseurl:'http://localhost:8080/repository/upload.json',
                                                identity:'Admin',
                                                credentials:'password',
                                                owner:user);

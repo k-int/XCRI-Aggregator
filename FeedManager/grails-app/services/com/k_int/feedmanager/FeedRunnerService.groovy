@@ -14,6 +14,7 @@ import java.nio.charset.Charset
 class FeedRunnerService {
 
   def collect(feed_definition) {
+
     log.debug("Collecting ${feed_definition}");
 
     log.debug("Assemble http client to ${feed_definition.target.baseurl} - ${feed_definition.target.identity}/${feed_definition.target.credentials}");
@@ -33,6 +34,8 @@ class FeedRunnerService {
 
   def uploadStream(input_stream,target_service) {
 
+    def upload_result = [:]
+
     log.debug("About to make post request");
 
     byte[] resource_to_deposit = input_stream.getBytes()
@@ -47,12 +50,19 @@ class FeedRunnerService {
       multipart_entity.addPart( "owner", new StringBody( "aa1", "text/plain", Charset.forName( "UTF-8" )))  // Owner
       multipart_entity.addPart( "upload", new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'filename') )
 
-      // request.addHeader("Content-length", "${multipart_entity.getContentLength()}")
-
       request.entity = multipart_entity;
 
-      response.success = { resp ->
-        log.debug("response status: ${resp.statusLine} ${resp}")
+      response.success = { resp, data ->
+        log.debug("response status: ${resp.statusLine}")
+        
+        log.debug("Response data code: ${data?.code}");
+
+        //data?.eventLog?.each {
+        //  log.debug("log entry: ${it}");
+        //}
+
+        this.upload_result = data;
+
         // assert resp.statusLine.statusCode == 200
       }
 
@@ -62,6 +72,7 @@ class FeedRunnerService {
       }
     }
     log.debug("uploadStream completed");
+    upload_result
   }
 
 }
