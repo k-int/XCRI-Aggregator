@@ -2,6 +2,12 @@ package feedmanager
 
 import com.k_int.feedmanager.*
 
+/**
+ *
+ * Whenever this class looks up a feed definition, it should do so through the feedRunnerService.
+ * that service will return a clean instance of the feed OR the currently running instance of the 
+ * feed if it's currently being executed. This allows easy access to the "Console".
+ */
 class FeedController {
 
   def feedRunnerService
@@ -15,7 +21,7 @@ class FeedController {
    */
   def collect() {
     log.debug("collect")
-    def feedDefinition = Datafeed.get(params.id);
+    def feedDefinition = feedRunnerService.getDatafeed(params.id)
     feedRunnerService.collect(feedDefinition)
   }
 

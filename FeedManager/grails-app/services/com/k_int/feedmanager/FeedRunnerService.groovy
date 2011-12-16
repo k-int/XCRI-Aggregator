@@ -10,12 +10,29 @@ import groovyx.net.http.*
 import org.apache.http.entity.mime.*
 import org.apache.http.entity.mime.content.*
 import java.nio.charset.Charset
+import grails.converters.*
 
 class FeedRunnerService {
 
+  def running_feeds = [:]
+
   def collect(feed_definition) {
 
-    log.debug("Collecting ${feed_definition}");
+    log.debug("Attempting to Collect feed ${feed_definition.id}");
+
+    if ( running_feeds.keySet().contains(feed_definition.id) ) {
+      log.warn("Cannot start already running feed");
+    }
+    else {
+      log.warn("Starting feed ${feed_definition.id}");
+      doCollectFeed(feed_definition)
+    }
+  }
+
+  def doCollectFeed(feed_definition) {
+    running_feeds[feed_definition.id] = feed_definition;
+    feed_definition.status=2
+    feed_definition.save(flush:true)
 
     log.debug("Assemble http client to ${feed_definition.target.baseurl} - ${feed_definition.target.identity}/${feed_definition.target.credentials}");
     def aggregator_service = new HTTPBuilder( feed_definition.target.baseurl )
@@ -26,11 +43,17 @@ class FeedRunnerService {
 
       log.debug("Calling upload stream");
       java.net.URL resource = new java.net.URL(feed_definition.baseurl)
-      uploadStream(resource.openStream(),aggregator_service);
+      def response = uploadStream(resource.openStream(),aggregator_service);
+      feed_definition.jsonResponse = response as JSON
+
     }
+
+    feed_definition.status=3
+    feed_definition.save(flush:true)
+
+    log.debug("Removing feed from running_feeds map")
+    running_feeds.remove(feed_definition.id)
   }
-
-
 
   def uploadStream(input_stream,target_service) {
 
@@ -61,7 +84,7 @@ class FeedRunnerService {
         //  log.debug("log entry: ${it}");
         //}
 
-        this.upload_result = data;
+        upload_result = data;
 
         // assert resp.statusLine.statusCode == 200
       }
@@ -75,5 +98,8 @@ class FeedRunnerService {
     upload_result
   }
 
+  def getDatafeed(id) {
+    running_feeds[id] ?: Datafeed.get(id)
+  }
 }
 

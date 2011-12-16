@@ -8,9 +8,6 @@ class SingleFileDatafeed extends Datafeed {
 
     String baseurl
 
-    // 1==new
-    int status = 1
-
     static constraints = {
     }
 }
