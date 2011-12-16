@@ -44,8 +44,8 @@ class FeedRunnerService {
       log.debug("Calling upload stream");
       java.net.URL resource = new java.net.URL(feed_definition.baseurl)
       def response = uploadStream(resource.openStream(),aggregator_service);
+      log.debug("Assigning json response to database object");
       feed_definition.jsonResponse = response as JSON
-
     }
 
     feed_definition.status=3
@@ -99,7 +99,14 @@ class FeedRunnerService {
   }
 
   def getDatafeed(id) {
-    running_feeds[id] ?: Datafeed.get(id)
+    log.debug("Looking up data feed ${id}");
+    def result = running_feeds[id]
+    if ( result == null ) {
+      log.debug("Looking up feed from db");
+      result = Datafeed.get(id)
+    }
+
+    result
   }
 }
 

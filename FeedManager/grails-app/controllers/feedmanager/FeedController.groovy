@@ -1,6 +1,7 @@
 package feedmanager
 
 import com.k_int.feedmanager.*
+import grails.converters.*
 
 /**
  *
@@ -38,5 +39,30 @@ class FeedController {
   def schedule() {
   }
 
+  def console() {
+    def response = [:]
+    response.feed = feedRunnerService.getDatafeed(params.id)
+    // Convert the JSON object held in the jsonResponse property into some objects we can display
+
+    if ( response.feed != null ) {
+      if ( response.feed.jsonResponse != null ) {
+        response.lastlog = JSON.parse(response.feed.jsonResponse)
+      }
+      else {
+        log.warn("Lastlog entry of feed is null");
+      }
+    }
+    else {
+      log.warn("feed is null");
+    }
+
+    response
+  }
+
+  def dashboard() {
+  }
+
+  def search() {
+  }
   
 }

@@ -23,14 +23,14 @@ Your Feeds
   </tr>
   <g:each in="${user_feeds}" var="feed">
     <tr>
-      <td><g:link controller="feed" action="index" id="${feed.id}">${feed.id}</g:link></td>
-      <td><g:link controller="feed" action="index" id="${feed.id}">${feed.feedname}</g:link></td>
+      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
+      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
       <td>${feed.feedtype}</td>
       <td>${feed.status}</td>
       <td></td>
       <td></td>
       <td>
-        <g:if test="${feed.status == 1}">
+        <g:if test="${feed.status in [1,3,4]}">
           <g:link controller="feed" action="collect" id="${feed.id}">Collect Now</g:link>
         </g:if>
     </tr>

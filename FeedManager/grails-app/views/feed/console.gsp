@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="layout" content="feedlayout" />
+  </head>
+
+  <body>
+    <h1>Console for feed ${feed.feedname}</h1>
+    <table>
+      <tr>
+        <th>Timestamp</th>
+        <th>Message Type</th>
+        <th>Logging Level</th>
+        <th>Details</th>
+      </tr>
+      <g:each in="${lastlog?.eventLog?.reverse()}" var="entry">
+        <g:if test="${entry.type=='msg'}">
+          <tr>
+            <td>${entry.ts}</td>
+            <td>${entry.type}</td>
+            <td>${entry.lvl}</td>
+            <td>${entry.msg}</td>
+          </tr>
+        </g:if>
+        <g:else>
+          <tr><td colspan="4">Unhandled message type<br/>${entry}</td?</tr>
+        </g:else>
+      </g:each>
+    </table>
+  </body>
+</html>
