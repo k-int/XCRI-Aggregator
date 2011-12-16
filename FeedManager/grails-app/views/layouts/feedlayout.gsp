@@ -19,15 +19,18 @@
 </head>
 <body>
   <div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
-  <g:layoutBody/>
   Headings for the tabs on this page
   <ul>
     <li><g:link controller="feed" action="dashboard" id="${params.id}">Feed Dashboard</g:link></li>
     <li><g:link controller="feed" action="search" id="${params.id}">Search/Test Feed</g:link></li>
     <li><g:link controller="feed" action="console" id="${params.id}">Latest Console</g:link></li>
   </ul>
+
+  <g:layoutBody/>
   <div class="footer" role="contentinfo"></div>
+
   <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+
   <g:javascript library="application"/>
   <r:layoutResources />
 </body>

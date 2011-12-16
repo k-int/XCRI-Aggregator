@@ -5,7 +5,9 @@
   </head>
 
   <body>
+
     <h1>Console for feed ${feed.feedname}</h1>
+
     <table>
       <tr>
         <th>Timestamp</th>
@@ -27,5 +29,6 @@
         </g:else>
       </g:each>
     </table>
+
   </body>
 </html>
