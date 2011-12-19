@@ -15,7 +15,7 @@
         <th>Logging Level</th>
         <th>Details</th>
       </tr>
-      <g:each in="${lastlog?.eventLog?.reverse()}" var="entry">
+      <g:each in="${lastlog?.eventLog}" var="entry">
         <g:if test="${entry.type=='msg'}">
           <tr>
             <td>${entry.ts}</td>
