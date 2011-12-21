@@ -63,14 +63,18 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // enable query caching by default
 grails.hibernate.cache.queries = true
-
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
         grails.logging.jul.usebridge = true
+		/* this line prevents caching of css for grails 2.0 - MJ */
+		grails.gsp.reload.enable = true		
+		grails.resources.processing.enabled = false	
     }
     production {
         grails.logging.jul.usebridge = false
+		/* this line prevents caching of css for grails 2.0 - MJ */
+		grails.resources.processing.enabled = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
