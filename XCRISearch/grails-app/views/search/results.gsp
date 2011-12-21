@@ -5,6 +5,15 @@
     <title>Search front page</title>
   </head>
   <body>
-    This is the search front page
+Search results page
+
+<ul>
+<g:each in="${searchresult?.hits}" var="crs">
+  <li>
+    ${crs?.source}
+  </li>
+</g:each>
+</ul>
+
   </body>
 </html>

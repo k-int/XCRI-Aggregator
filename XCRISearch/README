@@ -1,0 +1,3 @@
+
+
+Test the es search directly with rest URLs like http://localhost:9200/courses/course/_search?q=painting
