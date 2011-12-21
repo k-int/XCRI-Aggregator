@@ -67,14 +67,15 @@ grails.hibernate.cache.queries = true
 environments {
     development {
         grails.logging.jul.usebridge = true
-		/* this line prevents caching of css for grails 2.0 - MJ */
-		grails.gsp.reload.enable = true		
-		grails.resources.processing.enabled = false	
+	/* this line prevents caching of css for grails 2.0 - MJ */
+	grails.gsp.reload.enable = true		
+	grails.resources.processing.enabled = false	
+        grails.resources.debug = true
     }
     production {
         grails.logging.jul.usebridge = false
-		/* this line prevents caching of css for grails 2.0 - MJ */
-		grails.resources.processing.enabled = false
+        /* this line prevents caching of css for grails 2.0 - MJ */
+        grails.resources.processing.enabled = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
