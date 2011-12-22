@@ -3,3 +3,19 @@ This project is a spike for the JISC XCRI aggregator ITT.. To test out our assum
 
 
 HTML5 Info taken from http://ghads.wordpress.com/2011/01/21/grails-html5-works/
+
+
+
+Additional configuration
+
+create database FeedManagerLive default charset UTF8 default collate UTF8_BIN;
+grant all on FeedManagerLive.* to 'k-int'@'localhost';
+grant all on FeedManagerLive.* to 'k-int'@'localhost.localdomain';
+grant all on FeedManagerLive.* to 'k-int'@'%';
+
+
+create database hreplive default charset UTF8 default collate UTF8_BIN;
+grant all on hreplive.* to 'k-int'@'localhost';
+grant all on hreplive.* to 'k-int'@'localhost.localdomain';
+grant all on hreplive.* to 'k-int'@'%';
+
