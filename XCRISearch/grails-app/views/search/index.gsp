@@ -5,6 +5,6 @@
     <title>Search front page</title>
   </head>
   <body>
-    This is the search front page
+    This is the search front page..
   </body>
 </html>
