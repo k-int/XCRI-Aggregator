@@ -34,6 +34,7 @@ class BootStrap {
         log.debug("Admin user verified");
       }
 
+      log.debug("Bootstrap completed");
     }
 
 
