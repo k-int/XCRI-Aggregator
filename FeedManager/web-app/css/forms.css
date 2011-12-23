@@ -1,0 +1,87 @@
+form ul
+{
+	list-style: none;
+}
+
+form .info
+{
+	vertical-align: sub;
+	line-height: 25px;
+}
+
+
+form li
+{
+	padding: 2px 0;	
+}
+
+form li *
+{
+	font-size: 14px;
+	
+}
+
+form li label
+{
+	display: inline-block;
+    width: 15%;
+}
+
+input[type="text"], input[type="password"], select
+{
+	border-color: #b7b7b7;
+	-moz-border-radius:2px;
+	border-radius:2px;
+	padding: 3px;
+	-moz-box-shadow: inset 3px 3px 5px #e5e5e5;
+	box-shadow: inset 3px 3px 5px #e5e5e5;
+}
+
+select, select *
+{
+	background:transparent !important;
+}
+
+/*input[type="submit"]
+{
+	border-color: #b7b7b7;
+	background-color: #e5e5e5;
+	-moz-border-radius:2px;
+	border-radius:2px;
+	-moz-box-shadow: inset 0px 9px 9px white;
+	box-shadow: inset 0px 9px 9px white;
+	cursor: pointer;
+}*/
+
+/*input[type="submit"]:hover, .button-link:hover
+{
+	background-color: #c6dedd;
+}*/
+
+.small, .medium, .large
+{
+	box-sizing:content-box;
+	-ms-box-sizing:content-box;
+	-moz-box-sizing:content-box;
+	-webkit-box-sizing:content-box; 
+}
+
+.small
+{
+	width: 15%;
+}
+
+.medium
+{
+	width: 30%;
+}
+
+.large
+{
+	width: 45%;
+}
+
+form input[type="submit"]
+{
+	margin-left:15.5%;
+}

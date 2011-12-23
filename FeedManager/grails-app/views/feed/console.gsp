@@ -6,7 +6,7 @@
 
   <body>
 
-    <h1>Console for feed ${feed.feedname}</h1>
+    <h1>Console for feed ${feed?.feedname}</h1>
 
     <table>
       <tr>

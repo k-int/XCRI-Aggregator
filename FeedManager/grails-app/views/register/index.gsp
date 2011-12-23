@@ -5,12 +5,14 @@
   </head>
 
   <body>
-    Register
+    <h1>Register</h1>
     <g:form method="post" action="processRegistration">
-      <label for="new_username">Username:</label><input name="new_username"/><br/>
-      <label for="new_password">Password:</label><input name="new_password"/><br/>
-      <label for="new_confirmation">Confirm Password:</label><input name="new_confirmation"/><br/>
-      <input type="submit"/>
+    	<ul>
+    		<li><label for="new_username">Username</label><input name="new_username" type="text" class="medium"/></li>
+    		<li><label for="new_password">Password</label><input name="new_password" type="password" class="medium"/></li>
+    		<li><label for="new_confirmation">Confirm Password</label><input name="new_confirmation" type="password" class="medium"/></li>    		
+    		<li><input type="submit" class="button-link" value="Register"/></li>
+    	</ul>
     </g:form>
   </body>
 </html>
