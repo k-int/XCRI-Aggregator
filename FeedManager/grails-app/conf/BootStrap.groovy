@@ -17,7 +17,7 @@ class BootStrap {
         user.save()
 
         def test_aggr = new AggregationService(baseurl:'http://localhost:8080/repository/upload.json',
-                                               identity:'Admin',
+                                               identity:'admin',
                                                credentials:'password',
                                                owner:user);
 

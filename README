@@ -19,3 +19,7 @@ grant all on hreplive.* to 'k-int'@'localhost';
 grant all on hreplive.* to 'k-int'@'localhost.localdomain';
 grant all on hreplive.* to 'k-int'@'%';
 
+create database Aggr3Live default charset UTF8 default collate UTF8_BIN;
+grant all on Aggr3Live.* to 'k-int'@'localhost';
+grant all on Aggr3Live.* to 'k-int'@'localhost.localdomain';
+grant all on Aggr3Live.* to 'k-int'@'%';
