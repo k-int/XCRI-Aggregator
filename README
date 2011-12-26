@@ -23,3 +23,14 @@ create database Aggr3Live default charset UTF8 default collate UTF8_BIN;
 grant all on Aggr3Live.* to 'k-int'@'localhost';
 grant all on Aggr3Live.* to 'k-int'@'localhost.localdomain';
 grant all on Aggr3Live.* to 'k-int'@'%';
+
+
+To clear down the mongo store
+
+mongo client:
+
+>  use xcri
+switched to db xcri
+
+> db.dropDatabase()
+{ "dropped" : "xcri.$cmd", "ok" : 1 }
