@@ -11,7 +11,8 @@ Search results page
 <g:each in="${searchresult?.hits}" var="crs">
   <li>
     <div class="result">
-      <h3><a href="${crs.source.url}">${crs.source.title}</a></h3>
+      <h3><g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link></h3>
+      <i>${crs.source.url}</i>
       <p>
         Subjects: <g:join in="${crs.source.subject}" delimiter=", "/><br/>
         Identifier: ${crs.source.identifier}<br/>

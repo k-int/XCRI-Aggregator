@@ -2,6 +2,8 @@ package com.k_int.xcri
 
 class CourseController {
 
+  def ESWrapperService
+
   def index() { 
     log.debug("Course controller, params.id=${params.id}")
 
@@ -29,7 +31,9 @@ class CourseController {
       log.debug("Search returned $search.response.hits.totalHits total hits")
       log.debug("First hit course is $search.response.hits[0]")
       result.searchresult = search.response
-      render(view:'results',model:result)
+      result.course = search.response.hits[0];
+
+      result
     }
     else {
       log.warn("No query.. Show search page")
