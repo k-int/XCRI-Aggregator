@@ -6,6 +6,7 @@ class SearchController {
   def ESWrapperService
 
   def index() { 
+    // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
     log.debug("Search Index, params.q=${params.q}")
 
     def result = [:]
@@ -17,17 +18,20 @@ class SearchController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
     if ( params.q != null ) {
-      // Form passed in a query
-      
       def search = esclient.search {
         indices "courses"
         types "course"
         source {
           query {
-            term(title:params.q)
+            query_string ( query: params.q )
           }
         }
       }
+      //      and : [
+      //        params.coursetitle ?: { term(title:params.coursetitle) },
+      //        params.coursedescription ?: { term(descriptions:params.coursedescription) },
+      //        params.freetext ?: { term(params.freetext) },
+      //      ]
 
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
