@@ -18,6 +18,12 @@ class SearchController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
     if ( params.q != null ) {
+
+      def terms = params.q
+
+      if ( terms=='' )
+        terms="*"
+
       def search = esclient.search {
         indices "courses"
         types "course"
@@ -27,6 +33,7 @@ class SearchController {
           }
         }
       }
+
       //      and : [
       //        params.coursetitle ?: { term(title:params.coursetitle) },
       //        params.coursedescription ?: { term(descriptions:params.coursedescription) },
