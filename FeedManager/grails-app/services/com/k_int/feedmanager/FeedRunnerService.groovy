@@ -30,6 +30,7 @@ class FeedRunnerService {
   }
 
   def doCollectFeed(feed_definition) {
+    log.debug("starting doCollectFeed ${feed_definition.id}");
     running_feeds[feed_definition.id] = feed_definition;
     feed_definition.status=2
     feed_definition.save(flush:true)
@@ -84,7 +85,7 @@ class FeedRunnerService {
           log.debug("response status: ${resp.statusLine}")
           log.debug("Response data code: ${data?.code}");
           log.debug("Assigning json response to database object");
-          feed_definition.jsonResponse = response as JSON
+          feed_definition.jsonResponse = data as JSON
           feed_definition.status=3
           feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
           // assert resp.statusLine.statusCode == 200
