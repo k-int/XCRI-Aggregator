@@ -671,3 +671,14 @@ footer span
 	color:white !important;
 }
 
+.ellipsis-overflow
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+table img
+{
+	margin: 0 auto;
+	display:block;
+}

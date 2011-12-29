@@ -3,6 +3,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="layout" content="main" />
   <title>Login</title>
+   <g:javascript>
+    $(document).ready(function()
+	{	
+		$('.login').addClass('active');
+	});
+	</g:javascript>
 </head>
 <body>
 	<h1>Login</h1>
