@@ -118,6 +118,7 @@ log4j = {
            //'grails.app.filters',
            //'grails.app.taglib',
            'grails.app.services',
-           'grails.app.domain'
+           'grails.app.domain',
+           'grails.app.jobs'
 
 }

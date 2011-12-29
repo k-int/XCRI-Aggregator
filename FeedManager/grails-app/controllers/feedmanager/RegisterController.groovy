@@ -2,7 +2,7 @@ package feedmanager
 
 import org.apache.shiro.crypto.hash.Sha256Hash
 import grails.util.GrailsUtil
-import ShiroUser
+import com.k_int.feedmanager.*
 
 class RegisterController {
 

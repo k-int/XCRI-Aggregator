@@ -9,5 +9,6 @@ class SingleFileDatafeed extends Datafeed {
     String baseurl
 
     static constraints = {
+      baseurl(blank:false,nullable:false)
     }
 }

@@ -1,3 +1,4 @@
+package com.k_int.feedmanager
 
 class ShiroUser {
     String username

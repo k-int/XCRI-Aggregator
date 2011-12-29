@@ -9,7 +9,8 @@ class ShiroSecurityFilters {
                 // Ignore direct views (e.g. the default main index page).
                 if (!controllerName) return true
 
-                if (controllerName=='register') return true
+                // Some controllers run unauthenticated
+                if (controllerName in ['register','frontpage'] ) return true
 
                 // Access control by convention.
                 accessControl()
