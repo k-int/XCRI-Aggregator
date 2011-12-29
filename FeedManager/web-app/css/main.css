@@ -19,6 +19,7 @@ html {
 	        box-sizing: border-box;
 }
 
+
 html.no-cssgradients {
 	background-color: #aaa;
 }
