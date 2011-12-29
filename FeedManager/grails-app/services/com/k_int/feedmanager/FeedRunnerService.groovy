@@ -44,7 +44,7 @@ class FeedRunnerService {
         
         log.debug("Calling upload stream");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
-        uploadStream(resource.openStream(),aggregator_service,feed_definition.dataProvider);
+        uploadStream(resource.openStream(),aggregator_service,feed_definition)
       }
     }
     catch ( Exception e ) {
@@ -59,7 +59,7 @@ class FeedRunnerService {
     running_feeds.remove(feed_definition.id)
   }
 
-  def uploadStream(input_stream,target_service,dataProvider) {
+  def uploadStream(input_stream,target_service,feed_definition) {
 
     log.debug("About to make post request");
 
@@ -73,7 +73,7 @@ class FeedRunnerService {
 
         // Much help taken from http://evgenyg.wordpress.com/2010/05/01/uploading-files-multipart-post-apache/
         def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        multipart_entity.addPart( "owner", new StringBody( dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
+        multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
         multipart_entity.addPart( "upload", new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'filename') )
 
         request.entity = multipart_entity;
@@ -90,7 +90,7 @@ class FeedRunnerService {
         response.failure = { resp ->
           log.error("Failure - ${resp}");
           feed_definition.status=4
-          feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}"
+          feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
           // assert resp.status >= 400
         }
       }
