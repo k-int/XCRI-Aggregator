@@ -75,7 +75,7 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         /* this line prevents caching of css for grails 2.0 - MJ */
-        grails.resources.processing.enabled = false
+        // grails.resources.processing.enabled = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
