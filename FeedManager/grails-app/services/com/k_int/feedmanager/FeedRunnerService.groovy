@@ -35,16 +35,17 @@ class FeedRunnerService {
     feed_definition.save(flush:true)
 
     try {
-      log.debug("Assemble http client to ${feed_definition.target.baseurl} - ${feed_definition.target.identity}/${feed_definition.target.credentials}");
+      log.debug("Assemble http client to ${feed_definition.target.baseurl} - ${feed_definition.target.identity}/${feed_definition.target.credentials} for feed ${feed_definition.baseurl}");
       def aggregator_service = new HTTPBuilder( feed_definition.target.baseurl )
       aggregator_service.auth.basic feed_definition.target.identity, feed_definition.target.credentials
 
       if ( feed_definition instanceof SingleFileDatafeed ) {
-        log.debug("Processing single file datafeed. ${feed_definition.baseurl} is the url of the resource");
-        
-        log.debug("Calling upload stream");
+        log.debug("Processing single file datafeed. ${feed_definition.baseurl}");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
         uploadStream(resource.openStream(),aggregator_service,feed_definition)
+      }
+      else {
+        log.warn("Unhandled feed type");
       }
     }
     catch ( Exception e ) {
@@ -85,6 +86,7 @@ class FeedRunnerService {
           log.debug("Assigning json response to database object");
           feed_definition.jsonResponse = response as JSON
           feed_definition.status=3
+          feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
           // assert resp.statusLine.statusCode == 200
         }
 
@@ -97,7 +99,7 @@ class FeedRunnerService {
       }
     }
     catch ( Exception e ) {
-      log.debug("Unexpected exception trying to read remote stream")
+      log.error("Unexpected exception trying to read remote stream",e)
       feed_definition.status=4
       feed_definition.statusMessage="Error trying to read feed: ${e.message}"
     }
