@@ -40,16 +40,16 @@
 	<nav>
 		<div class="inner-cont">
 			<ul>
-			    <li><g:link class="home"><span>Home</span></g:link></li>
-			    <li><g:link controller="home" action="index" id="${params.id}" class="feeds"><span>My Feeds</span></g:link></li>
+			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
   			</ul>
 			<ul>
-			    <li><g:link controller="feed" action="dashboard" id="${params.id}" class="dashboard"><span>Dashboard</span></g:link></li>
-			    <li><g:link controller="feed" action="search" id="${params.id}" class="search"><span>Search</span></g:link></li>
-			    <li><g:link controller="feed" action="console" id="${params.id}" class="console"><span>Console</span></g:link></li>
+			    <li><g:link controller="feed" action="dashboard" class="dashboard"><span>Dashboard</span></g:link></li>
+			    <li><g:link controller="feed" action="search" class="search"><span>Search</span></g:link></li>
+			    <li><g:link controller="feed" action="console" class="console"><span>Console</span></g:link></li>
   			</ul>
   			<ul style="float:right">
-			    <li><g:link controller="home" action="index" id="${params.id}" class="logout"><span>Logout</span></g:link></li>
+			    <li><g:link controller="home" action="index" class="logout"><span>Logout</span></g:link></li>
   			</ul>
 		</div>
 	</nav>

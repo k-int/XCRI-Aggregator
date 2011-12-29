@@ -40,12 +40,12 @@
 	<nav>
 		<div class="inner-cont">
 			<ul>
-			    <li><g:link class="home"><span>Home</span></g:link></li>
-			    <li><g:link controller="home" action="index" id="${params.id}" class="feeds"><span>My Feeds</span></g:link></li>
+			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
   			</ul>
   			<ul style="float:right">
-			    <li><g:link controller="home" action="index" id="${params.id}" class="login"><span>Login</span></g:link></li>
-			    <li><g:link controller="register" action="index" id="${params.id}" class="register"><span>Register</span></g:link></li>
+			    <li><g:link controller="home" action="index" class="login"><span>Login</span></g:link></li>
+			    <li><g:link controller="register" action="index" class="register"><span>Register</span></g:link></li>
   			</ul>
 		</div>
 	</nav>
