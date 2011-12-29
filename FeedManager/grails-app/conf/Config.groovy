@@ -120,24 +120,6 @@ log4j = {
            'grails.app.services',
            'grails.app.domain',
            'grails.app.jobs'
-
 }
 
-/* This may be configured differently depending on mail server type, see grails mail plugin page for more details */
-//#TODO: put correct details in
-grails
-{
-	mail
-	{
-	  host = "smtp.gmail.com"
-	  port = 465
-	  username = "a-gmail-user-name-here"
-	  password = "a-gmail-password-here"
-	  props = ["mail.smtp.auth":"true",
-			   "mail.smtp.socketFactory.port":"465",
-			   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-			   "mail.smtp.socketFactory.fallback":"false"]
- 
-	}
-}
 
