@@ -53,6 +53,7 @@ class FeedRunnerService {
       feed_definition.statusMessage=e.message
     }
 
+    feed_definition.lastCheck = System.currentTimeMillis()
     feed_definition.save(flush:true)
 
     log.debug("Removing feed from running_feeds map")

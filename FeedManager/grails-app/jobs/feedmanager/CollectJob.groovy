@@ -3,11 +3,12 @@ package feedmanager
 class CollectJob {
 
   // We only want 1 of these running at a time...
-  def concurrent = false
+  // Trying with this commented out, as grails run-app deadlocks with the timer task running.. 
+  //def concurrent = false
   def feedRunnerService
 
   static triggers = {
-    cron name: 'CollectJobTrigger', cronExpression: "0 0/2 * * * ?"
+    cron name: 'CollectJobTrigger', cronExpression: "0 0/10 * * * ?"
   }
 
   def group = "CollectJobGroup"
