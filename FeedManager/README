@@ -13,11 +13,25 @@ grails -Dserver.port=8081 run-app  (FeedManager)
 SMTP settings need to be added to the FeedManager-config.groovy file stored locally
 The SMTP settings are configured according to mail server type, see grails mail plugin page for more details: http://grails.org/plugin/mail
 
-
 example FeedManager-config.groovy
 
 ----
 feedmanager.default.aggr='http://coursedata.k-int.com/repository/upload.json'
+grails
+{
+	mail
+	{
+	  host = "smtp.gmail.com"
+	  port = 465
+	  username = "a-sample-gmail-login"
+	  password = "a-sample-gmail-password"
+	  props = ["mail.smtp.auth":"true",
+			   "mail.smtp.socketFactory.port":"465",
+			   "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+			   "mail.smtp.socketFactory.fallback":"false"]
+ 
+	}
+}
 ----
 
 
