@@ -595,6 +595,8 @@ header h1
 	font: 42px 'DroidSerifRegular', Arial, sans-serif;
 	line-height: inherit;
 	text-shadow: 1px 1px 1px #000;
+	padding-left: 64px;
+	background: url(../images/xcri.png) left center no-repeat;
 }
 
 footer span
