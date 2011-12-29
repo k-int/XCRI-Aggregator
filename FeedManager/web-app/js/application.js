@@ -15,7 +15,7 @@ function resizeFrame()
 	var nav_height = $('nav').height();
 	var footer_height = $('footer').height();
 	
-    var content_height = $(window).height() - (nav_height + footer_height + header_height + 3);
+    var content_height = $(window).height() - (nav_height + footer_height + header_height + 4);
     
     $("#content").css('minHeight', content_height < 400 ? 400 : content_height); 
 } 

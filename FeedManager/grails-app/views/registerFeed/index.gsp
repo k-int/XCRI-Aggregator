@@ -2,6 +2,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="layout" content="main" />
+    <g:javascript>
+    $(document).ready(function()
+	{	
+		$('.feeds').addClass('active');
+	});
+	</g:javascript>
   </head>
 
   <body>
