@@ -9,7 +9,7 @@ class BootStrap {
       def user = ShiroUser.findByUsername("admin")
       if ( user == null ) {
         log.debug("admin user not found.. creating default");
-        user = new ShiroUser(username: "admin", passwordHash: new Sha256Hash("password").toHex())
+        user = new ShiroUser(username: "admin", name: "Mr Administrator", passwordHash: new Sha256Hash("password").toHex(), email: "email@somedomain.com", verified: Boolean.TRUE, active: Boolean.TRUE)
         user.addToPermissions("*:*")
         user.save()
 
