@@ -28,14 +28,16 @@ class CourseController {
         }
       }
 
-      log.debug("Search returned $search.response.hits.totalHits total hits")
+      log.debug("Search returned ${search.response.hits.totalHits} total hits")
       log.debug("First hit course is $search.response.hits[0]")
-      if ( search.response.hits.size() == 1 ) {
+      if ( search.response.hits.totalHits == 1 ) {
+        def rec = search.response.hits[0];
+        log.debug("Got 1 hit - $rec.id from $rec.index/$rec.type")
         result.searchresult = search.response
-        result.course = search.response.hits[0];
+        result.course = rec
       }
       else {
-        log.error("Id search matched ${search.response.hits.size()} items.");
+        log.error("Id search matched ${search.response.hits.totalHits} items.");
         render(view:'notfound',model:result)
       }
 
