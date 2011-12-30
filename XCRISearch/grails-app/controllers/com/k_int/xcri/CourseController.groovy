@@ -30,8 +30,14 @@ class CourseController {
 
       log.debug("Search returned $search.response.hits.totalHits total hits")
       log.debug("First hit course is $search.response.hits[0]")
-      result.searchresult = search.response
-      result.course = search.response.hits[0];
+      if ( search.response.hits.size() == 1 ) {
+        result.searchresult = search.response
+        result.course = search.response.hits[0];
+      }
+      else {
+        log.error("Id search matched ${search.response.hits.size()} items.");
+        render(view:'notfound',model:result)
+      }
 
       result
     }
