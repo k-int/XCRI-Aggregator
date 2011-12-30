@@ -640,7 +640,7 @@ footer span
 	background:-o-linear-gradient(#666b74,#292b2e 70%);
 	background:linear-gradient(#666b74,#292b2e 70%);
 	
-	color: #d6d6d6;
+	color: #d6d6d6 !important;
 	font-weight: bold;
 	text-decoration:none;
 	padding: 4px 10px;
@@ -658,7 +658,7 @@ footer span
 
 .button-link:hover
 {
-	color: white;
+	color: white !important;
 	cursor: pointer;	
 }
 
