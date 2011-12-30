@@ -1,5 +1,7 @@
 package com.k_int.xcri
 
+import grails.converters.*
+
 class CourseController {
 
   def ESWrapperService
@@ -18,20 +20,23 @@ class CourseController {
     if ( params.id != null ) {
       // Form passed in a query
 
-      def search = esclient.search {
-        indices "courses"
-        types "course"
-        source {
-          query {
-            term(_id:params.id)
-          }
-        }
+
+      def course = esclient.get {
+          index "courses"
+          type "course"
+          id params.id
       }
 
-      log.debug("Search returned $search.response.hits.totalHits total hits")
-      log.debug("First hit course is $search.response.hits[0]")
-      result.searchresult = search.response
-      result.course = search.response.hits[0];
+      if ( course != null ) {
+        result.course = course.response
+        def caj = course as JSON
+        log.debug("Got course ${caj}");
+        
+      }
+      else {
+        log.error("Id search matched ${search.response.hits.totalHits} items.");
+        render(view:'notfound',model:result)
+      }
 
       result
     }

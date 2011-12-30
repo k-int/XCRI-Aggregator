@@ -11,9 +11,9 @@
       ${course.source.description}
     </p>
     <p>
-      Subjects: <g:join in="${crs.source.subject}" delimiter=", "/><br/>
-      Identifier: ${crs.source.identifier}<br/>
-      URL: ${crs.source.url}<br/>
+      Subjects: <g:join in="${course.source.subject}" delimiter=", "/><br/>
+      Identifier: ${course.source.identifier}<br/>
+      URL: ${course.source.url}<br/>
     </p>
     <p>
       ${course.source}
