@@ -476,6 +476,7 @@ th:hover, tr:hover {
 
 /* PAGINATION */
 
+/*
 .pagination {
 	border-top: 0;
 	margin: 0;
@@ -512,7 +513,7 @@ th:hover, tr:hover {
 	background-color: transparent;
 	color: #444444;
 	text-decoration: underline;
-}
+}*/
 
 /* ACTION BUTTONS */
 

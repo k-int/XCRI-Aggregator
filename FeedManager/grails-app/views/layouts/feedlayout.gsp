@@ -1,3 +1,4 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -49,6 +50,9 @@
 			    <li><g:link controller="feed" action="dashboard" class="dashboard"><span>Dashboard</span></g:link></li>
 			    <li><g:link controller="feed" action="search" class="search"><span>Search</span></g:link></li>
 			    <li><g:link controller="feed" action="console" class="console"><span>Console</span></g:link></li>
+  			</ul>
+  			<ul>
+  				<li><a href="#"><shiro:principal/></a></li>
   			</ul>
   			<ul style="float:right">
 			    <li><g:link controller="home" action="index" class="logout"><span>Logout</span></g:link></li>

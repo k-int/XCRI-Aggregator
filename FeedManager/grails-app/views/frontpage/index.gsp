@@ -27,7 +27,18 @@
   </head>
 
   <body>
-<h1>Course Data Feed Manager - All Feeds</h1>
+<h1>Course Data Feed Manager</h1>
+<div class="paginateButtons">
+<g:if test="${params.int('offset')}">
+   	Showing Feeds ${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))} of ${feedsTotal}
+</g:if>
+<g:elseif test="${feedsTotal && feedsTotal > 0}">
+	Showing Feeds 1 - ${feedsTotal < params.int('max') ? feedsTotal : params.int('max')} of ${feedsTotal}
+</g:elseif>
+<g:else>
+	Showing ${feedsTotal} Feeds
+</g:else>
+<g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${feedsTotal}" /></div>
 <table>
 	<thead>
 	  <tr>
@@ -35,28 +46,24 @@
 	    <th>Name</th>
 	    <th>Active?</th>
 	    <th>Type</th>
-	    <th>Status</th>
 	    <th>Last Harvest</th>
 	    <th>Next Harvest</th>
-	    <th>Status message</th>
+	    <th>Status</th>
 	  </tr>
 	  </thead>
 	  <tbody>
-  <g:each in="${feeds}" var="feed">
-    <tr>
-      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
-      <td><g:link controller="feed" action="dashboard" id="${feed.id}" class="ellipsis-overflow">${feed.feedname}</g:link></td>
-      <td>${feed.active}</td>
-      <td>${feed.feedtype}</td>
-      <td>${feed.status}</td>
-      <td><g:formatDate format="dd-MM-yyyy" date="${feed.lastCheck}"/></td>
-      <td><g:formatDate format="dd-MM-yyyy" date="${feed.lastCheck+feed.checkInterval}"/></td>
-      <td><g:img dir="images/table" file="info32.png" title="${feed.statusMessage}"/></td>
-    </tr>
-    </tbody>
-    <tfoot>
-    </tfoot>
-  </g:each>
-</table>
+	  <g:each in="${feeds}" var="feed">
+	    <tr>
+	      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
+	      <td><g:link controller="feed" action="dashboard" id="${feed.id}" class="ellipsis-overflow">${feed.feedname}</g:link></td>
+	      <td>${feed.active}</td>
+	      <td>${feed.feedtype}</td>
+	      <td><g:formatDate format="MMM dd HH:mm:ss" date="${feed.lastCheck}"/></td>
+	      <td><g:formatDate format="MMM dd HH:mm:ss" date="${feed.lastCheck+feed.checkInterval}"/></td>
+	      <td><g:img dir="images/table" file="status-${feed.status}.png" title="${feed.statusMessage}"/></td>
+	    </tr>
+	   </g:each>
+	   </tbody>
+     </table>
   </body>
 </html>
