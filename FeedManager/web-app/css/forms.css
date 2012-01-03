@@ -81,11 +81,16 @@ select, select *
 	width: 45%;
 }
 
-form input[type="submit"]
+form input[type="submit"]:first-child
 {
 	margin-left:15.5%;
 }
 
+form a
+{
+	padding-top: 5px !important;
+	padding-bottom: 5px !important; 
+}
 
 /* PAGINATION */
 

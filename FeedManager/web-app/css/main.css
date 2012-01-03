@@ -662,6 +662,21 @@ footer span
 	cursor: pointer;	
 }
 
+.button-link-positive
+{
+	border: 1px solid #437904;
+		
+	background-color: #558c30;
+	background:-moz-linear-gradient(#7ebd46,#558c30 70%);
+	background:-webkit-linear-gradient(#7ebd46,#558c30 70%);
+	background:-o-linear-gradient(#7ebd46,#558c30 70%);
+	background:linear-gradient(#7ebd46,#558c30 70%);
+	
+	-web-box-shadow: inset 0 1px 0 #95c852;
+	-moz-box-shadow: inset 0 1px 0 #95c852;
+	box-shadow:inset 0 1px 0 #95c852;
+}
+
 .grey-contrast-txt
 {
 	color: #D6D6D6 !important;
@@ -678,7 +693,7 @@ footer span
 	text-overflow: ellipsis;
 }
 
-table img
+table img.centered
 {
 	margin: 0 auto;
 	display:block;

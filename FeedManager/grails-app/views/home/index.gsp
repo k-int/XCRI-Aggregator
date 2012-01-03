@@ -1,3 +1,5 @@
+<%@ page import="groovy.time.*" %>
+<%@ page import="com.k_int.feedmanager.utils.DurationFormatter" %>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -58,9 +60,9 @@
 		      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
 		      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
 		      <td>${feed.feedtype}</td>
-		      <td><g:formatDate format="MMM dd HH:mm:ss" date="${feed.lastCheck}"/></td>
-			  <td><g:formatDate format="MMM dd HH:mm:ss" date="${feed.lastCheck+feed.checkInterval}"/></td>
-		      <td><g:img dir="images/table" file="status-${feed.status}.png" title="${feed.statusMessage}"/></td>
+		      <td><g:formatDate format="dd MMM HH:mm" date="${feed.lastCheck}"/></td>
+			  <td>${use(DurationFormatter){TimeCategory.minus(new Date(feed.lastCheck+feed.checkInterval), new Date()).toString()}}</td>
+		      <td><g:img dir="images/table" file="status-${feed.status}.png" title="${feed.statusMessage}" class="centered"/></td>
 		      <td>
 		        <g:if test="${feed.status in [1,3,4]}">
 		          <g:link controller="feed" action="collect" id="${feed.id}">Collect Now</g:link>

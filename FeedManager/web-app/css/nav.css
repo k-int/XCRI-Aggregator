@@ -97,6 +97,33 @@ nav a:hover span
 	color:white;
 }
 
+nav li span.principal
+{
+	color: #d6d6d6 !important;
+	font-weight: bold;
+	text-decoration:none;
+	border: 1px solid #000;
+	
+	-web-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+	-moz-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+	box-shadow:		 inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+	
+	-moz-border-radius-topleft: 5px;
+	-webkit-border-radius-topleft: 5px;
+	border-top-left-radius: 5px;
+	
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-radis-bottomleft: 5px;
+	border-bottom-left-radius: 5px;
+	
+	background:url(../images/icons/user.png) 10px no-repeat, -moz-linear-gradient(#0188e0,#014779);
+	background:url(../images/icons/user.png) 10px no-repeat, -webkit-linear-gradient(#0188e0,#014779);
+	background:url(../images/icons/user.png) 10px no-repeat, -o-linear-gradient(#0188e0,#014779);
+	background:url(../images/icons/user.png) 10px no-repeat, linear-gradient(#0188e0,#014779);
+	
+	padding: 5px 10px 5px 30px;
+}
+
 nav .console span { background: transparent url(../images/icons/console.png) 10px no-repeat; }
 nav .console:hover span { background: transparent url(../images/icons/console-hover.png) 10px no-repeat; }
 nav .dashboard span { background: transparent url(../images/icons/dashboard.png) 10px no-repeat; }
@@ -113,3 +140,5 @@ nav .register span { background: transparent url(../images/icons/register.png) 1
 nav .register:hover span { background: transparent url(../images/icons/register-hover.png) 10px no-repeat;	}
 nav .logout span { background: transparent url(../images/icons/logout.png) 10px no-repeat;	}
 nav .logout:hover span { background: transparent url(../images/icons/logout-hover.png) 10px no-repeat;	}
+nav .users span { background: transparent url(../images/icons/users.png) 10px no-repeat;	}
+nav .users:hover span { background: transparent url(../images/icons/users-hover.png) 10px no-repeat;	}

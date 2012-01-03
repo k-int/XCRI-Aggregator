@@ -43,12 +43,25 @@
 		<div class="inner-cont">
 			<ul>
 			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+			    <shiro:authenticated>
 			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
+			    </shiro:authenticated>
+  			</ul>
+  			<shiro:authenticated>
+  			<ul>
+  				<li><g:link controller="shiroUser" action="list" class="users"><span>Users</span></g:link></li>
   			</ul>
   			<ul style="float:right">
-			    <li><g:link controller="home" action="index" class="login"><span>Login</span></g:link></li>
+  				<li><span class="principal"><shiro:principal/></span></li>
+			    <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
+  			</ul>
+  			</shiro:authenticated>
+  			<shiro:notAuthenticated>
+  			<ul style="float:right">
+			    <li><g:link controller="auth" action="signIn" class="login"><span>Login</span></g:link></li>
 			    <li><g:link controller="register" action="index" class="register"><span>Register</span></g:link></li>
   			</ul>
+  			</shiro:notAuthenticated>
 		</div>
 	</nav>
 	<div id="content" class="outer-cont">

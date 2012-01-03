@@ -11,7 +11,7 @@
   <meta http-equiv="Cache-Control" content="no-cache"/>
   <title>XCRI-CAP Aggregator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+  <link rel="shortcut icon" href="${resource(dir: 'images', file: 'xcri.ico')}" type="image/x-icon">
   <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
   <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
@@ -44,19 +44,24 @@
 		<div class="inner-cont">
 			<ul>
 			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+			    <shiro:authenticated>	
 			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
+			    </shiro:authenticated>
   			</ul>
+  			<shiro:authenticated>
 			<ul>
 			    <li><g:link controller="feed" action="dashboard" class="dashboard"><span>Dashboard</span></g:link></li>
 			    <li><g:link controller="feed" action="search" class="search"><span>Search</span></g:link></li>
 			    <li><g:link controller="feed" action="console" class="console"><span>Console</span></g:link></li>
   			</ul>
   			<ul>
-  				<li><a href="#"><shiro:principal/></a></li>
+  				<li><g:link controller="shiroUser" action="list" class="users"><span>Users</span></g:link></li>
   			</ul>
   			<ul style="float:right">
-			    <li><g:link controller="home" action="index" class="logout"><span>Logout</span></g:link></li>
+  				<li><span class="principal"><shiro:principal/></span></li>
+			    <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
   			</ul>
+  			</shiro:authenticated>
 		</div>
 	</nav>
 	<div id="content">
