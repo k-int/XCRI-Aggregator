@@ -11,6 +11,7 @@ import org.apache.http.entity.mime.*
 import org.apache.http.entity.mime.content.*
 import java.nio.charset.Charset
 import grails.converters.*
+import java.security.MessageDigest
 
 class FeedRunnerService {
 
@@ -69,34 +70,48 @@ class FeedRunnerService {
     try {
       byte[] resource_to_deposit = input_stream.getBytes()
 
-      log.debug("Length of input stream is ${resource_to_deposit.length}");
+      // Compute MD5 Sum for resource
+      MessageDigest md5_digest = MessageDigest.getInstance("MD5");
+      md5_digest.update(resource_to_deposit,0,resource_to_deposit.length);
+      byte[] md5sum = md5_digest.digest();
+      String md5sumHex = new BigInteger(1, md5sum).toString(16);
 
-      target_service.request(POST) {request ->
-        requestContentType = 'multipart/form-data'
+      log.debug("Length of input stream is ${resource_to_deposit.length}, Checksum is ${md5sumHex}");
 
-        // Much help taken from http://evgenyg.wordpress.com/2010/05/01/uploading-files-multipart-post-apache/
-        def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-        multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
-        multipart_entity.addPart( "upload", new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'filename') )
+      if ( ( feed_definition.checksum == null ) ||
+           ( feed_definition.checksum != md5sumHex ) ) {
 
-        request.entity = multipart_entity;
+        target_service.request(POST) {request ->
+          requestContentType = 'multipart/form-data'
 
-        response.success = { resp, data ->
-          log.debug("response status: ${resp.statusLine}")
-          log.debug("Response data code: ${data?.code}");
-          log.debug("Assigning json response to database object");
-          feed_definition.jsonResponse = data as JSON
-          feed_definition.status=3
-          feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
-          // assert resp.statusLine.statusCode == 200
+          // Much help taken from http://evgenyg.wordpress.com/2010/05/01/uploading-files-multipart-post-apache/
+          def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+          multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
+          multipart_entity.addPart( "upload", new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'filename') )
+
+          request.entity = multipart_entity;
+
+          response.success = { resp, data ->
+            log.debug("response status: ${resp.statusLine}")
+            log.debug("Response data code: ${data?.code}");
+            log.debug("Assigning json response to database object");
+            feed_definition.jsonResponse = data as JSON
+            feed_definition.status=3
+            feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
+            feed_definition.checksum = md5sumHex
+            // assert resp.statusLine.statusCode == 200
+          }
+
+          response.failure = { resp ->
+            log.error("Failure - ${resp}");
+            feed_definition.status=4
+            feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
+            // assert resp.status >= 400
+          }
         }
-
-        response.failure = { resp ->
-          log.error("Failure - ${resp}");
-          feed_definition.status=4
-          feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
-          // assert resp.status >= 400
-        }
+      }
+      else {
+        log.debug("No action, checksum match");
       }
     }
     catch ( Exception e ) {
