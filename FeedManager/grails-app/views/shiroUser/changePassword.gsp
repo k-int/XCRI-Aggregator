@@ -13,17 +13,17 @@
     </head>
     <body> 
         <h1>Change Password</h1>               
-        <g:form method="post" >
+        <g:form method="post" name="passwordForm" >
         <g:hiddenField name="id" value="${userInstance?.id}" />
         <g:hiddenField name="version" value="${userInstance?.version}" />
         <ul>
 			<li class="value">
 				<label for="username">Password</label>
-				<g:textField name="password" class="large"/>
+				<g:passwordField name="password" class="large"/>
 			</li>
 			<li class="value">
 				<label for="name">Confirm Password</label>
-				<g:textField name="password_confirm" class="large"/>
+				<g:passwordField name="password_confirm" class="large"/>
 			</li>
 			<li>
 				<g:actionSubmit class="save button-link button-link-positive" action="savePassword" value="${message(code: 'default.button.save.label', default: 'Save')}" />
@@ -31,5 +31,21 @@
 			</li>
     	</ul>
     	</g:form>
-    </body>
+    	<g:javascript>	
+			$(document).ready(function()
+			{
+				$("#passwordForm").validate(
+				{
+					submitHandler: function(oForm) 
+					{
+						oForm.submit();
+					},
+			        rules: {
+			            password: { required: true, minlength: 6 },
+			            password_confirm: { required: true, minlength: 6, equalTo: "[name=password]" }
+			        }			
+				});			
+			});
+		</g:javascript>
+    </body>  
 </html>

@@ -12,12 +12,28 @@
 
   <body>
 	<h1>Register Feed</h1>
-    <g:form>
+    <g:form name="addFeedForm">
       <ul>
         <li><label for="url">URL</label><input name="url" type="text" class="large"></li>
         <li><label for="feedname">Feed Name</label><input name="feedname" type="text" class="large"></li>
         <li><input type="submit" class="button-link" value="Submit"/></li>
       </ul>
     </g:form>
+    <g:javascript>	
+		$(document).ready(function()
+		{
+			$("#addFeedForm").validate(
+			{
+				submitHandler: function(oForm) 
+				{
+					oForm.submit();
+				},
+		        rules: {
+		            url: { required: true },
+		            feedname: { required: true }
+		        }			
+			});			
+		});
+	 </g:javascript>
   </body>
 </html>

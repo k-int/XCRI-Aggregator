@@ -21,7 +21,7 @@
             <g:renderErrors bean="${userInstance}" as="list" />
         </div>
         </g:hasErrors>                   
-        <g:form method="post" >
+        <g:form method="post" name="editUserForm" >
         <g:hiddenField name="id" value="${userInstance?.id}" />
         <g:hiddenField name="version" value="${userInstance?.version}" />
         <ul>
@@ -55,5 +55,22 @@
 			</li>
     	</ul>
     	</g:form>
+    	<g:javascript>	
+			$(document).ready(function()
+			{
+				$("#editUserForm").validate(
+				{
+					submitHandler: function(oForm) 
+					{
+						oForm.submit();
+					},
+			        rules: {
+			            username: { required: true, minlength: 5 },
+			            name: { required: true },
+			            email: { required: true, email: true }
+			        }			
+				});			
+			});
+		</g:javascript>
     </body>
 </html>

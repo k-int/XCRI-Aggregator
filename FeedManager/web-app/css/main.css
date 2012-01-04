@@ -324,7 +324,7 @@ fieldset.embedded legend {
 .message {
 	font-size: 0.8em;
 	line-height: 2;
-	margin: 1em 2em;
+	margin: 1em 0;
 	padding: 0.5em;
 }
 
@@ -353,13 +353,13 @@ fieldset.embedded legend {
 
 .errors li {
 	list-style: none;
-	background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
-	text-indent: 22px;
+	background: transparent url(../images/skin/exclamation.png) 5px center no-repeat;
+	text-indent: 25px;
 }
 
 .message {
-	background: transparent url(../images/skin/information.png) 0 50% no-repeat;
-	text-indent: 22px;
+	background: transparent url(../images/skin/information.png) 5px center no-repeat;
+	text-indent: 25px;
 }
 
 /* form fields with errors */

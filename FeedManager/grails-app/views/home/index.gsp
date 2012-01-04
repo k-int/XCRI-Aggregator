@@ -7,7 +7,7 @@
     <g:javascript>
     $(document).ready(function()
 	{	
-		$('.feeds').addClass('active');
+		$('.home').addClass('active');
 		
 		$('img[title]').qtip(
 		{
