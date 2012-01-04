@@ -2,7 +2,7 @@ aggr.system.name='XCRI-CAP Aggregator'
 
 repo {
   settings {
-    url='http://coursedata.k-int.com/HandlerRegistry'
+    url='http://localhost:8080/HandlerRegistry'
     user='*********'
     pass='*********'
   }
