@@ -68,7 +68,7 @@ class BootStrap {
                                                                                     target:testaggr,
                                                                                     active:true,
                                                                                     lastCheck:0,
-                                                                                    checkInterval:864000,
+                                                                                    checkInterval:864000*7,  // # seconds in a day * days interval
                                                                                     dataProvider:feed.dp).save()
   
     }
