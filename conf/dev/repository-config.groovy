@@ -12,7 +12,7 @@ com {
   k_int {
     aggregator {
       handlers {
-        remoteRepo='http://localhost:8085'
+        remoteRepo='http://localhost:8080'
       }
       aggregationServices {
         solr {

@@ -88,6 +88,7 @@ class FeedRunnerService {
           feed_definition.jsonResponse = data as JSON
           feed_definition.status=3
           feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
+          feed_definition.resourceIdentifier=response.resource_identifier
           // assert resp.statusLine.statusCode == 200
         }
 

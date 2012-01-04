@@ -1,4 +1,4 @@
-feedmanager.default.aggr='http://coursedata.k-int.com/repository/upload.json'
+feedmanager.default.aggr='http://localhost:8080/repository/upload.json'
 
 grails {
   mail {

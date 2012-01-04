@@ -60,9 +60,15 @@ class FeedController {
   }
 
   def dashboard() {
+    def response = [:]
+    response.feed = feedRunnerService.getDatafeed(params.id)
+    response
   }
 
   def search() {
+    def response = [:]
+    response.feed = feedRunnerService.getDatafeed(params.id)
+    response
   }
   
 }

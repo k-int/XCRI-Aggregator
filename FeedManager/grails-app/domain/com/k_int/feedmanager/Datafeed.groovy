@@ -14,6 +14,7 @@ class Datafeed {
     String jsonResponse
     boolean active
     String dataProvider
+    String resourceIdentifier
 
     // 1==new, 2==running, 3==OK, 4==Error, 5==Scheduled
     int status = 1
@@ -23,5 +24,6 @@ class Datafeed {
       statusMessage(nullable:true,blank:true)
       lastCheck(nullable:true)
       checkInterval(nullable:true)
+      resourceIdentifier(nullable:true)
     }
 }
