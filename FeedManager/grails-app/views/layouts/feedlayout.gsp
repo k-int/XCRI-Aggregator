@@ -43,12 +43,8 @@
 	<nav>
 		<div class="inner-cont">
 			<ul>
-			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
-			    <shiro:authenticated>	
-			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
-			    </shiro:authenticated>
+			    <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
   			</ul>
-  			<shiro:authenticated>
 			<ul>
 			    <li><g:link controller="feed" action="dashboard" class="dashboard"><span>Dashboard</span></g:link></li>
 			    <li><g:link controller="feed" action="search" class="search"><span>Search</span></g:link></li>
@@ -61,7 +57,6 @@
   				<li><span class="principal"><shiro:principal/></span></li>
 			    <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
   			</ul>
-  			</shiro:authenticated>
 		</div>
 	</nav>
 	<div id="content">

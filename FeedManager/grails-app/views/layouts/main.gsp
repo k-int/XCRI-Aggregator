@@ -41,13 +41,10 @@
 	</header>
 	<nav>
 		<div class="inner-cont">
+			<shiro:authenticated>
 			<ul>
-			    <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
-			    <shiro:authenticated>
-			    <li><g:link controller="home" action="index" class="feeds"><span>My Feeds</span></g:link></li>
-			    </shiro:authenticated>
+			    <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
   			</ul>
-  			<shiro:authenticated>
   			<ul>
   				<li><g:link controller="shiroUser" action="list" class="users"><span>Users</span></g:link></li>
   			</ul>
@@ -57,8 +54,11 @@
   			</ul>
   			</shiro:authenticated>
   			<shiro:notAuthenticated>
+  			<ul>
+  				<li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+  			</ul>
   			<ul style="float:right">
-			    <li><g:link controller="auth" action="signIn" class="login"><span>Login</span></g:link></li>
+			    <li><g:link controller="home" action="index" class="login"><span>Login</span></g:link></li>
 			    <li><g:link controller="register" action="index" class="register"><span>Register</span></g:link></li>
   			</ul>
   			</shiro:notAuthenticated>
