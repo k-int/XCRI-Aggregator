@@ -7,3 +7,24 @@ if (typeof jQuery !== 'undefined') {
 		});
 	})(jQuery);
 }
+
+function resizeFrame()  
+{ 
+	var header_height = $('header').height();
+	var nav_height = $('nav').height();
+	var footer_height = $('footer').height();
+	
+    var content_height = $(window).height() - (nav_height + footer_height + header_height + 4);
+    
+    $("#content").css('minHeight', content_height < 400 ? 400 : content_height); 
+} 
+
+$(window).resize(function() 
+{
+	resizeFrame();
+});
+
+$(document).ready(function()
+{	
+	resizeFrame();
+});

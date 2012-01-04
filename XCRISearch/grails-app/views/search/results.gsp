@@ -5,26 +5,26 @@
     <title>Search front page</title>
   </head>
   <body>
-Search results page
-
-<ul>
-<g:each in="${searchresult?.hits}" var="crs">
-  <li>
-    <div class="result">
-      <h3><g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link> via ${crs.source.provtitle} (${crs.source.provid})</h3>
-      <i>${crs.source.url}</i>
-      <p>
-        Subjects: <g:join in="${crs.source.subject}" delimiter=", "/><br/>
-        Identifier: ${crs.source.identifier}<br/>
-        URL: ${crs.source.url}<br/>
-        <pre>For debugging, json follows<br/>
-        ${crs?.source}
-        </pre>
-      </p>
-    </div>
-  </li>
-</g:each>
-</ul>
+	<h1>Search Results</h1>
+	<p class="result">
+	<g:img dir="images/icons" file="subject.png"/><span>Subject</span>
+	<g:img dir="images/icons" file="identifier.png"/><span>Identifier</span>
+	<g:img dir="images/icons" file="link.png"/><span>URL</span>
+	</p>
+	<ul>
+	<g:each in="${searchresult?.hits}" var="crs">
+	  <li class="result">
+	      <h3><g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link> via ${crs.source.provtitle} (${crs.source.provid})</h3>
+	     <!--  <i>${crs.source.url}</i>-->
+	      <ul>
+	      	<li><g:img dir="images/icons" file="subject.png"/><span><g:join in="${crs.source.subject}" delimiter=", "/></span></li>
+	        <li><g:img dir="images/icons" file="identifier.png"/><span>${crs.source.identifier}</span></li>
+	        <li><g:img dir="images/icons" file="link.png"/><span>${crs.source.url}</span></li>
+	      </ul>
+	      <pre>For debugging, json follows<br/>${crs?.source}</pre>
+	  </li>
+	</g:each>
+	</ul>
 
   </body>
 </html>

@@ -10,13 +10,13 @@
     <p>
       ${course.source.description}
     </p>
-    <p>
-      Subjects: <g:join in="${course.source.subject}" delimiter=", "/><br/>
-      Identifier: ${course.source.identifier}<br/>
-      URL: ${course.source.url}<br/>
-    </p>
-    <p>
+    <ul class="result">
+   		<li><g:img dir="images/icons" file="subject.png"/><span><g:join in="${course.source.subject}" delimiter=", "/></span></li>
+    	<li><g:img dir="images/icons" file="identifier.png"/><span>${course.source.identifier}</span></li>
+    	<li><g:img dir="images/icons" file="link.png"/><span>${course.source.url}</span></li>
+    </ul>
+    <pre>
       ${course.source}
-    </p>
+    </pre>
   </body>
 </html>

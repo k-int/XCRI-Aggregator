@@ -81,7 +81,103 @@ select, select *
 	width: 45%;
 }
 
-form input[type="submit"]
+form input[type="submit"]:first-child
 {
 	margin-left:15.5%;
+}
+
+form a
+{
+	padding-top: 5px !important;
+	padding-bottom: 5px !important; 
+}
+
+/* PAGINATION */
+
+.paginateButtons {
+    color: #666;
+    overflow: hidden;
+    padding: 5px 0;
+	background:transparent;
+}
+
+.paginateButtons a {
+   /* background: #fff;
+    background: -moz-linear-gradient(white, lightgray);
+    border: 1px solid #ccc;*/
+    margin: 0 3px;
+    float:right;
+   /* padding: 2px 6px;
+    color: #000;
+    text-decoration:none;
+    font-size:14px;
+    -moz-border-radius:5px;
+	border-radius:5px;
+	border-color: #b7b7b7;
+	padding: 5px 10px;*/
+    
+}
+.paginateButtons span {
+    padding: 2px 3px;
+}
+
+.paginateButtons .currentStep
+{
+ 	font-size:14px;
+}
+ 
+.paginateButtons a.step
+{
+	background-color: #e5e5e5;
+	font-size:14px;
+	border-color: #b7b7b7;
+	-moz-border-radius:2px;
+	border-radius:2px;
+}
+
+.step, .currentStep
+{
+	display:none;
+}
+
+.paginateButtons .prevLink
+{
+	font-size:14px;
+	border-color: #b7b7b7;
+	background:	#e5e5e5 url(../images/arrow-left.png) center center no-repeat;
+	background:	url(../images/arrow-left.png) center center no-repeat,
+				-moz-linear-gradient(white, lightgray);
+	-moz-border-radius:5px;
+	border-radius:5px;
+	padding: 5px 20px;
+	border: 1px solid #b7b7b7;
+	color:transparent;
+}
+
+.paginateButtons .nextLink
+{
+	font-size:14px;
+	border-color: #b7b7b7;
+	background: #e5e5e5 url(../images/arrow-right.png) center center no-repeat;
+	background: url(../images/arrow-right.png) center center no-repeat,
+				-moz-linear-gradient(white, lightgray);
+	-moz-border-radius:5px;
+	border-radius:5px;
+	padding: 5px 20px;
+	border: 1px solid #b7b7b7;
+	color:transparent;
+}
+
+.paginateButtons .nextLink:hover
+{
+	background: #e5e5e5 url(../images/arrow-right.png) center center no-repeat;
+	background: url(../images/arrow-right.png) center center no-repeat,
+				-moz-linear-gradient(white, #9fd2cf);
+}
+
+.paginateButtons .prevLink:hover
+{
+	background:	#e5e5e5 url(../images/arrow-left.png) center center no-repeat;
+	background: url(../images/arrow-left.png) center center no-repeat,
+				-moz-linear-gradient(white, #9fd2cf);
 }

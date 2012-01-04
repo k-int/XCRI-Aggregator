@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache"/>
   <title><g:layoutTitle default="XCRI-CAP Discovery Service" /></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+  <link rel="shortcut icon" href="${resource(dir: 'images', file: 'xcri.ico')}" type="image/x-icon">
   <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
   <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
@@ -53,7 +53,7 @@
 	<nav>
 		<div class="inner-cont">
 			<ul>
-			    <li><g:link controller="search" action="index" class="dashboard"><span>Home</span></g:link></li>
+			    <li><g:link controller="search" action="index" class="home"><span>Home</span></g:link></li>
   			</ul>
 		</div>
 	</nav>

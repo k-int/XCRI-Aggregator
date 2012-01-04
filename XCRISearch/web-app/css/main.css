@@ -75,8 +75,16 @@ h1 {
 	margin: 0.8em 0 0.3em 0;
 }
 
+h3 {
+	color: #000;
+	font-weight: normal;
+	font-size: 1.15em;
+	margin: 0.8em 0 0.3em 0;
+}
+
 ul {
 	padding: 0;
+	list-style:none;
 }
 
 img {
@@ -476,6 +484,7 @@ th:hover, tr:hover {
 
 /* PAGINATION */
 
+/*
 .pagination {
 	border-top: 0;
 	margin: 0;
@@ -512,7 +521,7 @@ th:hover, tr:hover {
 	background-color: transparent;
 	color: #444444;
 	text-decoration: underline;
-}
+}*/
 
 /* ACTION BUTTONS */
 
@@ -595,6 +604,8 @@ header h1
 	font: 42px 'DroidSerifRegular', Arial, sans-serif;
 	line-height: inherit;
 	text-shadow: 1px 1px 1px #000;
+	padding-left: 64px;
+	background: url(../images/xcri.png) left center no-repeat;
 }
 
 footer span
@@ -637,7 +648,7 @@ footer span
 	background:-o-linear-gradient(#666b74,#292b2e 70%);
 	background:linear-gradient(#666b74,#292b2e 70%);
 	
-	color: #d6d6d6;
+	color: #d6d6d6 !important;
 	font-weight: bold;
 	text-decoration:none;
 	padding: 4px 10px;
@@ -655,8 +666,23 @@ footer span
 
 .button-link:hover
 {
-	color: white;
+	color: white !important;
 	cursor: pointer;	
+}
+
+.button-link-positive
+{
+	border: 1px solid #437904;
+		
+	background-color: #558c30;
+	background:-moz-linear-gradient(#7ebd46,#558c30 70%);
+	background:-webkit-linear-gradient(#7ebd46,#558c30 70%);
+	background:-o-linear-gradient(#7ebd46,#558c30 70%);
+	background:linear-gradient(#7ebd46,#558c30 70%);
+	
+	-web-box-shadow: inset 0 1px 0 #95c852;
+	-moz-box-shadow: inset 0 1px 0 #95c852;
+	box-shadow:inset 0 1px 0 #95c852;
 }
 
 .grey-contrast-txt
@@ -669,3 +695,56 @@ footer span
 	color:white !important;
 }
 
+.ellipsis-overflow
+{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+table img.centered
+{
+	margin: 0 auto;
+	display:block;
+}
+
+pre
+{
+	overflow: auto; 
+	font-family: “Consolas”,monospace; 
+	font-size: 9pt; 
+	text-align:left; 
+	background-color: #FCF7EC; 
+	overflow-x: auto; 
+	/* Use horizontal scroller if needed; for Firefox 2, not 
+	white-space: pre-wrap; 	/* css-3 */ 
+	white-space: -moz-pre-wrap !important; 	/* Mozilla, since 1999 */ 
+	word-wrap: break-word; 	/* Internet Explorer 5.5+ */
+	margin: 5px 0px; 
+	padding:5px 5px 3px 5px; 
+	white-space : normal; 	/* crucial for IE 6, maybe 7? */
+	border: 1px solid #dbb053;
+}
+
+.result img
+{
+	 vertical-align: middle;
+}
+
+p.result
+{
+	padding: 5px;
+	background-color: #FCF7EC; 
+	border: 1px solid #dbb053;
+}
+
+.result span
+{
+	 vertical-align: middle;
+	 padding-left: 5px;
+	 padding-right: 50px;
+}
+
+.result a
+{
+	color: #1858c2;
+}
