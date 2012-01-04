@@ -11,7 +11,6 @@
   </head>
 
   <body>
-    Feed Dashboard
     <g:if test="${feed.resourceIdentifier}!=null">
       Feed resource identifier is ${feed.resourceIdentifier}  this feed is searchable
     </g:if>
