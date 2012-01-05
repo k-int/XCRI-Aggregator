@@ -8,7 +8,7 @@ class CollectJob {
   def feedRunnerService
 
   static triggers = {
-    cron name: 'CollectJobTrigger', cronExpression: "0 0/10 * * * ?"
+    cron name: 'CollectJobTrigger', cronExpression: "0 0/2 * * * ?"
   }
 
   static Boolean running = false;

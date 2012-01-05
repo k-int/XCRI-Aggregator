@@ -46,7 +46,7 @@ class FeedRunnerService {
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
         java.net.URLConnection url_conn = resource.openConnection();
         url_conn.connect();
-        log.debug("${url_conn.getContentEncoding()}");
+        log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
         uploadStream(url_conn.getInputStream(),aggregator_service,feed_definition)
       }
       else {
@@ -66,15 +66,23 @@ class FeedRunnerService {
     running_feeds.remove(feed_definition.id)
   }
 
-  def quickValidation(byte_array) {
+  def quickValidation(byte_array, feed_definition) {
     log.debug("Running quick validation checks");
+    byte[] result = byte_array
     try {
-      log.debug("Attempting to read stream as UTF-8");
-      String s = new String(byte_array, "UTF-8")
+      log.debug("Try and parse the byte array into XML.. detecting invalid encodings")
+      def xml = new XmlSlurper().parse(new java.io.ByteArrayInputStream(byte_array))
+      log.debug("Read bytes as UTF-8. Good!");
     }
     catch ( Exception e ) {
-      log.debug("Unable to construct UTF-8 String from feed");
+      log.debug("Unable to parse bytes as XML.. Maybe there is a charset encoding issue. Trying ISO-8859-1 Instead");
+      byte_array = new String(byte_array,"ISO-8859-1").getBytes()
+
+      // Set the source charset so we know for next time.
+      feed_definition.sourceCharset = 'ISO-8859-1';
     }
+
+    byte_array
   }
 
   def uploadStream(input_stream,target_service,feed_definition) {
@@ -82,9 +90,15 @@ class FeedRunnerService {
     log.debug("About to make post request");
 
     try {
-      byte[] resource_to_deposit = input_stream.getBytes()
-
-      quickValidation(resource_to_deposit)
+      byte[] resource_to_deposit = null;
+      if ( feed_definition.sourceCharset != null ) {
+        log.debug("Feed has explicit character set conversion... Adapting");
+        resource_to_deposit = new String(input_stream.getBytes(),feed_definition.sourceCharset).getBytes();
+      }
+      else {
+        log.debug("No explicit conversion, continue...");
+        resource_to_deposit = quickValidation(input_stream.getBytes())
+      }
 
       // Compute MD5 Sum for resource
       MessageDigest md5_digest = MessageDigest.getInstance("MD5");

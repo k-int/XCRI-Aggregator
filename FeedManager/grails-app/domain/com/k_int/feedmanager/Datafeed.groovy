@@ -16,6 +16,9 @@ class Datafeed {
     String dataProvider
     String resourceIdentifier
 
+    // Setting this should cause an explict charset conversion
+    String sourceCharset
+
     // 1==new, 2==running, 3==OK, 4==Error, 5==Scheduled
     int status = 1
 
@@ -25,5 +28,6 @@ class Datafeed {
       lastCheck(nullable:true)
       checkInterval(nullable:true)
       resourceIdentifier(nullable:true)
+      sourceCharset(nullable:true)
     }
 }
