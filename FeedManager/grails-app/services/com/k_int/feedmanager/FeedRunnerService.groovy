@@ -44,7 +44,10 @@ class FeedRunnerService {
       if ( feed_definition instanceof SingleFileDatafeed ) {
         log.debug("Processing single file datafeed. ${feed_definition.baseurl}");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
-        uploadStream(resource.openStream(),aggregator_service,feed_definition)
+        java.net.URLConnection url_conn = resource.openConnection();
+        url_conn.connect();
+        log.debug("${url_conn.getContentEncoding()}");
+        uploadStream(url_conn.getInputStream(),aggregator_service,feed_definition)
       }
       else {
         log.warn("Unhandled feed type");
@@ -63,12 +66,25 @@ class FeedRunnerService {
     running_feeds.remove(feed_definition.id)
   }
 
+  def quickValidation(byte_array) {
+    log.debug("Running quick validation checks");
+    try {
+      log.debug("Attempting to read stream as UTF-8");
+      String s = new String(byte_array, "UTF-8")
+    }
+    catch ( Exception e ) {
+      log.debug("Unable to construct UTF-8 String from feed");
+    }
+  }
+
   def uploadStream(input_stream,target_service,feed_definition) {
 
     log.debug("About to make post request");
 
     try {
       byte[] resource_to_deposit = input_stream.getBytes()
+
+      quickValidation(resource_to_deposit)
 
       // Compute MD5 Sum for resource
       MessageDigest md5_digest = MessageDigest.getInstance("MD5");

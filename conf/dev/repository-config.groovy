@@ -3,30 +3,11 @@ aggr.system.name='XCRI-CAP Aggregator'
 repo {
   settings {
     url='http://localhost:8080/HandlerRegistry'
-    user='*********'
-    pass='*********'
+    user='anonymous'
+    pass='anonymous'
   }
 }
 
-com {
-  k_int {
-    aggregator {
-      handlers {
-        remoteRepo='http://localhost:8080'
-      }
-      aggregationServices {
-        solr {
-          default_core_name='DefaultSolr'
-          DefaultSolr {
-            name='Default SOLR Server'
-            baseUrl='http://localhost:8085/solr'
-            adminConfig {
-              basedir='/usr/local/solr'
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
+tomcat.deploy.username = "tcmgr"
+tomcat.deploy.password = "notsosecr3t"
+tomcat.deploy.url = "http://localhost:8080/manager/text"
