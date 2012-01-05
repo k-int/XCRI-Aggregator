@@ -70,6 +70,8 @@ class FeedController {
   def search() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
+    // To restrict a search to a specific provider: "http://localhost:9200/courses/course/_search?q=provid:1304A08UN1"
+    // To restrict a search to a specific provider: "http://localhost:9200/courses/course/_search?q=provid:%22lincoln.ac.uk10007151%22"
     response.id = params.id
     response
   }

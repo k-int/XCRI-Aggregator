@@ -26,6 +26,7 @@ class BootStrap {
 
           test_aggr.save()
 
+          // XXP Feeds via /services/service.asmx/getXCRI?strUKPRN=strin.. 
           def feeds = [
             [name:'Adam Smith College', url:'http://www.adamsmith.ac.uk/onlineresources/ictassets/xcri/cap.xml',dp:'AdamSmithCollege'],
             [name:'University of Bolton', url:'http://www.bolton.ac.uk/xcri/xcri.asp',dp:'UoBolton'],
