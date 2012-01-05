@@ -47,9 +47,9 @@
 			    <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
   			</ul>
 			<ul>
-			    <li><g:link controller="feed" action="dashboard" class="dashboard"><span>Dashboard</span></g:link></li>
-			    <li><g:link controller="feed" action="search" class="search"><span>Search</span></g:link></li>
-			    <li><g:link controller="feed" action="console" class="console"><span>Console</span></g:link></li>
+			    <li><g:link controller="feed" action="dashboard" id="${id}" class="dashboard"><span>Dashboard</span></g:link></li>
+			    <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>
+			    <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
   			</ul>
   			<ul>
   				<li><g:link controller="shiroUser" action="list" class="users"><span>Users</span></g:link></li>

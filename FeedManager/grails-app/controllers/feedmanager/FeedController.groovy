@@ -42,6 +42,7 @@ class FeedController {
   def console() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
+    response.id = params.id
     // Convert the JSON object held in the jsonResponse property into some objects we can display
 
     if ( response.feed != null ) {
@@ -62,12 +63,14 @@ class FeedController {
   def dashboard() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
+    response.id = params.id
     response
   }
 
   def search() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
+    response.id = params.id
     response
   }
   
