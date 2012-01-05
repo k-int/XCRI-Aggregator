@@ -12,9 +12,18 @@
 
   <body>
 	<h1>Register Feed</h1>
-    <g:form name="addFeedForm">
+	<g:if test="${flash.message}">
+   		<div class="message">${flash.message}</div>
+    </g:if>
+    <g:hasErrors bean="${schoolInstance}">
+    	<div class="errors">
+        	<g:renderErrors bean="${schoolInstance}" as="list" />
+   		</div>
+    </g:hasErrors>
+    <g:form action="save" name="addFeedForm">
       <ul>
-        <li><label for="url">URL</label><input name="url" type="text" class="large"></li>
+     	<li><label for="dataProvider">Provider</label><input name="dataProvider" type="text" class="large"></li>
+        <li><label for="baseurl">URL</label><input name="baseurl" type="text" class="large"></li>
         <li><label for="feedname">Feed Name</label><input name="feedname" type="text" class="large"></li>
         <li><input type="submit" class="button-link" value="Submit"/></li>
       </ul>
@@ -29,8 +38,9 @@
 					oForm.submit();
 				},
 		        rules: {
-		            url: { required: true },
-		            feedname: { required: true }
+		            baseurl: { required: true },
+		            feedname: { required: true },
+		            dataProvider: { required: true }
 		        }			
 			});			
 		});

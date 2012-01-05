@@ -353,12 +353,12 @@ fieldset.embedded legend {
 
 .errors li {
 	list-style: none;
-	background: transparent url(../images/skin/exclamation.png) 5px center no-repeat;
+	background: transparent url(../images/skin/exclamation.png) 5px 5px no-repeat;
 	text-indent: 25px;
 }
 
 .message {
-	background: transparent url(../images/skin/information.png) 5px center no-repeat;
+	background: transparent url(../images/skin/information.png) 5px 5px no-repeat;
 	text-indent: 25px;
 }
 
