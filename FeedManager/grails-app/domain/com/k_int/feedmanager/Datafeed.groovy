@@ -13,8 +13,14 @@ class Datafeed {
     Long checkInterval
     String jsonResponse
     boolean active
+    // ID to be used inside aggregator
     String dataProvider
     String resourceIdentifier
+    String providerUrl
+    String providerTechnicalContact
+    String providerEmail
+    String iconUrl
+ 
 
     // Setting this should cause an explict charset conversion
     String sourceCharset
@@ -29,5 +35,9 @@ class Datafeed {
       checkInterval(nullable:true)
       resourceIdentifier(nullable:true)
       sourceCharset(nullable:true)
+      providerUrl(nullable:true)
+      providerTechnicalContact(nullable:true)
+      providerEmail(nullable:true)
+      iconUrl(nullable:true)
     }
 }
