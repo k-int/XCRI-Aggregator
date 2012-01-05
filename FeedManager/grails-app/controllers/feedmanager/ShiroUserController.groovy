@@ -124,7 +124,7 @@ class ShiroUserController
 			   to user.email
 			   from "no-reply@k-int.com" //needs changing and putting into config
 			   subject "Password Changed"
-			   html g.render(template:"passwordMail",  model:[newPassword:password])
+			   html g.render(template:"passwordMail",  model:[newPassword:params.password])
 		   }
 		   
 		   flash.message = "${message(code: 'default.updated.message', args: [message(code: 'shiroUser.label', default: 'User'), user.id])}"
