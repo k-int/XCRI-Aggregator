@@ -97,7 +97,7 @@ class FeedRunnerService {
       }
       else {
         log.debug("No explicit conversion, continue...");
-        resource_to_deposit = quickValidation(input_stream.getBytes())
+        resource_to_deposit = quickValidation(input_stream.getBytes(), feed_definition)
       }
 
       // Compute MD5 Sum for resource
@@ -128,7 +128,8 @@ class FeedRunnerService {
             feed_definition.jsonResponse = data as JSON
             feed_definition.status=3
             feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
-            feed_definition.resourceIdentifier=response.resource_identifier
+            if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) )
+              feed_definition.resourceIdentifier=data.resource_identifier
             feed_definition.checksum = md5sumHex
             // assert resp.statusLine.statusCode == 200
           }

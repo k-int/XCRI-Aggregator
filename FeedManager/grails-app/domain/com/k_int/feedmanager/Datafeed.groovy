@@ -24,7 +24,7 @@ class Datafeed {
 
     static constraints = {
       jsonResponse(maxSize:1000000,nullable:true,blank:true)
-      statusMessage(nullable:true,blank:true)
+      statusMessage(maxSize:512,nullable:true,blank:true)
       lastCheck(nullable:true)
       checkInterval(nullable:true)
       resourceIdentifier(nullable:true)
