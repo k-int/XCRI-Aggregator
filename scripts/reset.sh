@@ -16,22 +16,28 @@ echo clear db
 
 mysql -u k-int -pk-int Aggr3Live <<!!!
 use Aggr3Live;
-drop table resource;
-drop table event_handler;
-drop table deposit_event;
+drop table if exists resource;
+drop table if exists event_handler;
+drop table if exists deposit_event;
+
 use hreplive;
-drop table handler;
-drop table handler_revision;
+drop table if exists handler;
+drop table if exists handler_revision;
+drop table if exists find_when_log_entry;
+drop table if exists shiro_role;
+drop table if exists shiro_role_permissions;
+drop table if exists shiro_user;
+drop table if exists shiro_user_permissions;
+drop table if exists shiro_user_roles;
+
 use FeedManagerLive
-drop table aggregation_service;
-drop table datafeed;
-drop table shiro_role;
-drop table shiro_role_permissions;
-drop table shiro_user;
-drop table shiro_user_permissions;
-drop table shiro_user_roles;
+drop table if exists aggregation_service;
+drop table if exists datafeed;
+drop table if exists shiro_role;
+drop table if exists shiro_role_permissions;
+drop table if exists shiro_user;
+drop table if exists shiro_user_permissions;
+drop table if exists shiro_user_roles;
 !!!
 
-
 echo done
-

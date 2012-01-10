@@ -17,22 +17,23 @@ class FeedRunnerService {
 
   def running_feeds = [:]
 
-  def collect(feed_definition) {
+  def collect(feed_definition_id) {
 
-    log.debug("Attempting to Collect feed ${feed_definition.id}");
+    log.debug("Attempting to Collect feed ${feed_definition_id}");
 
-    if ( running_feeds.keySet().contains(feed_definition.id) ) {
+    if ( running_feeds.keySet().contains(feed_definition_id) ) {
       log.warn("Cannot start already running feed");
     }
     else {
-      log.warn("Starting feed ${feed_definition.id}");
-      doCollectFeed(feed_definition)
+      log.warn("Starting feed ${feed_definition_id}");
+      doCollectFeed(feed_definition_id)
     }
   }
 
-  def doCollectFeed(feed_definition) {
-    log.debug("starting doCollectFeed ${feed_definition.id}");
-    running_feeds[feed_definition.id] = feed_definition;
+  def doCollectFeed(feed_definition_id) {
+    log.debug("starting doCollectFeed ${feed_definition_id}");
+    def feed_definition = com.k_int.feedmanager.SingleFileDatafeed.get(feed_definition_id)
+    running_feeds[feed_definition_id] = feed_definition;
     feed_definition.status=2
     feed_definition.save(flush:true)
 
@@ -58,12 +59,12 @@ class FeedRunnerService {
       feed_definition.status=4
       feed_definition.statusMessage=e.message
     }
-
-    feed_definition.lastCheck = System.currentTimeMillis()
-    feed_definition.save(flush:true)
-
-    log.debug("Removing feed from running_feeds map")
-    running_feeds.remove(feed_definition.id)
+    finally {
+      feed_definition.lastCheck = System.currentTimeMillis()
+      feed_definition.save(flush:true)
+      log.debug("Removing feed from running_feeds map")
+      running_feeds.remove(feed_definition_id)
+    }
   }
 
   def quickValidation(byte_array, feed_definition) {
@@ -155,6 +156,7 @@ class FeedRunnerService {
     }
     finally {
       log.debug("uploadStream try block completed");
+      feed_definition.save(flush:true);
     }
     log.debug("uploadStream completed");
   }
