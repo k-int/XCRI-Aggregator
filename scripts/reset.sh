@@ -19,6 +19,8 @@ use Aggr3Live;
 drop table if exists resource;
 drop table if exists event_handler;
 drop table if exists deposit_event;
+drop table if exists identifier_instance;
+drop table if exists canonical_identifier;
 
 use hreplive;
 drop table if exists handler;
