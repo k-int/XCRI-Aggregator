@@ -8,7 +8,7 @@
     $(document).ready(function()
 	{	
 		$('.home').addClass('active');
-		$('td[title]').qtip(
+		$('img[title]').qtip(
 		{
 			position: 
 			{
@@ -73,12 +73,12 @@
 	      <g:else>
 	      	<td>Unknown</td>
 	      </g:else>
-	      <td title="${feed.statusMessage}">
+	      <td>
 	      	<g:if test="${feed.status == 3 && feed.statusMessage.contains("code")}">
-	      		<g:img dir="images/table" file="error.png" class="centered"/>
+	      		<g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/>
 	      	</g:if>
 	      	<g:else>
-	      		<g:img dir="images/table" file="status-${feed.status}.png" class="centered"/>
+	      		<g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/>
 	      	</g:else>
 	      </td>
 	    </tr>
