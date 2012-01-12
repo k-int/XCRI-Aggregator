@@ -29,14 +29,15 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+		//mavenRepo "https://oss.sonatype.org/content/repositories/releases"
     }
     dependencies {
+		runtime 'org.elasticsearch:elasticsearch-lang-groovy:0.18.4'
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
         runtime 'mysql:mysql-connector-java:5.1.18'
-	runtime 'commons-fileupload:commons-fileupload:1.2.2'
-	// runtime 'org.apache.httpcomponents:httpcomponents-client:4.1.2'
-	runtime 'org.apache.httpcomponents:httpmime:4.1.2'
+		runtime 'commons-fileupload:commons-fileupload:1.2.2'
+		// runtime 'org.apache.httpcomponents:httpcomponents-client:4.1.2'
+		runtime 'org.apache.httpcomponents:httpmime:4.1.2'
     }
 
     plugins {

@@ -90,15 +90,16 @@ log4j = {
     //}
 
     appenders {
-        file name:'file', file:'/tmp/FeedManager.log'
+        //file name:'file', file:'/tmp/FeedManager.log'
         // file name:'file', file:'/tmp/FeedManager.log', threshold: org.apache.log4j.Level.ALL
-        // console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        console name: "stdout", threshold: org.apache.log4j.Level.ALL
     }
 
-    root {
+
+    /*root {
         // debug 'stdout', 'file'
-        warn 'file'
-    }
+        warn 'console'
+    }*/
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -114,11 +115,9 @@ log4j = {
 
     //debug  'grails.app',
     debug  'grails.app.controllers',
-           'grails.app.conf',
-           //'grails.app.filters',
-           //'grails.app.taglib',
            'grails.app.services',
            'grails.app.domain',
+		   'grails.app.conf',
            'grails.app.jobs'
 }
 

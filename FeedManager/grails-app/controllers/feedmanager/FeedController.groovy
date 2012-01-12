@@ -12,6 +12,8 @@ import grails.converters.*
 class FeedController {
 
   def feedRunnerService
+  
+  def ESWrapperService
 
   def index() {
     log.debug("index")
@@ -70,10 +72,50 @@ class FeedController {
   def search() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
-    // To restrict a search to a specific provider: "http://localhost:9200/courses/course/_search?q=provid:1304A08UN1"
-    // To restrict a search to a specific provider: "http://localhost:9200/courses/course/_search?q=provid:%22lincoln.ac.uk10007151%22"
-    response.id = params.id
-    response
+	response.id = params.id
+	
+	// Get hold of some services we might use ;)
+	org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+    org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+	
+
+	if (params.title || params.description || params.subject)
+	{
+	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
+	  params.offset = params.offset ? params.int('offset') : 0
+	  
+	  //dynamically build query_string
+	  def search_query_str = new StringBuilder()
+	  
+	  search_query_str << "provid:" << response.feed?.resourceIdentifier
+	  
+	  if(params.title){ search_query_str << " AND title:(" << params.title << ")" }
+	  if(params.description){ search_query_str << " AND description:(" << params.description << ")" }
+	  if(params.subject){ search_query_str << " AND subject:(" << params.subject << ")" }
+
+	  def search = esclient.search
+	  {
+		indices "courses"
+		types "course"
+		source 
+		{
+		  from = params.offset
+		  size = params.max
+		  query
+		  {
+			  query_string (query: search_query_str)
+		  }
+		}
+	  }
+	  
+	  response.searchresult = search.response
+	  render(view:'results',model:response)
+	}
+	else 
+	{
+		log.debug("No query.. Show search page")
+		render(view:'search',model:response)
+	}
   }
   
 }

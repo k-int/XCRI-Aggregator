@@ -9,6 +9,8 @@ class BootStrap {
       log.debug("Verify default Shiro User");
       def user = ShiroUser.findByUsername("admin")
       if ( user == null ) {
+		  
+		log.error("${ApplicationHolder.application.config.locations}")
         log.debug("admin user not found.. creating default");
         user = new ShiroUser(username: "admin", name: "Mr Administrator", passwordHash: new Sha256Hash("password").toHex(), email: "email@somedomain.com", verified: Boolean.TRUE, active: Boolean.TRUE)
         user.addToPermissions("*:*")
@@ -24,7 +26,14 @@ class BootStrap {
                                                  credentials:'password',
                                                  owner:user);
 
-          test_aggr.save()
+		  if(test_aggr.save(flush: true))
+		  {
+			  log.debug("AggregationService Save Success");
+		  }
+		  else
+		  {
+			  log.error("AggregationService Save Failed ${test_aggr.errors}");
+		  }
 
           // XXP Feeds via /services/service.asmx/getXCRI?strUKPRN=strin.. 
           def feeds = [
@@ -62,17 +71,34 @@ class BootStrap {
 
   def validate(feeds,user,testaggr) {
     feeds.each { feed ->
-      def fd = SingleFileDatafeed.findByBaseurl(feed.url) ?: new SingleFileDatafeed(owner:user,
-                                                                                    feedname:feed.name,
-                                                                                    baseurl:feed.url,
-                                                                                    status:1,
-                                                                                    target:testaggr,
-                                                                                    active:true,
-                                                                                    lastCheck:0,
-                                                                                    checkInterval:60*60*24*7*100,  // Sec * Min * Hours * Days * Milliseconds
-                                                                                    dataProvider:feed.dp).save()
+      def fd = SingleFileDatafeed.findByBaseurl(feed.url)
+	  
+	  if(!fd)
+	  {
+		  SingleFileDatafeed sdf = new SingleFileDatafeed(	owner:user,
+	                                                        feedname:feed.name,
+	                                                        baseurl:feed.url,
+	                                                        status:1,
+	                                                        target:testaggr,
+	                                                        active:true,
+	                                                        lastCheck:0,
+	                                                        checkInterval:60*60*24*7*100,  // Sec * Min * Hours * Days * Milliseconds
+	                                                        dataProvider:feed.dp)
+		 		 
+		  if (sdf.save(flush: true)) 
+		  {
+			  log.debug("Feed Save Success");
+		  }
+		  else
+		  {
+			  log.error("Save Failed ${sdf.errors}");
+		  }
   
-    }
+	  }
+	  else
+	  {
+		  log.debug("Feed exists");
+	  }
+	}
   }
-
 }
