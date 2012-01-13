@@ -90,14 +90,7 @@ log4j = {
     //}
 
     appenders {
-        file name:'file', file:'/tmp/FeedManager.log'
-        // file name:'file', file:'/tmp/FeedManager.log', threshold: org.apache.log4j.Level.ALL
-        // console name: "stdout", threshold: org.apache.log4j.Level.ALL
-    }
-
-    root {
-        // debug 'stdout', 'file'
-        warn 'file'
+        console name: "stdout", threshold: org.apache.log4j.Level.ALL
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers

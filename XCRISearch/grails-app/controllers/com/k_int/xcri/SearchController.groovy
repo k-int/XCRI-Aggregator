@@ -20,7 +20,9 @@ class SearchController {
     if ( params.q != null ) {
 
       def terms = params.q
-
+	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
+	  params.offset = params.offset ? params.int('offset') : 0
+	  
       if ( terms=='' )
         terms="*"
 
@@ -28,8 +30,10 @@ class SearchController {
         indices "courses"
         types "course"
         source {
+		  from = params.offset
+		  size = params.max
           query {
-            query_string ( query: params.q )
+            query_string (query: terms)
           }
         }
       }
@@ -43,6 +47,8 @@ class SearchController {
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
       result.searchresult = search.response
+	  result.resultsTotal = search.response.hits.totalHits
+	  	  
       render(view:'results',model:result) 
     }
     else {
