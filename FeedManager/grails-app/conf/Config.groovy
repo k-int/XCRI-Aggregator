@@ -95,12 +95,6 @@ log4j = {
         console name: "stdout", threshold: org.apache.log4j.Level.ALL
     }
 
-
-    /*root {
-        // debug 'stdout', 'file'
-        warn 'console'
-    }*/
-
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
            'org.codehaus.groovy.grails.web.sitemesh', //  layouts

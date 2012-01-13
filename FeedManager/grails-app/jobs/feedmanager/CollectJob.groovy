@@ -8,7 +8,7 @@ class CollectJob {
   def feedRunnerService
 
   static triggers = {
-    cron name: 'CollectJobTrigger', cronExpression: "0 0/2 * * * ?"
+    cron name: 'CollectJobTrigger', cronExpression: "0 0/2 * * * ?", startDelay:60000
   }
 
   static Boolean running = false;
@@ -34,7 +34,7 @@ class CollectJob {
         if ( ( feed.active ) &&
              ( ( feed.lastCheck == 0 ) || ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
           log.debug("Collecting......");
-          feedRunnerService.collect(feed)
+          feedRunnerService.collect(feed.id)
         }
       }
       log.debug("Collect job completed");

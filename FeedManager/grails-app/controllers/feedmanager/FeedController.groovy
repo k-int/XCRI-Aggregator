@@ -24,8 +24,8 @@ class FeedController {
    */
   def collect() {
     log.debug("collect")
-    def feedDefinition = feedRunnerService.getDatafeed(params.id)
-    feedRunnerService.collect(feedDefinition)
+    // def feedDefinition = feedRunnerService.getDatafeed(params.id)
+    feedRunnerService.collect(params.id)
   }
 
   // Allows the user to search any aggregations where the collected
