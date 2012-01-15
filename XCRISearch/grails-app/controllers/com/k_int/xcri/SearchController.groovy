@@ -1,5 +1,7 @@
 package com.k_int.xcri
 
+import grails.converters.*
+
 class SearchController {
 
 
@@ -9,6 +11,7 @@ class SearchController {
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
     log.debug("Search Index, params.q=${params.q}")
 
+    def pagename = 'index'
     def result = [:]
 
     // Get hold of some services we might use ;)
@@ -30,11 +33,28 @@ class SearchController {
         indices "courses"
         types "course"
         source {
-		  from = params.offset
-		  size = params.max
+          from = params.offset
+          size = params.max
           query {
             query_string (query: terms)
           }
+          facets [
+            subject { 
+              terms {
+                field = 'subject'
+              }
+            }
+            //   terms{
+            //     field = "subject"
+            //   }
+            // }
+            // provid { 
+            //   terms(field:"provid") 
+            // }
+            // quallvl { 
+            //   terms(field:"qual.level") 
+            // }
+          ]
         }
       }
 
@@ -47,13 +67,27 @@ class SearchController {
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
       result.searchresult = search.response
-	  result.resultsTotal = search.response.hits.totalHits
-	  	  
-      render(view:'results',model:result) 
+      result.resultsTotal = search.response.hits.totalHits
+
+
+      pagename='results'
+      // render(view:'results',model:result) 
     }
     else {
       log.debug("No query.. Show search page")
-      render(view:'index',model:result)
+      // render(view:'index',model:result)
+    }
+
+    withFormat {
+      html {
+        render(view:pagename,model:result)
+      }
+      xml {
+        render result as XML
+      }
+      json {
+        render result as JSON
+      }
     }
   }
 }
