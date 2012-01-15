@@ -1,6 +1,7 @@
 package com.k_int.xcri
 
 import grails.converters.*
+import org.elasticsearch.groovy.common.xcontent.*
 
 class SearchController {
 
@@ -22,41 +23,38 @@ class SearchController {
 
     if ( params.q != null ) {
 
-      def terms = params.q
+      def query_terms = params.q
 	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
 	  params.offset = params.offset ? params.int('offset') : 0
 	  
-      if ( terms=='' )
-        terms="*"
+      if ( query_terms=='' )
+        query_terms="*"
 
-      def search = esclient.search {
-        indices "courses"
-        types "course"
+      // def b = builder.buildAsString {
+
+      def search_closure = {
         source {
           from = params.offset
           size = params.max
           query {
-            query_string (query: terms)
+            query_string (query: query_terms)
           }
-          facets [
-            subject { 
+          facets {
+            subject {
               terms {
                 field = 'subject'
               }
             }
-            //   terms{
-            //     field = "subject"
-            //   }
-            // }
-            // provid { 
-            //   terms(field:"provid") 
-            // }
-            // quallvl { 
-            //   terms(field:"qual.level") 
-            // }
-          ]
+            provider {
+              terms {
+                field = 'provid'
+              }
+            }
+          }
         }
       }
+
+      def search = esclient.search(search_closure)
 
       //      and : [
       //        params.coursetitle ?: { term(title:params.coursetitle) },
@@ -68,6 +66,13 @@ class SearchController {
       println "First hit course is $search.response.hits[0]"
       result.searchresult = search.response
       result.resultsTotal = search.response.hits.totalHits
+
+      search.response.facets?.facets?.each { facet ->
+        log.debug("facet : ${facet.key}");
+        facet.value.entries?.each { fe ->
+          log.debug("fe: ${fe.term} : ${fe.count}");
+        }
+      }
 
 
       pagename='results'
@@ -89,5 +94,12 @@ class SearchController {
         render result as JSON
       }
     }
+  }
+
+  def testSearchClosurei(c) {
+    log.debug("testSearchClosure");
+    def builder = new GXContentBuilder()
+    def b = builder.buildAsString(c)
+    log.debug(b.toString())
   }
 }
