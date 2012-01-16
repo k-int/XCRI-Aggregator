@@ -77,7 +77,7 @@ class FeedRunnerService {
     }
     catch ( Exception e ) {
       log.debug("Unable to parse bytes as XML.. Maybe there is a charset encoding issue. Trying ISO-8859-1 Instead");
-      byte_array = new String(byte_array,"ISO-8859-1").getBytes()
+      byte_array = new String(byte_array,"ISO-8859-1").getBytes("UTF-8")
 
       // Set the source charset so we know for next time.
       feed_definition.sourceCharset = 'ISO-8859-1';
