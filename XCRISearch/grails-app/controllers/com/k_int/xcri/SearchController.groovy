@@ -66,14 +66,7 @@ class SearchController {
       println "First hit course is $search.response.hits[0]"
       result.searchresult = search.response
       result.resultsTotal = search.response.hits.totalHits
-
-      search.response.facets?.facets?.each { facet ->
-        log.debug("facet : ${facet.key}");
-        facet.value.entries?.each { fe ->
-          log.debug("fe: ${fe.term} : ${fe.count}");
-        }
-      }
-
+      result.facets = search.response.facets?.facets
 
       pagename='results'
       // render(view:'results',model:result) 
