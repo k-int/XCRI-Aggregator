@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'layout.css')}" type="text/css">
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'nav.css')}" type="text/css">
   <link rel="stylesheet" href="${resource(dir: 'css', file: 'forms.css')}" type="text/css">
+  <link rel="stylesheet" href="${resource(dir: 'css', file: 'faceting.css')}" type="text/css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js" type="text/javascript"></script>
   <g:layoutHead/>

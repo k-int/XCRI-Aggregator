@@ -31,27 +31,88 @@ class SearchController {
         query_terms="*"
 
       // def b = builder.buildAsString {
-
+		
       def search_closure = {
         source {
           from = params.offset
           size = params.max
-          query {
-            query_string (query: query_terms)
+		  if(params.subject)
+		  {
+			  query
+			  {
+				  filtered
+				  {  
+					  query
+					  {	  
+						query_string (query: query_terms)
+					  }
+					  if(params.subject)
+					  {
+						  filter
+						  {
+							 and [{
+								 if(params.subject)
+								 {
+									term 
+									{
+										subject = params.subject
+									}
+								 }
+								 if(params.provider)
+								 {
+									term
+									{
+										provid = params.provider 
+									}
+								 }
+							 }]
+						  }
+					  }
+				  }
+			  }
+			  facets
+			  {
+				subject
+				{
+				  terms
+				  {
+					field = 'subject'
+				  }
+				}
+				provider
+				{
+				  terms
+				  {
+					field = 'provid'
+				  }
+				}
+			  }
+		  }
+		  else
+		  {
+			  query
+			  { 
+				query_string (query: query_terms)
+			  }
+			  facets
+			  {
+				subject
+				{
+				  terms 
+				  {
+					field = 'subject'
+				  }
+				}
+				provider 
+				{
+				  terms 
+				  {
+					field = 'provid'
+				  }
+				}
+			  }
+		  	}
           }
-          facets {
-            subject {
-              terms {
-                field = 'subject'
-              }
-            }
-            provider {
-              terms {
-                field = 'provid'
-              }
-            }
-          }
-        }
       }
 
       def search = esclient.search(search_closure)

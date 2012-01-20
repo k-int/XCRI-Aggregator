@@ -6,16 +6,17 @@
   </head>
 
   <body>
+   <div class="searchForm">
    <g:form action="index" method="get">
      <ul>
        <li><label for="q">Keyword(s)</label><input id="q" name="q" type="text" class="large" value="${params.q}" /></li>
        <li><input type="submit" class="button-link button-link-positive" value="Search"/></li>
      </ul>
     </g:form>
+    </div>
 
     <h1>Search Results</h1>
 
-    <ul>
       <div class="paginateButtons">
         <g:if test="${params.int('offset')}">
          Showing Results ${params.int('offset') + 1} - ${resultsTotal < (params.int('max') + params.int('offset')) ? resultsTotal : (params.int('max') + params.int('offset'))} of ${resultsTotal}
@@ -28,10 +29,29 @@
         </g:else>
         <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${resultsTotal}" /></span>
       </div>  
+      
+      <div class="facetFilter">
+      	<g:each in="${facets}" var="facet">
+      		<div>			
+				<h1 class="open"><a href="">${facet.key}</a></h1>
+      			<ul>
+      				<g:each in="${facet.value.entries}" var="fe">
+      					<g:if test="${params.(facet.key) && params.(facet.key) == (fe.term)}">
+      						<li><g:link class="active" params='${params + [(facet.key) : ""]}'><span class="ellipsis-overflow">${fe.term}</span><span> ${fe.count}</span></g:link></li>
+      					</g:if>
+      					<g:else>
+      					<li>
+      						<g:link params='${params + [(facet.key) : (fe.term)]}'><span class="ellipsis-overflow">${fe.term}</span><span> ${fe.count}</span></g:link></li>
+      					</g:else>	
+      				</g:each>
+      			</ul>
+      		</div>
+        </g:each>
+      </div>
 
       <div id="resultsarea">
+      	<ul>
         <g:each in="${searchresult?.hits}" var="crs">
-          <div>
 
             <g:if test="${crs.source.imageuri?.length() > 0}">
               <img src="${crs.source.imageuri}" style="float:right" />
@@ -47,39 +67,36 @@
                   <g:if test="${crs.source.description?.length() > 0}"> 
                     <li>
                       <g:if test="${crs.source.description?.length() > 500}"> 
-                      ${crs.source.description.substring(0,500)}<g:link controller="course" action="index" id="${crs.source._id}">...</g:link>
+                      ${crs.source.description.substring(0,300)}<g:link controller="course" action="index" id="${crs.source._id}">...</g:link>
                       </g:if>
                       <g:else>
                         ${crs.source.description}
                       </g:else>
                     </li> 
                   </g:if>
-<li>Subjects: <g:each in="${crs.source.subject}" var="subject"><g:link controller="search" action="index">${subject}</g:link>&nbsp;</g:each></li>
-<li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
-<li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
+				<li>Subjects: <g:each in="${crs.source.subject}" var="subject"><g:link controller="search" action="index">${subject}</g:link>&nbsp;</g:each></li>
+				<li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
+				<li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
                 </ul>
                 <g:if test="${params.debug==true}">
                   <pre>For debugging, json follows<br/>${crs?.source}</pre>
                 </g:if>
             </li>
-          </div>
         </g:each>
-      </div>
-
-      <div id="facets">
-        <ul>
-          <g:each in="${facets}" var="facet">
-            <li>${facet.key}
-              <ul>
-                <g:each in="${facet.value.entries}" var="fe">
-                  <li>${fe.term} : ${fe.count}</li>
-                </g:each>
-              </ul>
-            </li>
-          </g:each>
         </ul>
-      </div><!--id="facets"-->
-
-    </ul>
+      </div>
+      <g:javascript>
+      	$(document).ready(function()
+		{
+			$('.facetFilter h1 a').click(function(evt)
+			{
+				evt.preventDefault();
+				
+				var clicked = $(this).parent();
+				
+				clicked.next('ul').toggle('blind', 500, function(){ clicked.toggleClass('open'); });
+			});
+		});
+      </g:javascript>
   </body>
 </html>
