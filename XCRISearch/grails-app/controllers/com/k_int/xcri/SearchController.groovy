@@ -24,99 +24,71 @@ class SearchController {
     if ( params.q != null ) {
 
       def query_terms = params.q
-	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
-	  params.offset = params.offset ? params.int('offset') : 0
-	  
+    params.max = Math.min(params.max ? params.int('max') : 10, 100)
+    params.offset = params.offset ? params.int('offset') : 0
+    
       if ( query_terms=='' )
         query_terms="*"
 
       // def b = builder.buildAsString {
-		
+
+      def flist = []
+
+      if ( params.subject ) {
+        flist.add(['field':'subject','value':params.subject])
+      }
+    
       def search_closure = {
         source {
           from = params.offset
           size = params.max
-		  if(params.subject)
-		  {
-			  query
-			  {
-				  filtered
-				  {  
-					  query
-					  {	  
-						query_string (query: query_terms)
-					  }
-					  if(params.subject)
-					  {
-						  filter
-						  {
-							 and [{
-								 if(params.subject)
-								 {
-									term 
-									{
-										subject = params.subject
-									}
-								 }
-								 if(params.provider)
-								 {
-									term
-									{
-										provid = params.provider 
-									}
-								 }
-							 }]
-						  }
-					  }
-				  }
-			  }
-			  facets
-			  {
-				subject
-				{
-				  terms
-				  {
-					field = 'subject'
-				  }
-				}
-				provider
-				{
-				  terms
-				  {
-					field = 'provid'
-				  }
-				}
-			  }
-		  }
-		  else
-		  {
-			  query
-			  { 
-				query_string (query: query_terms)
-			  }
-			  facets
-			  {
-				subject
-				{
-				  terms 
-				  {
-					field = 'subject'
-				  }
-				}
-				provider 
-				{
-				  terms 
-				  {
-					field = 'provid'
-				  }
-				}
-			  }
-		  	}
+          query {
+            if ( flist.size() > 0 ) {
+              filtered {  
+                query {    
+                  query_string (query: query_terms)
+                }
+                filter {
+                  // and {
+                    // filters {
+                      term {
+                        subject='Arts & Crafts'
+                      }
+                    //   term {
+                    //     provid = 'c59d10da-e8f3-49b7-8224-c739d6bf0f32'
+                    //   }
+                    // }
+                  // }
+                  // }
+                  // and {
+                  //   filters.each { f ->
+                  //     term {
+                  //       f.field = f.value
+                  //     }
+                  // }
+                }
+              }
+            }
+            else {
+              query_string (query: query_terms)
+            }
           }
+          facets {
+            subject {
+              terms {
+                field = 'subject'
+              }
+            }
+            provider {
+              terms {
+                field = 'provid'
+              }
+            }
+          }
+        }
       }
 
       def search = esclient.search(search_closure)
-
       //      and : [
       //        params.coursetitle ?: { term(title:params.coursetitle) },
       //        params.coursedescription ?: { term(descriptions:params.coursedescription) },
