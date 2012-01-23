@@ -103,13 +103,13 @@
 
 .facetFilter span:first-child
 {
-	width:140px;
+	width:135px;
 	text-align:left;
 }
 
 .facetFilter a.active span:first-child
 {
-	width:120px;
+	width:115px;
 	text-align:left;
 }
 

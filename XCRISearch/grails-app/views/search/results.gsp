@@ -37,11 +37,34 @@
       			<ul>
       				<g:each in="${facet.value.entries}" var="fe">
       					<g:if test="${params.(facet.key) && params.(facet.key) == (fe.term)}">
-      						<li><g:link class="active" params='${params + [(facet.key) : ""]}'><span class="ellipsis-overflow">${fe.term}</span><span> ${fe.count}</span></g:link></li>
+      						<li>
+      							<g:link class="active" params='${params + [(facet.key) : ""]}'>
+      							<span>
+      								<g:if test="${fe.term.length() > 17}"> 
+      									${fe.term.substring(0,14)}...
+      								</g:if>
+      								<g:else>
+      									${fe.term}
+      								</g:else>
+      							</span>
+      							<span> ${fe.count}</span>
+      							</g:link>
+      						</li>
       					</g:if>
       					<g:else>
       					<li>
-      						<g:link params='${params + [(facet.key) : (fe.term)]}'><span class="ellipsis-overflow">${fe.term}</span><span> ${fe.count}</span></g:link></li>
+      						<g:link params='${params + [(facet.key) : (fe.term)]}'>
+      							<span>
+      								<g:if test="${fe.term.length() > 19}"> 
+      									${fe.term.substring(0,16)}...
+      								</g:if>
+      								<g:else>
+      									${fe.term}
+      								</g:else>
+      							</span>
+      							<span> ${fe.count}</span>
+      						</g:link>
+      					</li>
       					</g:else>	
       				</g:each>
       			</ul>
@@ -85,6 +108,19 @@
         </g:each>
         </ul>
       </div>
+      
+      <div class="paginateButtons paginate-bottom">
+        <g:if test="${params.int('offset')}">
+         Showing Results ${params.int('offset') + 1} - ${resultsTotal < (params.int('max') + params.int('offset')) ? resultsTotal : (params.int('max') + params.int('offset'))} of ${resultsTotal}
+        </g:if>
+        <g:elseif test="${resultsTotal && resultsTotal > 0}">
+          Showing Results 1 - ${resultsTotal < params.int('max') ? resultsTotal : params.int('max')} of ${resultsTotal}
+        </g:elseif>
+        <g:else>
+          Showing ${resultsTotal} Results
+        </g:else>
+        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${resultsTotal}" /></span>
+      </div>  
       <g:javascript>
       	$(document).ready(function()
 		{

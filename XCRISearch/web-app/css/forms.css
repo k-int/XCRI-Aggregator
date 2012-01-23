@@ -101,7 +101,7 @@ form a
 	background:transparent;
 }
 
-.paginateButtons span:first-child
+.paginateButtons > span:first-child
 {
 	float:right;
 	display:block;
@@ -140,7 +140,7 @@ form a
 	border-radius:2px;
 }
 
-.step, .currentStep
+.paginateButtons .step, .paginateButtons  .currentStep
 {
 	display:none;
 }
@@ -177,12 +177,14 @@ form a
 {
 	background: #e5e5e5 url(../images/arrow-right.png) center center no-repeat;
 	background: url(../images/arrow-right.png) center center no-repeat,
-				-moz-linear-gradient(white, #9fd2cf);
+				-moz-linear-gradient(white, #a4a4a4);
+	border: 1px solid #7b7b7b;
 }
 
 .paginateButtons .prevLink:hover
 {
 	background:	#e5e5e5 url(../images/arrow-left.png) center center no-repeat;
 	background: url(../images/arrow-left.png) center center no-repeat,
-				-moz-linear-gradient(white, #9fd2cf);
+				-moz-linear-gradient(white, #a4a4a4);
+	border: 1px solid #7b7b7b;
 }

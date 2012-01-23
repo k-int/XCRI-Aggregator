@@ -31,11 +31,12 @@ class SearchController {
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
 
-      def flist = []
+  /* old code 
+   *   def flist = []
 
       if ( params.subject ) {
         flist.add(['field':'subject','value':params.subject])
-      }
+      }*/
     
       def search_closure = {
         source {
