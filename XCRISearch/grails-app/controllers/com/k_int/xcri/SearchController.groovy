@@ -23,21 +23,31 @@ class SearchController {
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
+    
+    
     if ( params.q != null ) {
 
       params.max = Math.min(params.max ? params.int('max') : 10, 100)
       params.offset = params.offset ? params.int('offset') : 0
 
+      //def params_set=params.entrySet()
+      
+      if(!params.subject)  params.subject = []
+      else
+      {
+          params.subject = [params.subject].flatten()
+      }
+      
+      if(!params.provider) params.provider = []
+      else
+      {
+          params.provider = [params.provider].flatten()
+      }
+
+            
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
-
-  /* old code 
-   *   def flist = []
-
-      if ( params.subject ) {
-        flist.add(['field':'subject','value':params.subject])
-      }*/
-    
+          
       def search_closure = {
         source {
           from = params.offset
@@ -117,12 +127,12 @@ class SearchController {
       log.debug("testing ${mapping.key}");
 
       if ( params[mapping.key] != null ) {
-        if ( params[mapping.key].class.isArray() ) {
-          params[mapping.key].each { p ->
-            sw.write(" AND ")
-            sw.write(mapping.value)
-            sw.write(":")
-            sw.write("\"${p}\"")
+        if ( params[mapping.key].class == java.util.ArrayList) {
+          params[mapping.key].each { p ->  
+                sw.write(" AND ")
+                sw.write(mapping.value)
+                sw.write(":")
+                sw.write("\"${p}\"")
           }
         }
         else {

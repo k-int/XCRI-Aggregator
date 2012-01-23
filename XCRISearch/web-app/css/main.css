@@ -767,6 +767,7 @@ p.result
 
 .paginate-bottom
 {
+	clear:both;
 	margin-top: 10px !important;
 	padding: 10px 0 10px 10px !important;
 	-webkit-border-radius: 10px 10px 0 0;

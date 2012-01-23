@@ -36,12 +36,24 @@
 				<h1 class="open"><a href="">${facet.key}</a></h1>
       			<ul>
       				<g:each in="${facet.value.entries}" var="fe">
-      					<g:if test="${params.(facet.key) && params.(facet.key) == (fe.term)}">
-      						<li>
-      							<g:link class="active" params='${params + [(facet.key) : ""]}'>
+      				        <% def ops = [:]
+							  params.each 
+					          {
+								ops."$it.key" = it.value
+					          }
+					      	%>
+      					<g:if test="${params.(facet.key) && params.(facet.key).contains(fe.term)}">  
+      						<%   
+                              def uniqueLink = []
+                              uniqueLink.addAll(params."${facet.key}")
+                              uniqueLink.remove(fe.term)
+      					      ops."${facet.key}" = uniqueLink
+      					    %>
+        					<li>
+      							<g:link class="active" params='${ops}'>
       							<span>
-      								<g:if test="${fe.term.length() > 17}"> 
-      									${fe.term.substring(0,14)}...
+      								<g:if test="${fe.term.length() > 16}"> 
+      									${fe.term.substring(0,13)}...
       								</g:if>
       								<g:else>
       									${fe.term}
@@ -53,10 +65,15 @@
       					</g:if>
       					<g:else>
       					<li>
-      						<g:link params='${params + [(facet.key) : (fe.term)]}'>
+      					   <% 
+                             def uniqueLink = ["${fe.term}"]
+                             uniqueLink.addAll(params."${facet.key}")                                 
+      					     ops."${facet.key}" = uniqueLink
+      					    %>
+      						<g:link params='${ops}'>
       							<span>
-      								<g:if test="${fe.term.length() > 19}"> 
-      									${fe.term.substring(0,16)}...
+      								<g:if test="${fe.term.length() > 18}"> 
+      									${fe.term.substring(0,15)}...
       								</g:if>
       								<g:else>
       									${fe.term}
