@@ -5,8 +5,10 @@ import org.elasticsearch.groovy.common.xcontent.*
 
 class SearchController {
 
-
   def ESWrapperService
+
+  // Map the parameter names we use in the webapp with the ES fields
+  def reversemap = ['subject':'subject', 'provider':'provid']
 
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
@@ -23,14 +25,11 @@ class SearchController {
 
     if ( params.q != null ) {
 
-      def query_terms = params.q
-    params.max = Math.min(params.max ? params.int('max') : 10, 100)
-    params.offset = params.offset ? params.int('offset') : 0
-    
-      if ( query_terms=='' )
-        query_terms="*"
+      params.max = Math.min(params.max ? params.int('max') : 10, 100)
+      params.offset = params.offset ? params.int('offset') : 0
 
-      // def b = builder.buildAsString {
+      def query_str = buildQuery(params)
+      log.debug("query: ${query_str}");
 
       def flist = []
 
@@ -43,35 +42,7 @@ class SearchController {
           from = params.offset
           size = params.max
           query {
-            if ( flist.size() > 0 ) {
-              filtered {  
-                query {    
-                  query_string (query: query_terms)
-                }
-                filter {
-                  // and {
-                    // filters {
-                      term {
-                        subject='Arts & Crafts'
-                      }
-                    //   term {
-                    //     provid = 'c59d10da-e8f3-49b7-8224-c739d6bf0f32'
-                    //   }
-                    // }
-                  // }
-                  // }
-                  // and {
-                  //   filters.each { f ->
-                  //     term {
-                  //       f.field = f.value
-                  //     }
-                  // }
-                }
-              }
-            }
-            else {
-              query_string (query: query_terms)
-            }
+            query_string (query: query_str)
           }
           facets {
             subject {
@@ -87,6 +58,8 @@ class SearchController {
           }
         }
       }
+
+      testSearchClosure(search_closure)
 
       def search = esclient.search(search_closure)
       //      and : [
@@ -122,10 +95,44 @@ class SearchController {
     }
   }
 
-  def testSearchClosurei(c) {
+  def testSearchClosure(c) {
     log.debug("testSearchClosure");
     def builder = new GXContentBuilder()
     def b = builder.buildAsString(c)
     log.debug(b.toString())
+  }
+
+  def buildQuery(params) {
+
+    StringWriter sw = new StringWriter()
+
+   if ( ( params != null ) && ( params.q != null ) )
+     sw.write(params.q)
+   else
+     sw.write("*:*")
+
+    reversemap.each { mapping ->
+
+      log.debug("testing ${mapping.key}");
+
+      if ( params[mapping.key] != null ) {
+        if ( params[mapping.key].class.isArray() ) {
+          params[mapping.key].each { p ->
+            sw.write(" AND ")
+            sw.write(mapping.value)
+            sw.write(":")
+            sw.write("\"${p}\"")
+          }
+        }
+        else {
+          sw.write(" AND ")
+          sw.write(mapping.value)
+          sw.write(":")
+          sw.write("\"${params[mapping.key]}\"")
+        }
+      }
+    }
+
+    sw.toString()
   }
 }
