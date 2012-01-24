@@ -25,7 +25,7 @@ class SearchController {
 
     
     
-    if ( params.q != null ) {
+    if ( params.q && params.q.length() > 0) {
 
       params.max = Math.min(params.max ? params.int('max') : 10, 100)
       params.offset = params.offset ? params.int('offset') : 0
