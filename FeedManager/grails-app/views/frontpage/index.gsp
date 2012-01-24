@@ -45,7 +45,6 @@
 <table>
 	<thead>
 	  <tr>
-	    <th>ID</th>
 	    <th>Name</th>
 	    <th>Active</th>
 	    <th>Type</th>
@@ -57,8 +56,7 @@
 	  <tbody>
 	  <g:each in="${feeds}" var="feed">
 	    <tr>
-	      <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
-	      <td><g:link controller="feed" action="dashboard" id="${feed.id}" class="ellipsis-overflow">${feed.feedname}</g:link></td>
+	      <td class="ellipsis-overflow">${feed.feedname}</td>
 	      <td><g:img dir="images/table" file="${feed.active}.png" class="centered" /></td>
 	      <td>${feed.feedtype}</td>
 	      <g:if test="${feed.lastCheck}">

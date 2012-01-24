@@ -18,7 +18,7 @@ class FeedController {
   def index() {
     log.debug("index")
   }
-
+  
   /**
    * Run the feed now, testing, reporting any errors and processing any data
    */
@@ -79,7 +79,7 @@ class FeedController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 	
 
-	if (params.title || params.description || params.subject)
+	if ((params.title && params.title.trim().length() > 0) || (params.description && params.description.trim().length() > 0) || (params.subject && params.subject.trim().length() > 0))
 	{
 	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
 	  params.offset = params.offset ? params.int('offset') : 0
@@ -89,9 +89,9 @@ class FeedController {
 	  
 	  search_query_str << "provid:" << response.feed?.resourceIdentifier
 	  
-	  if(params.title){ search_query_str << " AND title:(" << params.title << ")" }
-	  if(params.description){ search_query_str << " AND description:(" << params.description << ")" }
-	  if(params.subject){ search_query_str << " AND subject:(" << params.subject << ")" }
+	  if(params.title && params.title.trim().length() > 0){ search_query_str << " AND title:(" << params.title << ")" }
+	  if(params.description && params.description.trim().length() > 0){ search_query_str << " AND description:(" << params.description << ")" }
+	  if(params.subject && params.subject.trim().length() > 0) { search_query_str << " AND subject:(" << params.subject << ")" }
 
 	  def search = esclient.search
 	  {
