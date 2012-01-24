@@ -18,8 +18,8 @@
             </g:if>
 			<g:form method="get" action="list" name="list">
 				<ul>
-					<li><label for="name">Username</label><input type="text" name="username" id="username" class="large" value="${params.username}"/></li>
-					<li><label for="username">Name</label><input type="text" name="name" id="name" class="large" value="${params.name}"/></li>
+					<li><label for="username">Username</label><input type="text" name="username" id="username" class="large" value="${params.username}"/></li>
+					<li><label for="name">Name</label><input type="text" name="name" id="name" class="large" value="${params.name}"/></li>
 					<li><label for="email">Email</label><input type="text" name="email" id="email" class="large" value="${params.email}"/></li>
 					<li><label for="institution">Institution</label><input type="text" name="institution" id="institution" class="large" value="${params.institution}"/></li>
 					<li><input type="submit" value="Search" class="button-link button-link-positive"/></li>
