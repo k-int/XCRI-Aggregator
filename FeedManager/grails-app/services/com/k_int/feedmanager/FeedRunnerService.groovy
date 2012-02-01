@@ -1,7 +1,5 @@
 package com.k_int.feedmanager
 
-import com.k_int.feedmanager.*
-
 import groovy.util.slurpersupport.GPathResult
 import static groovyx.net.http.ContentType.URLENC
 import static groovyx.net.http.ContentType.*
@@ -123,7 +121,7 @@ class FeedRunnerService {
           multipart_entity.addPart( "upload", uploaded_file_body_part)
 
           request.entity = multipart_entity;
-
+          
           response.success = { resp, data ->
             log.debug("response status: ${resp.statusLine}")
             log.debug("Response data code: ${data?.code}");
@@ -147,6 +145,8 @@ class FeedRunnerService {
       }
       else {
         log.debug("No action, checksum match");
+        //no action so reset to successful completion
+        feed_definition.status=3
       }
     }
     catch ( Exception e ) {
