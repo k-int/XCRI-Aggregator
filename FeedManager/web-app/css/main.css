@@ -402,6 +402,7 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 
 table {
 	border-top: 1px solid #DFDFDF;
+	border-bottom: 1px solid #DFDFDF;
 	border-collapse: collapse;
 	width: 100%;
 	margin-bottom: 1em;

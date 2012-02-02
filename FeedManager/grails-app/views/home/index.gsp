@@ -54,7 +54,7 @@
           <th>Next Harvest</th>
           <th>Published?</th>
           <th>Status</th>
-          <th>Actions</th>
+          <th>Select</th>
       </tr>
 
       <g:each in="${feeds}" var="feed">

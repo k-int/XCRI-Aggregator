@@ -125,7 +125,7 @@
         </g:each>
         </ul>
       </div>
-      
+      <g:if test="${searchresult.hits.totalHits > params.int('max')}">
       <div class="paginateButtons paginate-bottom">
         <g:if test="${params.int('offset')}">
             Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
@@ -138,6 +138,7 @@
         </g:else>
         <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
       </div>
+      </g:if>
       <g:javascript>
         $(document).ready(function()
         {
