@@ -80,7 +80,9 @@
           </td>
   
           <td>
-            <g:if test="${feed.status in [1,3,4]}"><g:link controller="feed" action="collect" id="${feed.id}">Collect Now</g:link></g:if>
+            <g:if test="${feed.status in [1,3,4]}">
+            <g:link controller="feed" action="collect" params="[id:feed.id, force:false]">Collect</g:link>
+            <g:link controller="feed" action="collect" params="[id:feed.id, force:true]">Force Collect</g:link></g:if>
           </td>
         </tr>
       </g:each>
