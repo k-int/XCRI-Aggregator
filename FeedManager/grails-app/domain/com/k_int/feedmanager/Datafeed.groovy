@@ -10,6 +10,7 @@ class Datafeed {
     String feedtype
     String statusMessage
     Long lastCheck
+    Long lastCollect
     Long checkInterval
     String jsonResponse
     boolean active
@@ -20,6 +21,9 @@ class Datafeed {
     String providerTechnicalContact
     String providerEmail
     String iconUrl
+
+    // null/0==Not published, 1==Publised
+    int publicationStatus
  
 
     // Setting this should cause an explict charset conversion
@@ -32,6 +36,7 @@ class Datafeed {
       jsonResponse(maxSize:1000000,nullable:true,blank:true)
       statusMessage(maxSize:512,nullable:true,blank:true)
       lastCheck(nullable:true)
+      lastCollect(nullable:true)
       checkInterval(nullable:true)
       resourceIdentifier(nullable:true)
       sourceCharset(nullable:true)
@@ -39,5 +44,6 @@ class Datafeed {
       providerTechnicalContact(nullable:true)
       providerEmail(nullable:true)
       iconUrl(nullable:true)
+      publicationStatus(nullable:true)
     }
 }
