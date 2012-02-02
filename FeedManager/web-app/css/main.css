@@ -727,3 +727,51 @@ pre
 	border: 1px solid #dbb053;
 }
 
+.result img
+{
+	 vertical-align: middle;
+}
+
+p.result
+{
+	padding: 5px;
+	background-color: #FCF7EC; 
+	border: 1px solid #dbb053;
+}
+
+.result span
+{
+	 vertical-align: middle;
+	 padding-left: 5px;
+	 padding-right: 50px;
+}
+
+.result a
+{
+	color: #1858c2;
+}
+
+.result:first-child h3
+{
+	margin-top:0px;
+}
+
+.searchForm
+{
+	padding: 10px;
+	-webkit-border-radius: 0 0 10px 10px;
+	-moz-border-radius: 0 0 10px 10px;
+	border-radius: 0 0 10px 10px;
+	background-color: #EAEAEA;
+}
+
+.paginate-bottom
+{
+	clear:both;
+	margin-top: 10px !important;
+	padding: 10px 0 10px 10px !important;
+	-webkit-border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+	border-radius: 10px 10px 0 0;
+	background-color: #EAEAEA !important;
+}

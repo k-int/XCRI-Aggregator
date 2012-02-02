@@ -34,7 +34,7 @@ class CollectJob {
         if ( ( feed.active ) &&
              ( ( feed.lastCheck == 0 ) || ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
           log.debug("Collecting......");
-          feedRunnerService.collect(feed.id)
+          feedRunnerService.collect(false, feed.id)
         }
       }
       log.debug("Collect job completed");

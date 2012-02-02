@@ -15,7 +15,7 @@ class FeedRunnerService {
 
   def running_feeds = [:]
 
-  def collect(feed_definition_id) {
+  def collect(force_process, feed_definition_id) {
 
     log.debug("Attempting to Collect feed ${feed_definition_id}");
 
@@ -24,11 +24,11 @@ class FeedRunnerService {
     }
     else {
       log.warn("Starting feed ${feed_definition_id}");
-      doCollectFeed(feed_definition_id)
+      doCollectFeed(force_process, feed_definition_id)
     }
   }
 
-  def doCollectFeed(feed_definition_id) {
+  def doCollectFeed(force_process, feed_definition_id) {
     log.debug("starting doCollectFeed ${feed_definition_id}");
     def feed_definition = com.k_int.feedmanager.SingleFileDatafeed.get(feed_definition_id)
     running_feeds[feed_definition_id] = feed_definition;
@@ -46,7 +46,7 @@ class FeedRunnerService {
         java.net.URLConnection url_conn = resource.openConnection();
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
-        uploadStream(url_conn.getInputStream(),aggregator_service,feed_definition)
+        uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
       }
       else {
         log.warn("Unhandled feed type");
@@ -84,7 +84,7 @@ class FeedRunnerService {
     byte_array
   }
 
-  def uploadStream(input_stream,target_service,feed_definition) {
+  def uploadStream(force_process,input_stream,target_service,feed_definition) {
 
     log.debug("About to make post request");
 
@@ -107,7 +107,8 @@ class FeedRunnerService {
 
       log.debug("Length of input stream is ${resource_to_deposit.length}, Checksum is ${md5sumHex}");
 
-      if ( ( feed_definition.checksum == null ) ||
+      if ( ( force_process ) ||
+           ( feed_definition.checksum == null ) ||
            ( feed_definition.checksum != md5sumHex ) ) {
 
         target_service.request(POST) {request ->

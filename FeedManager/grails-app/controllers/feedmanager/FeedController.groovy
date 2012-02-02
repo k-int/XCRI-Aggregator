@@ -14,6 +14,8 @@ class FeedController {
   def feedRunnerService
   
   def ESWrapperService
+  
+  def reversemap = ['subject':'subject']
 
   def index() {
     log.debug("index")
@@ -25,7 +27,7 @@ class FeedController {
   def collect() {
     log.debug("collect")
     // def feedDefinition = feedRunnerService.getDatafeed(params.id)
-    feedRunnerService.collect(params.id)
+    feedRunnerService.collect(params.boolean('force'), params.id)
   }
 
   // Allows the user to search any aggregations where the collected
@@ -74,25 +76,27 @@ class FeedController {
     response.feed = feedRunnerService.getDatafeed(params.id)
 	response.id = params.id
 	
+    if(!params.subject)  params.subject = []
+    else
+    {
+        params.subject = [params.subject].flatten()
+    }
+    
 	// Get hold of some services we might use ;)
 	org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 	
 
-	if ((params.title && params.title.trim().length() > 0) || (params.description && params.description.trim().length() > 0) || (params.subject && params.subject.trim().length() > 0))
-	{
+    if((params != null) && (params.q != null))
+    {
 	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
 	  params.offset = params.offset ? params.int('offset') : 0
 	  
-	  //dynamically build query_string
-	  def search_query_str = new StringBuilder()
-	  
-	  search_query_str << "provid:" << response.feed?.resourceIdentifier
-	  
-	  if(params.title && params.title.trim().length() > 0){ search_query_str << " AND title:(" << params.title << ")" }
-	  if(params.description && params.description.trim().length() > 0){ search_query_str << " AND description:(" << params.description << ")" }
-	  if(params.subject && params.subject.trim().length() > 0) { search_query_str << " AND subject:(" << params.subject << ")" }
-
+	  //set prov id
+      params.provid = response.feed?.resourceIdentifier
+      
+      def search_query_str = buildQuery(params)
+      
 	  def search = esclient.search
 	  {
 		indices "courses"
@@ -105,6 +109,13 @@ class FeedController {
 		  {
 			  query_string (query: search_query_str)
 		  }
+          facets {
+              subject {
+                terms {
+                  field = 'subject'
+                }
+              }
+          }
 		}
 	  }
 	  
@@ -116,6 +127,39 @@ class FeedController {
 		log.debug("No query.. Show search page")
 		render(view:'search',model:response)
 	}
+  }
+  
+  def buildQuery(params) {
+      
+    StringWriter sw = new StringWriter()
+      
+    if ( ( params != null ) && ( params.q != null ) )
+           sw.write(params.q)
+    else
+           sw.write("*:*")
+          
+          reversemap.each { mapping ->
+      
+            log.debug("testing ${mapping.key}");
+      
+            if ( params[mapping.key] != null ) {
+              if ( params[mapping.key].class == java.util.ArrayList) {
+                params[mapping.key].each { p ->
+                      sw.write(" AND ")
+                  sw.write(mapping.value)
+                  sw.write(":")
+                  sw.write("\"${p}\"")
+            }
+          }
+          else {
+            sw.write(" AND ")
+            sw.write(mapping.value)
+            sw.write(":")
+            sw.write("\"${params[mapping.key]}\"")
+          }
+        }
+      }
+  sw.toString()
   }
   
 }

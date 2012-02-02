@@ -14,9 +14,7 @@
 	<h1>Search</h1>
     <g:form controller="feed" action="search" name="searchForm" id="${id}" method="GET">
       <ul>
-     	<li><label for="title">Title</label><input name="title" type="text" class="large"></li>
-        <li><label for="description">Description</label><input name="description" type="text" class="large"></li>
-        <li><label for="subject">Subject</label><input name="subject" type="text" class="large"></li>
+     	<li><label for="q">Title</label><input name="q" type="text" class="large"></li>
         <li><input type="submit" class="button-link" value="Search"/></li>
       </ul>
     </g:form>
