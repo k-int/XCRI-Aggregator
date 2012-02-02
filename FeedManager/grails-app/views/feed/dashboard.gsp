@@ -18,9 +18,9 @@
       feed not searchable
     </g:else>
 
-    Feed was last collectedon ${feed.lastCollect?} and the feed is
-    <g:if test="${feed.publicationStatus? == 1}">Published. You can withdraw the records by clicking <a:href="">here</a></g:if>
-    <g:else>Not published. You can make these records active by clicking <a:href="">here</a></g:else>
+    Feed was last collectedon ${feed.lastCollect} and the feed is
+    <g:if test="${(feed.publicationStatus != null) && (feed.publicationStatus == 1)}">Published. You can withdraw the records by clicking <a href="">here</a></g:if>
+    <g:else>Not published. You can make these records active by clicking <a href="">here</a></g:else>
     
   </body>
 </html>

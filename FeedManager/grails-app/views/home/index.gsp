@@ -70,7 +70,7 @@
             <g:else>Unknown</g:else>
           </td>
           <td>
-            <g:if test="${feed.publicationStatus? == 1 }">Yes</g:if>
+            <g:if test="${(feed.publicationStatus!=null)&&(feed.publicationStatus==1)}">Yes</g:if>
             <g:else>No</g:else>
           </td>
   
