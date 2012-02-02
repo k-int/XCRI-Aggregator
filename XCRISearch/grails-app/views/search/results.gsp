@@ -31,66 +31,66 @@
       </div>  
       
       <div class="facetFilter">
-      	<g:each in="${facets}" var="facet">
-      		<div>			
-				<h1 class="open"><a href="">${facet.key}</a></h1>
-      			<ul>
-      				<g:each in="${facet.value.entries}" var="fe">
-      				        <% def ops = [:]
-							  params.each 
-					          {
-								ops."$it.key" = it.value
-					          }
-					      	%>
-      					<g:if test="${params.(facet.key) && params.(facet.key).contains(fe.term)}">  
-      						<%   
+        <g:each in="${facets}" var="facet">
+          <div>      
+        <h1 class="open"><a href="">${facet.key}</a></h1>
+            <ul>
+              <g:each in="${facet.value.entries}" var="fe">
+                      <% def ops = [:]
+                params.each 
+                    {
+                ops."$it.key" = it.value
+                    }
+                  %>
+                <g:if test="${params.(facet.key) && params.(facet.key).contains(fe.term)}">  
+                  <%   
                               def uniqueLink = []
                               uniqueLink.addAll(params."${facet.key}")
                               uniqueLink.remove(fe.term)
-      					      ops."${facet.key}" = uniqueLink
-      					    %>
-        					<li>
-      							<g:link class="active" params='${ops}'>
-      							<span>
-      								<g:if test="${fe.term.length() > 16}"> 
-      									${fe.term.substring(0,13)}...
-      								</g:if>
-      								<g:else>
-      									${fe.term}
-      								</g:else>
-      							</span>
-      							<span> ${fe.count}</span>
-      							</g:link>
-      						</li>
-      					</g:if>
-      					<g:else>
-      					<li>
-      					   <% 
+                      ops."${facet.key}" = uniqueLink
+                    %>
+                  <li>
+                    <g:link class="active" params='${ops}'>
+                    <span>
+                      <g:if test="${fe.term.length() > 16}"> 
+                        ${fe.term.substring(0,13)}...
+                      </g:if>
+                      <g:else>
+                        ${fe.term}
+                      </g:else>
+                    </span>
+                    <span> ${fe.count}</span>
+                    </g:link>
+                  </li>
+                </g:if>
+                <g:else>
+                <li>
+                   <% 
                              def uniqueLink = ["${fe.term}"]
                              uniqueLink.addAll(params."${facet.key}")                                 
-      					     ops."${facet.key}" = uniqueLink
-      					    %>
-      						<g:link params='${ops}'>
-      							<span>
-      								<g:if test="${fe.term.length() > 18}"> 
-      									${fe.term.substring(0,15)}...
-      								</g:if>
-      								<g:else>
-      									${fe.term}
-      								</g:else>
-      							</span>
-      							<span> ${fe.count}</span>
-      						</g:link>
-      					</li>
-      					</g:else>	
-      				</g:each>
-      			</ul>
-      		</div>
+                     ops."${facet.key}" = uniqueLink
+                    %>
+                  <g:link params='${ops}'>
+                    <span>
+                      <g:if test="${fe.term.length() > 18}"> 
+                        ${fe.term.substring(0,15)}...
+                      </g:if>
+                      <g:else>
+                        ${fe.term}
+                      </g:else>
+                    </span>
+                    <span> ${fe.count}</span>
+                  </g:link>
+                </li>
+                </g:else>  
+              </g:each>
+            </ul>
+          </div>
         </g:each>
       </div>
 
       <div id="resultsarea">
-      	<ul>
+        <ul>
         <g:each in="${searchresult?.hits}" var="crs">
 
             <g:if test="${crs.source.imageuri?.length() > 0}">
@@ -114,9 +114,15 @@
                       </g:else>
                     </li> 
                   </g:if>
-				<li>Subjects: <g:each in="${crs.source.subject}" var="subject"><g:link controller="search" action="index">${subject}</g:link>&nbsp;</g:each></li>
-				<li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
-				<li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
+
+        <li>Subjects: 
+          <g:each in="${crs.source.subject}" var="subject">
+            <g:link controller="search" action="index" params='[q:"subjectKw:${subject}"]'>${subject}</g:link>&nbsp;
+          </g:each>
+        </li>
+
+        <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
+        <li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
                 </ul>
                 <g:if test="${params.debug==true}">
                   <pre>For debugging, json follows<br/>${crs?.source}</pre>
@@ -139,17 +145,17 @@
         <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${resultsTotal}" /></span>
       </div>  
       <g:javascript>
-      	$(document).ready(function()
-		{
-			$('.facetFilter h1 a').click(function(evt)
-			{
-				evt.preventDefault();
-				
-				var clicked = $(this).parent();
-				
-				clicked.next('ul').toggle('blind', 500, function(){ clicked.toggleClass('open'); });
-			});
-		});
+        $(document).ready(function()
+    {
+      $('.facetFilter h1 a').click(function(evt)
+      {
+        evt.preventDefault();
+        
+        var clicked = $(this).parent();
+        
+        clicked.next('ul').toggle('blind', 500, function(){ clicked.toggleClass('open'); });
+      });
+    });
       </g:javascript>
   </body>
 </html>
