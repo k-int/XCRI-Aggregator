@@ -43,6 +43,7 @@
       </g:else>
       <span><g:link controller="registerFeed" action="index" class="button-link">Register New Feed</g:link><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${feedsTotal}" /></span>
     </div>
+    <g:form controller="feed" action="collect">
     <table>
       <thead>
         <tr>
@@ -73,20 +74,19 @@
             <g:if test="${(feed.publicationStatus!=null)&&(feed.publicationStatus==1)}">Yes</g:if>
             <g:else>No</g:else>
           </td>
-  
           <td>
             <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:[1-9]/)}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:if>
             <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
           </td>
-  
           <td>
-            <g:if test="${feed.status in [1,3,4]}">
-            <g:link controller="feed" action="collect" params="[id:feed.id, force:false]">Collect</g:link>
-            <g:link controller="feed" action="collect" params="[id:feed.id, force:true]">Force Collect</g:link></g:if>
+            <g:if test="${feed.status in [1,3,4]}"><g:radio class="centered" name="id" value="${feed.id}"/></g:if>
           </td>
         </tr>
       </g:each>
-    </table>
-
+    </table>   
+    <div class="paginateButtons">
+     <span><label><g:checkBox name="force" value="${true}" /> Force  </label><g:submitButton name="collect" value="Collect" class="button-link" /></span>
+    </div>
+    </g:form>
   </body>
 </html>

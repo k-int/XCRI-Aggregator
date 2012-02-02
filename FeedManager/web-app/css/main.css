@@ -703,7 +703,7 @@ footer span
 	overflow: hidden;
 }
 
-table img.centered
+table img.centered, table input[type="radio"].centered
 {
 	margin: 0 auto;
 	display:block;

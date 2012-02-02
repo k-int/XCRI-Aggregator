@@ -26,8 +26,11 @@ class FeedController {
    */
   def collect() {
     log.debug("collect")
+    //if force does not exist then set to false
+    params.force = (params.force ? params.force : "false")
     // def feedDefinition = feedRunnerService.getDatafeed(params.id)
     feedRunnerService.collect(params.boolean('force'), params.id)
+    redirect(controller:"home", action: "index")
   }
 
   // Allows the user to search any aggregations where the collected
