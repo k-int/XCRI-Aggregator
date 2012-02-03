@@ -2,6 +2,8 @@ package com.k_int.xcri
 
 import grails.converters.*
 import org.elasticsearch.groovy.common.xcontent.*
+import groovy.xml.MarkupBuilder
+
 
 class SearchController {
 
@@ -73,17 +75,25 @@ class SearchController {
       testSearchClosure(search_closure)
 
       def search = esclient.search(search_closure)
-      //      and : [
-      //        params.coursetitle ?: { term(title:params.coursetitle) },
-      //        params.coursedescription ?: { term(descriptions:params.coursedescription) },
-      //        params.freetext ?: { term(params.freetext) },
-      //      ]
 
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
-      result.searchresult = search.response
+      result.hits = search.response.hits
       result.resultsTotal = search.response.hits.totalHits
-      result.facets = search.response.facets?.facets
+      // result.facets = search.response.facets?.facets
+
+      // We pre-process the facet response to work around some translation issues in ES
+      if ( search.response.facets != null ) {
+        result.facets = [:]
+        search.response.facets.facets.each { facet ->
+          def facet_values = []
+          facet.value.entries.each { fe ->
+            log.debug("${fe.term} = ${fe.count}")
+            facet_values.add([term:"${fe.term}",count:"${fe.count}"])
+          }
+          result.facets[facet.key] = facet_values
+        }
+      }
 
       pagename='results'
       // render(view:'results',model:result) 
@@ -94,6 +104,12 @@ class SearchController {
     }
 
     withFormat {
+      rss {
+        renderRSSResponse(result)
+      }
+      atom {
+        renderATOMResponse( result )
+      }
       html {
         render(view:pagename,model:result)
       }
@@ -146,4 +162,69 @@ class SearchController {
 
     sw.toString()
   }
+
+  def renderRSSResponse(results) {
+
+    def output_elements = buildOutputElements(results.search_results)
+
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+
+    xml.rss(version: '2.0') {
+      channel {
+        title("Open Family Services RSS Response")
+        description("Open Family Services RSS Description")
+        copyright("(c) Open Family Services")
+        "opensearch:totalResults"(results.search_results.results.numFound)
+        "opensearch:startIndex"(results.search_results.results.start)
+        "opensearch:itemsPerPage"(10)
+        output_elements.each { i ->  // For each record
+          entry {
+            i.each { tuple ->   // For each tuple in the record
+              "${tuple[0]}"("${tuple[1]}")
+            }
+          }
+        }
+      }
+    }
+
+    render(contentType:"application/rss+xml", text: writer.toString())
+  }
+
+
+  def renderATOMResponse(results) {
+
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    def output_elements = buildOutputElements(results.search_results)
+
+    xml.feed(xmlns:'http://www.w3.org/2005/Atom') {
+        // add the top level information about this feed.
+        title("Open Family Services ATOM Response")
+        description("Open Family Services ATOM Response")
+        copyright("(c) Open Family Services")
+        "opensearch:totalResults"(results.search_results.results.numFound)
+        "opensearch:startIndex"(results.search_results.results.start)
+        "opensearch:itemsPerPage"("10")
+        // subtitle("Serving up my content")
+        //id("uri:uuid:xxx-xxx-xxx-xxx")
+        link(href:"http://www.openfamilyservices.org.uk")
+        author {
+          name("OFS - OpenFamilyServices")
+        }
+        //updated sdf.format(new Date());
+
+        // for each entry we need to create an entry element
+        output_elements.each { i ->
+          entry {
+            i.each { tuple ->
+                "${tuple[0]}"("${tuple[1]}")
+            }
+          }
+        }
+    }
+
+    render(contentType:'application/xtom+xml', text: writer.toString())
+  }
+
 }

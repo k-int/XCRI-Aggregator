@@ -35,7 +35,7 @@
           <div>      
         <h1 class="open"><a href="">${facet.key}</a></h1>
             <ul>
-              <g:each in="${facet.value.entries}" var="fe">
+              <g:each in="${facet.value}" var="fe">
                       <% def ops = [:]
                 params.each 
                     {
@@ -91,7 +91,7 @@
 
       <div id="resultsarea">
         <ul>
-        <g:each in="${searchresult?.hits}" var="crs">
+        <g:each in="${hits}" var="crs">
 
             <g:if test="${crs.source.imageuri?.length() > 0}">
               <img src="${crs.source.imageuri}" style="float:right" />
