@@ -42,11 +42,11 @@
                 ops."$it.key" = it.value
                     }
                   %>
-                <g:if test="${params.(facet.key) && params.(facet.key).contains(fe.term)}">  
+                <g:if test="${params[facet.key] && params[facet.key].contains(fe.term.toString())}">  
                   <%   
                               def uniqueLink = []
                               uniqueLink.addAll(params."${facet.key}")
-                              uniqueLink.remove(fe.term)
+                              uniqueLink.remove(fe.term.toString())
                       ops."${facet.key}" = uniqueLink
                     %>
                   <li>
