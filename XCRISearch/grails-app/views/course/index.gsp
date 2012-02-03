@@ -14,11 +14,51 @@
 
       <g:if test="${course.source.description?.length() > 0}">${course.source.description}<br/></g:if>
 
+      <g:if test="${course.source.subject}">
       <h4>Subjects</h4>
-      <p><g:join in="${course.source.subject}" delimiter=", "/><br/></p>
+      <p>
+      <g:join in="${course.source.subject}" delimiter=", "/><br/>
+      <g:if test="${course.source.subjectKeywords && course.source.subjectKeywords.size() > 0}">
+      <span style="color:gray">Keywords: <g:join in="${course.source.subjectKeywords}" delimiter=", "/></span>
+      </g:if>
+      </p>
+      </g:if>
       <h4>Course Identifier</h4><p>${course.source.identifier}</p>
       <h4>Course Link</h4><p>${course.source.url}</p>
-      <h4>Qualification</h4><p>${course.source.qual?.title} ( ${course.source.qual?.level} / ${course.source.qual?.awardedBy} )</p>
+      <h4>Qualifications</h4>
+      <p>
+      <g:if test="${course.source.qual.title}">${course.source.qual.title}</g:if><g:if test="${course.source.qual.level}"> (Level: ${course.source.qual.level})</g:if>
+      <ul>   
+            <g:if test="${course.source.qual.type}"><li>${course.source.qual.type}</li></g:if>
+            <g:if test="${course.source.qual.description}"><li>${course.source.qual.description} </li></g:if>
+            <g:if test="${course.source.qual.awardedBy}"><li>Awarded by ${course.source.qual.awardedBy}</li></g:if>
+            <g:if test="${course.source.qual.accreditedBy}"><li>Accredited by ${course.source.qual.accreditedBy}</li></g:if>
+      </ul>
+      </p>
+
+      <g:if test="${course.source.presentations && course.source.presentations.size() > 0}">    
+      <h4>Variations</h4>
+      <p>
+          <g:each var="presentation" in="${course.source.presentations}">
+          <span style="font-weight: bold">${presentation.identifier}</span>
+          <br/>
+          <g:if test="${presentation.description}">
+          ${presentation.description}<br/>
+          </g:if>
+          <ul>   
+                <li>Running from ${presentation.start} until ${presentation.end} <g:if test="(${presentation.duration}">(${presentation.duration})</g:if></li>
+                <li>Apply for this course between ${presentation.applicationsOpen} and ${presentation.applicationsClose}</li>
+                <g:if test="${presentation.applyTo}"> <li>Applications can be submitted to ${presentation.applyTo}</li></g:if>
+                <g:if test="${presentation.enquireTo}"><li>Enquiries can be made to ${presentation.enquireTo}</li></g:if>
+                <g:if test="${presentation.cost}"><li>The cost of this course is ${presentation.cost}</li></g:if>
+                <g:if test="${presentation.venue}">
+                <li>Taught at ${presentation.venue.name}, ${presentation.venue.street}, ${presentation.venue.town}, ${presentation.venue.postcode}</li>
+                </g:if>
+          </ul>
+          <br/>
+          </g:each>
+      </p>
+      </g:if>
       
       <g:if test="${course.source.abstract}">
         <h4>Abstract</h4><p>${course.source.abstract}</p>
