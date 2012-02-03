@@ -19,15 +19,15 @@
 
       <div class="paginateButtons">
         <g:if test="${params.int('offset')}">
-         Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
+         Showing Results ${params.int('offset') + 1} - ${hits.totalHits < (params.int('max') + params.int('offset')) ? hits.totalHits : (params.int('max') + params.int('offset'))} of ${hits.totalHits}
         </g:if>
-        <g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
-          Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
+        <g:elseif test="${hits.totalHits && hits.totalHits > 0}">
+          Showing Results 1 - ${hits.totalHits < params.int('max') ? hits.totalHits : params.int('max')} of ${hits.totalHits}
         </g:elseif>
         <g:else>
-          Showing ${searchresult.hits.totalHits} Results
+          Showing ${hits.totalHits} Results
         </g:else>
-        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
+        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${hits.totalHits}" /></span>
       </div>  
       
       <div class="facetFilter">
@@ -131,18 +131,18 @@
         </g:each>
         </ul>
       </div>
-      <g:if test="${searchresult.hits.totalHits > params.int('max')}">
+      <g:if test="${hits.totalHits > params.int('max')}">
       <div class="paginateButtons paginate-bottom">
         <g:if test="${params.int('offset')}">
-         Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
+         Showing Results ${params.int('offset') + 1} - ${hits.totalHits < (params.int('max') + params.int('offset')) ? hits.totalHits : (params.int('max') + params.int('offset'))} of ${hits.totalHits}
         </g:if>
-        <g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
-          Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
+        <g:elseif test="${hits.totalHits && hits.totalHits > 0}">
+          Showing Results 1 - ${hits.totalHits < params.int('max') ? hits.totalHits : params.int('max')} of ${hits.totalHits}
         </g:elseif>
         <g:else>
-          Showing ${searchresult.hits.totalHits} Results
+          Showing ${hits.totalHits} Results
         </g:else>
-        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
+        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${hits.totalHits}" /></span>
       </div> 
       </g:if>
       <g:javascript>

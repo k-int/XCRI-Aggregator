@@ -88,7 +88,6 @@ class SearchController {
         search.response.facets.facets.each { facet ->
           def facet_values = []
           facet.value.entries.each { fe ->
-            log.debug("${fe.term} = ${fe.count}")
             facet_values.add([term:"${fe.term}",count:"${fe.count}"])
           }
           result.facets[facet.key] = facet_values
@@ -108,7 +107,7 @@ class SearchController {
         renderRSSResponse(result)
       }
       atom {
-        renderATOMResponse( result )
+        renderATOMResponse( result,params.max )
       }
       html {
         render(view:pagename,model:result)
@@ -165,7 +164,7 @@ class SearchController {
 
   def renderRSSResponse(results) {
 
-    def output_elements = buildOutputElements(results.search_results)
+    def output_elements = buildOutputElements(results.hits)
 
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
@@ -175,8 +174,8 @@ class SearchController {
         title("Open Family Services RSS Response")
         description("Open Family Services RSS Description")
         copyright("(c) Open Family Services")
-        "opensearch:totalResults"(results.search_results.results.numFound)
-        "opensearch:startIndex"(results.search_results.results.start)
+        "opensearch:totalResults"(results.hits.totalHits)
+        // "opensearch:startIndex"(results.search_results.results.start)
         "opensearch:itemsPerPage"(10)
         output_elements.each { i ->  // For each record
           entry {
@@ -192,25 +191,26 @@ class SearchController {
   }
 
 
-  def renderATOMResponse(results) {
+  def renderATOMResponse(results,hpp) {
 
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
-    def output_elements = buildOutputElements(results.search_results)
+
+    def output_elements = buildOutputElements(results.hits)
 
     xml.feed(xmlns:'http://www.w3.org/2005/Atom') {
         // add the top level information about this feed.
         title("Open Family Services ATOM Response")
         description("Open Family Services ATOM Response")
         copyright("(c) Open Family Services")
-        "opensearch:totalResults"(results.search_results.results.numFound)
-        "opensearch:startIndex"(results.search_results.results.start)
-        "opensearch:itemsPerPage"("10")
+        "opensearch:totalResults"(results.hits.totalHits)
+        // "opensearch:startIndex"(results.search_results.results.start)
+        "opensearch:itemsPerPage"("${hpp}")
         // subtitle("Serving up my content")
         //id("uri:uuid:xxx-xxx-xxx-xxx")
-        link(href:"http://www.openfamilyservices.org.uk")
+        link(href:"http://coursedata.k-int.com")
         author {
-          name("OFS - OpenFamilyServices")
+          name("XCRI-DCAP")
         }
         //updated sdf.format(new Date());
 
@@ -225,6 +225,32 @@ class SearchController {
     }
 
     render(contentType:'application/xtom+xml', text: writer.toString())
+  }
+
+  def buildOutputElements(searchresults) {
+    // Result is an array of result elements
+    def result = []
+
+    searchresults.hits.each { doc ->
+      log.debug("adding ${doc} ${doc.source.title}");
+      def docinfo = [];
+
+      docinfo.add(['dc.title',doc.source.title])
+      docinfo.add(['dc.description',doc.source.description])
+      docinfo.add(['dc.identifier',doc.source.title])
+      // addField("dc.title", "dc.title", doc, docinfo)
+      // addField("dc.description", "dc.description", doc, docinfo)
+      // addField("dc.description", "dc.description", doc, docinfo)
+      // addField("dc.identifier", "guid", doc, docinfo)
+      // addField("modified", "pubdate", doc, docinfo)
+      // docinfo.add(["link","${ApplicationHolder.application.config.ofs.pub.baseurl}/ofs/directory/${doc['authority_shortcode']}/${doc['aggregator.internal.id']}"])
+      // if ( ( doc['lat'] != null ) && ( doc['lng'] != null ) ) {
+      //   docinfo.add(["georss:point","${doc['lat']} ${doc['lng']}"])
+      // }
+      result.add(docinfo)
+    }
+    // println "Result ${result}"
+    result
   }
 
 }
