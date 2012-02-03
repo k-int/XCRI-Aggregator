@@ -10,71 +10,64 @@
         <img src="${course.source.imageuri}" style="float:right" />
       </g:if>
 
-      <h3>${course.source.title} via ${course.source.provtitle} (${course.source.provid})</h3>
+      <h1>${course.source.title} via ${course.source.provtitle} (${course.source.provid})</h1>
 
       <g:if test="${course.source.description?.length() > 0}">${course.source.description}<br/></g:if>
 
-      <h3>Subjects</h3>
+      <h4>Subjects</h4>
       <p><g:join in="${course.source.subject}" delimiter=", "/><br/></p>
-      <h3>Course Identifier</h3><p>${course.source.identifier}</p>
-      <h3>Course Link</h3><p>${course.source.url}</p>
-      <h3>Qualification</h3><p>${course.source.qual?.title} ( ${course.source.qual?.level} / ${course.source.qual?.awardedBy} )</p>
+      <h4>Course Identifier</h4><p>${course.source.identifier}</p>
+      <h4>Course Link</h4><p>${course.source.url}</p>
+      <h4>Qualification</h4><p>${course.source.qual?.title} ( ${course.source.qual?.level} / ${course.source.qual?.awardedBy} )</p>
       
       <g:if test="${course.source.abstract}">
-        <h3>Abstract</h3><p>${course.source.abstract}</p>
+        <h4>Abstract</h4><p>${course.source.abstract}</p>
       </g:if>
       <g:if test="${course.source.aim}">
-        <h3>Course Aim</h3><p>${course.source.aim}</p>
+        <h4>Course Aim</h4><p>${course.source.aim}</p>
       </g:if>
       <g:if test="${course.source.leadsTo}">
-        <h3>Leads To</h3><p>${course.source.leadsTo}</p>
+        <h4>Leads To</h4><p>${course.source.leadsTo}</p>
       </g:if>
       <g:if test="${course.source.careerOutcome}">
-        <h3>Career Outcome</h3><p>${course.source.careerOutcome}</p>
+        <h4>Career Outcome</h4><p>${course.source.careerOutcome}</p>
       </g:if>     
       <g:if test="${course.source.syllabus}">
-        <h3>Syllabus</h3><p>${course.source.syllabus}</p>
+        <h4>Syllabus</h4><p>${course.source.syllabus}</p>
+      </g:if>
+      <g:if test="${course.source.structure}">
+        <h4>Structure</h4><p>${course.source.structure}</p>
       </g:if>
       <g:if test="${course.source.assessmentStrategy}">
-        <h3>Assessment Strategy</h3><p>${course.source.assessmentStrategy}</p>
+        <h4>Assessment Strategy</h4><p>${course.source.assessmentStrategy}</p>
       </g:if>
       <g:if test="${course.source.teachingStrategy}">
-        <h3>Teaching Strategy</h3><p>${course.source.teachingStrategy}</p>
+        <h4>Teaching Strategy</h4><p>${course.source.teachingStrategy}</p>
       </g:if>
-       <g:if test="${course.source.careerOutcome}">
-        <h3>Career Outcome</h3><p>${course.source.careerOutcome}</p>
+      <g:if test="${course.source.careerOutcome}">
+        <h4>Career Outcome</h4><p>${course.source.careerOutcome}</p>
       </g:if>
-       <g:if test="${course.source.policy}">
-        <h3>Policy</h3><p>${course.source.policy}</p>
+      <g:if test="${course.source.policy}">
+        <h4>Policy</h4><p>${course.source.policy}</p>
+      </g:if>
+      <g:if test="${course.source.requiredResource}">
+        <h4>Required Resources</h4><p>${course.source.requiredResource}</p>
+      </g:if>
+       <g:if test="${course.source.providedResource}">
+        <h4>Provided Resources</h4><p>${course.source.providedResource}</p>
       </g:if>
       <g:if test="${course.source.support}">
-        <h3>Support</h3><p>${course.source.support}</p>
+        <h4>Support</h4><p>${course.source.support}</p>
       </g:if>
-      
-
+      <g:if test="${course.source.regulations}">
+        <h4>Regulations</h4><p>${course.source.regulations}</p>
+      </g:if>
+      <g:if test="${course.source.specialFeature}">
+        <h4>Special Features</h4><p>${course.source.specialFeature}</p>
+      </g:if>
       <g:if test="${params.debug=='true'}">
         <pre>For debugging, json follows ${course?.source}</pre>
       </g:if>
     </div>
   </body>
 </html>
-
-
-"metadataKeywords": ["xcri:metadataKeywords","xcriterms:metadataKeywords"],
-                              "abstract": ["xcri:abstract","xcriTerms:abstract"],
-                              "careerOutcome": ["xcri:careerOutcome","xcriTerms:careerOutcome","Career Outcome"],
-                              "prerequisites": ["xcri:prerequisites","xcriTerms:prerequisites","Entry Profile"],
-                              "indicativeResource": ["xcri:indicativeResource","xcriTerms:indicativeResource","Indicative Resource"],
-                              "assessmentStrategy":["xcri:assessmentStrategy","xcriTerms:assessmentStrategy","Assessment Strategy"],
-                              "aim":["xcri:aim","xcriTerms:aim","Aim","terms:topic"],
-                              "learningOutcome":["xcri:learningOutcome","xcriTerms:learningOutcome","Learning Outcome"],
-                              "syllabus": ["xcri:syllabus","xcriTerms:syllabus","Syllabus"],   
-                              "support": ["xcri:support","xcriTerms:support","Support"],
-                              "teachingStrategy": ["xcri:teachingStrategy","xcriTerms:teachingStrategy","Teaching Strategy"],
-                              "structure": ["xcri:structure","xcriTerms:structure","Structure"],
-                              "specialFeature": ["xcri:specialFeature","xcriTerms:specialFeature","Special Feature"],
-                              "leadsTo": ["xcri:leadsTo","xcriTerms:leadsTo","Leads To"],
-                              "requiredResource":["xcri:requiredResource","xcriTerms:requiredResource","Required Resource"],
-                              "providedResource":["xcri:providedResource","xcriTerms:providedResource","Provided Resource"],
-                              "policy":["xcri:policy","xcriTerms:policy","Policy"],
-                              "regulations":["xcri:regulations","xcriTerms:regulations","Policy"]
