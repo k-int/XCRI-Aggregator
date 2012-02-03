@@ -82,7 +82,6 @@ class SearchController {
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
       result.searchresult = search.response
-      result.resultsTotal = search.response.hits.totalHits
       result.facets = search.response.facets?.facets
 
       pagename='results'
