@@ -11,7 +11,7 @@
   </head>
 
   <body>
-	<h1>Search</h1>
+	<h1>Search ${feed.feedname}</h1>
     <g:form controller="feed" action="search" name="searchForm" id="${id}" method="GET">
       <ul>
      	<li><label for="q">Title</label><input name="q" type="text" class="large"></li>

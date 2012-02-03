@@ -90,7 +90,7 @@ class FeedController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 	
 
-    if((params != null) && (params.q != null))
+    if(params != null && params.q != null && params.q.length() > 0)
     {
 	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
 	  params.offset = params.offset ? params.int('offset') : 0
