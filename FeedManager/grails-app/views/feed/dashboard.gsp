@@ -14,7 +14,7 @@
 
   <body>
     <h1>${feed.feedname}</h1>
-    <p><g:if test="${feed.resourceIdentifier}!=null">
+    <p><g:if test="${feed.resourceIdentifier && feed.resourceIdentifier.length() > 0}">
       Feed resource identifier is ${feed.resourceIdentifier}, this feed is searchable.
     </g:if>
     <g:else>
@@ -27,7 +27,7 @@
     <br/>
     <p>This feed is 
     <g:if test="${(feed.publicationStatus != null) && (feed.publicationStatus == 1)}">Published. You can withdraw the records by clicking <a href="">here</a></g:if>
-    <g:else>Not published. You can make these records active by clicking <a href="">here</a></g:else></p>
+    <g:else>not published. You can make these records active by clicking <a href="">here</a></g:else></p>
     
   </body>
 </html>

@@ -14,7 +14,7 @@
     <div class="searchForm">
     <g:form controller="feed" action="search" name="searchForm" id="${id}" method="GET">
       <ul>
-        <li><label for="q">Title</label><input name="q" type="text" class="large"></li>
+        <li><label for="q">Title</label><input name="q" type="text" class="large" value="${q}"></li>
         <li><input type="submit" class="button-link" value="Search"/></li>
       </ul>
     </g:form>
@@ -98,11 +98,11 @@
             </g:if>
 
             <li class="result">
-                <h3>
-                  <g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link> via 
+                <h4>
+                  ${crs.source.title} via 
                   <g:if test="${crs.source.provtitle?.length() > 0}">${crs.source.provtitle}</g:if>
                   <g:else>Missing Provider Name (${crs.source.provid})</g:else>
-                </h3>
+                </h4>
                 <ul>
                   <g:if test="${crs.source.description?.length() > 0}"> 
                     <li>
@@ -114,7 +114,7 @@
                       </g:else>
                     </li> 
                   </g:if>
-                <li>Subjects: <g:each in="${crs.source.subject}" var="subject"><g:link controller="search" action="index">${subject}</g:link>&nbsp;</g:each></li>
+                <li>Subjects: <g:each in="${crs.source.subject}" var="subject">${subject}&nbsp;</g:each></li>
                 <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
                 <li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
                 </ul>

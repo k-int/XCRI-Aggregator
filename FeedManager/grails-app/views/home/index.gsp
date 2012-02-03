@@ -59,12 +59,12 @@
 
       <g:each in="${feeds}" var="feed">
         <tr>
-          <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.id}</g:link></td>
+          <td>${feed.id}</td>
           <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
           <td>${feed.feedtype}</td>
           <td>
             <g:if test="${feed?.lastCheck}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCheck}"/></g:if>
-            <g:else><td>Never</td></g:else>
+            <g:else>Never</g:else>
           </td>
           <td>
             <g:if test="${feed?.lastCheck && feed?.checkInterval}">${use(DurationFormatter){TimeCategory.minus(new Date(feed?.lastCheck+feed?.checkInterval), new Date()).toString()}}</g:if>
