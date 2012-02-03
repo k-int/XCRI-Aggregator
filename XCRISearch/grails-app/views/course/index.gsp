@@ -10,71 +10,104 @@
         <img src="${course.source.imageuri}" style="float:right" />
       </g:if>
 
-      <h3>${course.source.title} via ${course.source.provtitle} (${course.source.provid})</h3>
+      <h1>${course.source.title} via ${course.source.provtitle} (${course.source.provid})</h1>
 
       <g:if test="${course.source.description?.length() > 0}">${course.source.description}<br/></g:if>
 
-      <h3>Subjects</h3>
-      <p><g:join in="${course.source.subject}" delimiter=", "/><br/></p>
-      <h3>Course Identifier</h3><p>${course.source.identifier}</p>
-      <h3>Course Link</h3><p>${course.source.url}</p>
-      <h3>Qualification</h3><p>${course.source.qual?.title} ( ${course.source.qual?.level} / ${course.source.qual?.awardedBy} )</p>
+      <g:if test="${course.source.subject}">
+      <h4>Subjects</h4>
+      <p>
+      <g:join in="${course.source.subject}" delimiter=", "/><br/>
+      <g:if test="${course.source.subjectKeywords && course.source.subjectKeywords.size() > 0}">
+      <span style="color:gray">Keywords: <g:join in="${course.source.subjectKeywords}" delimiter=", "/></span>
+      </g:if>
+      </p>
+      </g:if>
+      <h4>Course Identifier</h4><p>${course.source.identifier}</p>
+      <h4>Course Link</h4><p>${course.source.url}</p>
+      <h4>Qualifications</h4>
+      <p>
+      <g:if test="${course.source.qual.title}">${course.source.qual.title}</g:if><g:if test="${course.source.qual.level}"> (Level: ${course.source.qual.level})</g:if>
+      <ul>   
+            <g:if test="${course.source.qual.type}"><li>${course.source.qual.type}</li></g:if>
+            <g:if test="${course.source.qual.description}"><li>${course.source.qual.description} </li></g:if>
+            <g:if test="${course.source.qual.awardedBy}"><li>Awarded by ${course.source.qual.awardedBy}</li></g:if>
+            <g:if test="${course.source.qual.accreditedBy}"><li>Accredited by ${course.source.qual.accreditedBy}</li></g:if>
+      </ul>
+      </p>
+
+      <g:if test="${course.source.presentations && course.source.presentations.size() > 0}">    
+      <h4>Variations</h4>
+      <p>
+          <g:each var="presentation" in="${course.source.presentations}">
+          <span style="font-weight: bold">${presentation.identifier}</span>
+          <br/>
+          <g:if test="${presentation.description}">
+          ${presentation.description}<br/>
+          </g:if>
+          <ul>   
+                <li>Running from ${presentation.start} until ${presentation.end} <g:if test="(${presentation.duration}">(${presentation.duration})</g:if></li>
+                <li>Apply for this course between ${presentation.applicationsOpen} and ${presentation.applicationsClose}</li>
+                <g:if test="${presentation.applyTo}"> <li>Applications can be submitted to ${presentation.applyTo}</li></g:if>
+                <g:if test="${presentation.enquireTo}"><li>Enquiries can be made to ${presentation.enquireTo}</li></g:if>
+                <g:if test="${presentation.cost}"><li>The cost of this course is ${presentation.cost}</li></g:if>
+                <g:if test="${presentation.venue}">
+                <li>Taught at ${presentation.venue.name}, ${presentation.venue.street}, ${presentation.venue.town}, ${presentation.venue.postcode}</li>
+                </g:if>
+          </ul>
+          <br/>
+          </g:each>
+      </p>
+      </g:if>
       
       <g:if test="${course.source.abstract}">
-        <h3>Abstract</h3><p>${course.source.abstract}</p>
+        <h4>Abstract</h4><p>${course.source.abstract}</p>
       </g:if>
       <g:if test="${course.source.aim}">
-        <h3>Course Aim</h3><p>${course.source.aim}</p>
+        <h4>Course Aim</h4><p>${course.source.aim}</p>
       </g:if>
       <g:if test="${course.source.leadsTo}">
-        <h3>Leads To</h3><p>${course.source.leadsTo}</p>
+        <h4>Leads To</h4><p>${course.source.leadsTo}</p>
       </g:if>
       <g:if test="${course.source.careerOutcome}">
-        <h3>Career Outcome</h3><p>${course.source.careerOutcome}</p>
+        <h4>Career Outcome</h4><p>${course.source.careerOutcome}</p>
       </g:if>     
       <g:if test="${course.source.syllabus}">
-        <h3>Syllabus</h3><p>${course.source.syllabus}</p>
+        <h4>Syllabus</h4><p>${course.source.syllabus}</p>
+      </g:if>
+      <g:if test="${course.source.structure}">
+        <h4>Structure</h4><p>${course.source.structure}</p>
       </g:if>
       <g:if test="${course.source.assessmentStrategy}">
-        <h3>Assessment Strategy</h3><p>${course.source.assessmentStrategy}</p>
+        <h4>Assessment Strategy</h4><p>${course.source.assessmentStrategy}</p>
       </g:if>
       <g:if test="${course.source.teachingStrategy}">
-        <h3>Teaching Strategy</h3><p>${course.source.teachingStrategy}</p>
+        <h4>Teaching Strategy</h4><p>${course.source.teachingStrategy}</p>
       </g:if>
-       <g:if test="${course.source.careerOutcome}">
-        <h3>Career Outcome</h3><p>${course.source.careerOutcome}</p>
+      <g:if test="${course.source.careerOutcome}">
+        <h4>Career Outcome</h4><p>${course.source.careerOutcome}</p>
       </g:if>
-       <g:if test="${course.source.policy}">
-        <h3>Policy</h3><p>${course.source.policy}</p>
+      <g:if test="${course.source.policy}">
+        <h4>Policy</h4><p>${course.source.policy}</p>
+      </g:if>
+      <g:if test="${course.source.requiredResource}">
+        <h4>Required Resources</h4><p>${course.source.requiredResource}</p>
+      </g:if>
+       <g:if test="${course.source.providedResource}">
+        <h4>Provided Resources</h4><p>${course.source.providedResource}</p>
       </g:if>
       <g:if test="${course.source.support}">
-        <h3>Support</h3><p>${course.source.support}</p>
+        <h4>Support</h4><p>${course.source.support}</p>
       </g:if>
-      
-
+      <g:if test="${course.source.regulations}">
+        <h4>Regulations</h4><p>${course.source.regulations}</p>
+      </g:if>
+      <g:if test="${course.source.specialFeature}">
+        <h4>Special Features</h4><p>${course.source.specialFeature}</p>
+      </g:if>
       <g:if test="${params.debug=='true'}">
         <pre>For debugging, json follows ${course?.source}</pre>
       </g:if>
     </div>
   </body>
 </html>
-
-
-"metadataKeywords": ["xcri:metadataKeywords","xcriterms:metadataKeywords"],
-                              "abstract": ["xcri:abstract","xcriTerms:abstract"],
-                              "careerOutcome": ["xcri:careerOutcome","xcriTerms:careerOutcome","Career Outcome"],
-                              "prerequisites": ["xcri:prerequisites","xcriTerms:prerequisites","Entry Profile"],
-                              "indicativeResource": ["xcri:indicativeResource","xcriTerms:indicativeResource","Indicative Resource"],
-                              "assessmentStrategy":["xcri:assessmentStrategy","xcriTerms:assessmentStrategy","Assessment Strategy"],
-                              "aim":["xcri:aim","xcriTerms:aim","Aim","terms:topic"],
-                              "learningOutcome":["xcri:learningOutcome","xcriTerms:learningOutcome","Learning Outcome"],
-                              "syllabus": ["xcri:syllabus","xcriTerms:syllabus","Syllabus"],   
-                              "support": ["xcri:support","xcriTerms:support","Support"],
-                              "teachingStrategy": ["xcri:teachingStrategy","xcriTerms:teachingStrategy","Teaching Strategy"],
-                              "structure": ["xcri:structure","xcriTerms:structure","Structure"],
-                              "specialFeature": ["xcri:specialFeature","xcriTerms:specialFeature","Special Feature"],
-                              "leadsTo": ["xcri:leadsTo","xcriTerms:leadsTo","Leads To"],
-                              "requiredResource":["xcri:requiredResource","xcriTerms:requiredResource","Required Resource"],
-                              "providedResource":["xcri:providedResource","xcriTerms:providedResource","Provided Resource"],
-                              "policy":["xcri:policy","xcriTerms:policy","Policy"],
-                              "regulations":["xcri:regulations","xcriTerms:regulations","Policy"]
