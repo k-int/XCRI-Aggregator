@@ -15,10 +15,10 @@
   <body>
     <h1>${feed.feedname}</h1>
     <p><g:if test="${feed.resourceIdentifier}!=null">
-      Feed resource identifier is ${feed.resourceIdentifier}  this feed is searchable
+      Feed resource identifier is ${feed.resourceIdentifier}, this feed is searchable.
     </g:if>
     <g:else>
-      This feed is not searchable!
+      This feed is not searchable.
     </g:else>
     </p><br/>
     <g:if test="${feed?.lastCollect}"><p>Last ran on <g:formatDate format="dd MMM HH:mm" date="${feed.lastCollect}"/></p></g:if>
