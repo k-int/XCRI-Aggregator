@@ -19,15 +19,15 @@
 
       <div class="paginateButtons">
         <g:if test="${params.int('offset')}">
-         Showing Results ${params.int('offset') + 1} - ${resultsTotal < (params.int('max') + params.int('offset')) ? resultsTotal : (params.int('max') + params.int('offset'))} of ${resultsTotal}
+         Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
         </g:if>
-        <g:elseif test="${resultsTotal && resultsTotal > 0}">
-          Showing Results 1 - ${resultsTotal < params.int('max') ? resultsTotal : params.int('max')} of ${resultsTotal}
+        <g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
+          Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
         </g:elseif>
         <g:else>
-          Showing ${resultsTotal} Results
+          Showing ${searchresult.hits.totalHits} Results
         </g:else>
-        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${resultsTotal}" /></span>
+        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
       </div>  
       
       <div class="facetFilter">
@@ -35,7 +35,7 @@
           <div>      
         <h1 class="open"><a href="">${facet.key}</a></h1>
             <ul>
-              <g:each in="${facet.value.entries}" var="fe">
+              <g:each in="${facet.value}" var="fe">
                       <% def ops = [:]
                 params.each 
                     {
@@ -91,7 +91,7 @@
 
       <div id="resultsarea">
         <ul>
-        <g:each in="${searchresult?.hits}" var="crs">
+        <g:each in="${hits}" var="crs">
 
             <g:if test="${crs.source.imageuri?.length() > 0}">
               <img src="${crs.source.imageuri}" style="float:right" />
@@ -131,19 +131,20 @@
         </g:each>
         </ul>
       </div>
-      
+      <g:if test="${searchresult.hits.totalHits > params.int('max')}">
       <div class="paginateButtons paginate-bottom">
         <g:if test="${params.int('offset')}">
-         Showing Results ${params.int('offset') + 1} - ${resultsTotal < (params.int('max') + params.int('offset')) ? resultsTotal : (params.int('max') + params.int('offset'))} of ${resultsTotal}
+         Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
         </g:if>
-        <g:elseif test="${resultsTotal && resultsTotal > 0}">
-          Showing Results 1 - ${resultsTotal < params.int('max') ? resultsTotal : params.int('max')} of ${resultsTotal}
+        <g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
+          Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
         </g:elseif>
         <g:else>
-          Showing ${resultsTotal} Results
+          Showing ${searchresult.hits.totalHits} Results
         </g:else>
-        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${resultsTotal}" /></span>
-      </div>  
+        <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
+      </div> 
+      </g:if>
       <g:javascript>
         $(document).ready(function()
     {
