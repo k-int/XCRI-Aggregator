@@ -24,7 +24,7 @@
       <g:each in="${lastlog?.eventLog}" var="entry">
         <g:if test="${entry.type=='msg'}">
           <tr>
-            <td>${entry.ts}</td>
+            <td><g:formatDate format="dd MMM HH:mm:ss" date="${entry.ts}"/></td>
             <td>${entry.type}</td>
             <td>${entry.lvl}</td>
             <td>${entry.msg}</td>
