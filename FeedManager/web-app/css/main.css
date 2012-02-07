@@ -735,6 +735,18 @@ pre
 	border: 1px solid #dbb053;
 }
 
+.result
+{
+	display:block;
+	padding: 5px;
+}
+
+.result:hover
+{
+	background-color: #EAEAEA;
+	
+}
+
 .result img
 {
 	 vertical-align: middle;
@@ -763,6 +775,17 @@ p.result
 {
 	margin-top:0px;
 }
+
+.result h4
+{
+	margin-top:0.3em;
+}
+
+.result:first-child h4
+{
+	margin-top:0em;
+}
+
 
 .searchForm
 {
@@ -796,3 +819,8 @@ p.result
 	color: orange !important;
 }
 
+h4 em
+{
+	font-weight: bold;
+	font-style:normal;
+}

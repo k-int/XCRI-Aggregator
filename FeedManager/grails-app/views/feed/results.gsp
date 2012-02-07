@@ -14,20 +14,20 @@
     <div class="searchForm">
     <g:form controller="feed" action="search" name="searchForm" id="${id}" method="GET">
       <ul>
-        <li><label for="q">Title</label><input name="q" type="text" class="large" value="${q}"></li>
-        <li><input type="submit" class="button-link" value="Search"/></li>
+        <li><label for="q">Title</label><input name="q" type="text" class="large" value="${params.q}"></li>
+        <li><input type="submit" class="button-link button-link-positive" value="Search"/></li>
       </ul>
     </g:form>
     </div>
 	<div class="paginateButtons">
 		<g:if test="${params.int('offset')}">
-		   	Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
+		   	Showing Results <em>${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))}</em> of <em>${searchresult.hits.totalHits}</em>
 		</g:if>
 		<g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
-			Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
+			Showing Results <em>1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')}</em> of <em>${searchresult.hits.totalHits}</em>
 		</g:elseif>
 		<g:else>
-			Showing ${searchresult.hits.totalHits} Results
+			Showing <em>${searchresult.hits.totalHits}</em> Results
 		</g:else>
 		<span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
 	</div>
@@ -99,7 +99,7 @@
 
             <li class="result">
                 <h4>
-                  ${crs.source.title} via 
+                  <em>${crs.source.title}</em> via 
                   <g:if test="${crs.source.provtitle?.length() > 0}">${crs.source.provtitle}</g:if>
                   <g:else>Missing Provider Name (${crs.source.provid})</g:else>
                 </h4>
@@ -128,13 +128,13 @@
       <g:if test="${searchresult.hits.totalHits > params.int('max')}">
       <div class="paginateButtons paginate-bottom">
         <g:if test="${params.int('offset')}">
-            Showing Results ${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))} of ${searchresult.hits.totalHits}
+            Showing Results <em>${params.int('offset') + 1} - ${searchresult.hits.totalHits < (params.int('max') + params.int('offset')) ? searchresult.hits.totalHits : (params.int('max') + params.int('offset'))}</em> of <em>${searchresult.hits.totalHits}</em>
         </g:if>
         <g:elseif test="${searchresult.hits.totalHits && searchresult.hits.totalHits > 0}">
-            Showing Results 1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')} of ${searchresult.hits.totalHits}
+            Showing Results <em>1 - ${searchresult.hits.totalHits < params.int('max') ? searchresult.hits.totalHits : params.int('max')}</em> of <em>${searchresult.hits.totalHits}</em>
         </g:elseif>
         <g:else>
-            Showing ${searchresult.hits.totalHits} Results
+            Showing <em>${searchresult.hits.totalHits}</em> Results
         </g:else>
         <span><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${searchresult.hits.totalHits}" /></span>
       </div>
