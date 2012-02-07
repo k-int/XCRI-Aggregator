@@ -39,6 +39,18 @@ class CourseController {
       }
 
       result
+      
+      withFormat {
+          html {
+            result
+          }
+          xml {
+            render result as XML
+          }
+          json {
+            render result as JSON
+          }
+        }
     }
     else {
       log.warn("No query.. Show search page")

@@ -10,7 +10,10 @@
         <img src="${course.source.imageuri}" style="float:right" />
       </g:if>
 
-      <h1>${course.source.title} via ${course.source.provtitle} (${course.source.provid})</h1>
+      <h1>${course.source.title} via ${course.source.provtitle} (${course.source.provid})
+        <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${course.source._id}" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span>
+        <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${course.source._id}" target="_blank" params="[format:'xml']">XML</g:link>&gt;</span>
+      </h1>
 
       <g:if test="${course.source.description?.length() > 0}">${course.source.description}<br/></g:if>
 

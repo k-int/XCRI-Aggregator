@@ -102,6 +102,8 @@
                   <g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link> via 
                   <g:if test="${crs.source.provtitle?.length() > 0}">${crs.source.provtitle}</g:if>
                   <g:else>Missing Provider Name (${crs.source.provid})</g:else>
+                  <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${crs.source._id}" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span>
+                  <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${crs.source._id}" target="_blank" params="[format:'xml']">XML</g:link>&gt;</span>
                 </h3>
                 <ul>
                   <g:if test="${crs.source.description?.length() > 0}"> 
