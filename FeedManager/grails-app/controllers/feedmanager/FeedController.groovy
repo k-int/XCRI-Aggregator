@@ -172,7 +172,7 @@ class FeedController {
           redirect(controller: "home", action: "index")
       }
       else {
-          return [feedInstance: feedInstance]
+          return [feedInstance: feedInstance, id: params.id]
       }
   }
   
