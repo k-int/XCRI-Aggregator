@@ -783,3 +783,16 @@ p.result
 	border-radius: 10px 10px 0 0;
 	background-color: #EAEAEA !important;
 }
+
+.h-link-small, .h-link-small *
+{
+	font-size:14px;
+	font-style: none;
+	font-weight:bold;
+}
+
+.h-link-small *:hover
+{
+	color: orange !important;
+}
+

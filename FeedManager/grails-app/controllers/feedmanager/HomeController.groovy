@@ -2,6 +2,7 @@ package feedmanager
 
 import org.apache.shiro.SecurityUtils
 import com.k_int.feedmanager.*
+import grails.converters.*
 
 class HomeController {
 
@@ -22,7 +23,17 @@ class HomeController {
 	
     def response = [:]
     response.feeds = results
-	response.feedsTotal = results.totalCount
+    response.feedsTotal = results.totalCount
     response
+    
+    withFormat {
+        html {
+            response
+          //render(view:pagename,model:result)
+        }
+        json {
+          render response as JSON
+        }
+      }
   }
 }

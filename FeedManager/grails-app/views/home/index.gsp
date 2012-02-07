@@ -30,7 +30,7 @@
   </head>
 
   <body>
-    <h1>Your Feeds</h1>
+    <h1>Your Feeds <span class="h-link-small">&lt;<g:link action="index" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span></h1>
     <div class="paginateButtons">
       <g:if test="${params.int('offset')}">
            Showing Feeds ${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))} of ${feedsTotal}
