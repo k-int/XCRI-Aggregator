@@ -34,3 +34,11 @@ switched to db xcri
 
 > db.dropDatabase()
 { "dropped" : "xcri.$cmd", "ok" : 1 }
+
+
+
+To query
+mongo <<!!
+use xcri
+providers.find();
+!!
