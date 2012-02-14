@@ -1,5 +1,6 @@
+This project holds the components and datastructures specific to the XCRI-CAP aggregator project.
 
-This project is a spike for the JISC XCRI aggregator ITT.. To test out our assumptions and validate our response
+Specifically, the repository contains the FeedManager and Discover applications. Both are groovy/grails applications
+which require access to a configured mongo service.
 
-
-HTML5 Info taken from http://ghads.wordpress.com/2011/01/21/grails-html5-works/
+Invidvidual handlers may need specific additional components such as apache solr, elasticsearch, 4Store / BigData.
