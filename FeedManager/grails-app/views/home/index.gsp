@@ -30,16 +30,16 @@
   </head>
 
   <body>
-    <h1>Your Feeds</h1>
+    <h1>Your Feeds <span class="h-link-small">&lt;<g:link action="index" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span></h1>
     <div class="paginateButtons">
       <g:if test="${params.int('offset')}">
-           Showing Feeds ${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))} of ${feedsTotal}
+           Showing Feeds <em>${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))}</em> of <em>${feedsTotal}</em>
       </g:if>
       <g:elseif test="${feedsTotal && feedsTotal > 0}">
-        Showing Feeds 1 - ${feedsTotal < params.int('max') ? feedsTotal : params.int('max')} of ${feedsTotal}
+        Showing Feeds <em>1 - ${feedsTotal < params.int('max') ? feedsTotal : params.int('max')}</em> of <em>${feedsTotal}</em>
       </g:elseif>
       <g:else>
-        Showing ${feedsTotal} Feeds
+        Showing <em>${feedsTotal}</em> Feeds
       </g:else>
       <span><g:link controller="registerFeed" action="index" class="button-link">Register New Feed</g:link><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${feedsTotal}" /></span>
     </div>

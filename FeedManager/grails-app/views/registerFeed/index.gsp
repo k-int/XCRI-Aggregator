@@ -15,9 +15,9 @@
 	<g:if test="${flash.message}">
    		<div class="message">${flash.message}</div>
     </g:if>
-    <g:hasErrors bean="${schoolInstance}">
+    <g:hasErrors bean="${feedInstance}">
     	<div class="errors">
-        	<g:renderErrors bean="${schoolInstance}" as="list" />
+        	<g:renderErrors bean="${feedInstance}" as="list" />
    		</div>
     </g:hasErrors>
     <g:form action="save" name="addFeedForm">

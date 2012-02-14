@@ -130,6 +130,8 @@ nav .dashboard span { background: transparent url(../images/icons/dashboard.png)
 nav .dashboard:hover span {	background: transparent url(../images/icons/dashboard-hover.png) 10px no-repeat; }
 nav .search span { background: transparent url(../images/icons/magnify.png) 10px no-repeat; }
 nav .search:hover span { background: transparent url(../images/icons/magnify-hover.png) 10px no-repeat;	}
+nav .edit span { background: transparent url(../images/icons/edit.png) 10px no-repeat;    }
+nav .edit:hover span { background: transparent url(../images/icons/edit-hover.png) 10px no-repeat;    }
 nav .home span { background: transparent url(../images/icons/home.png) 10px no-repeat;	}
 nav .home:hover span { background: transparent url(../images/icons/home-hover.png) 10px no-repeat;	}
 nav .feeds span { background: transparent url(../images/icons/feeds.png) 10px no-repeat;	}

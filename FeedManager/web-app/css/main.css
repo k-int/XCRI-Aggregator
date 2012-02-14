@@ -735,6 +735,18 @@ pre
 	border: 1px solid #dbb053;
 }
 
+.result
+{
+	display:block;
+	padding: 5px;
+}
+
+.result:hover
+{
+	background-color: #EAEAEA;
+	
+}
+
 .result img
 {
 	 vertical-align: middle;
@@ -764,6 +776,17 @@ p.result
 	margin-top:0px;
 }
 
+.result h4
+{
+	margin-top:0.3em;
+}
+
+.result:first-child h4
+{
+	margin-top:0em;
+}
+
+
 .searchForm
 {
 	padding: 10px;
@@ -782,4 +805,22 @@ p.result
 	-moz-border-radius: 10px 10px 0 0;
 	border-radius: 10px 10px 0 0;
 	background-color: #EAEAEA !important;
+}
+
+.h-link-small, .h-link-small *
+{
+	font-size:14px;
+	font-style: none;
+	font-weight:bold;
+}
+
+.h-link-small *:hover
+{
+	color: orange !important;
+}
+
+h4 em
+{
+	font-weight: bold;
+	font-style:normal;
 }

@@ -101,12 +101,6 @@ form a
 	background:transparent;
 }
 
-.paginateButtons > span:first-child
-{
-	float:right;
-	display:block;
-}
-
 .paginateButtons a {
    /* background: #fff;
     background: -moz-linear-gradient(white, lightgray);
@@ -187,4 +181,22 @@ form a
 	background: url(../images/arrow-left.png) center center no-repeat,
 				-moz-linear-gradient(white, #a4a4a4);
 	border: 1px solid #7b7b7b;
+}
+
+.paginateButtons em
+{
+	font-style: normal;
+	color: black;
+}
+
+div.paginateButtons > span:first-child
+{
+    float:right;
+    display:block;
+}
+
+em + span
+{
+    float:right;
+    display:block;
 }

@@ -165,4 +165,42 @@ class FeedController {
   sw.toString()
   }
   
+  def edit() {
+      def feedInstance = feedRunnerService.getDatafeed(params.id)
+      if (!feedInstance) {
+          flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'feed.label', default: 'Datafeed'), params.id])}"
+          redirect(controller: "home", action: "index")
+      }
+      else {
+          return [feedInstance: feedInstance, id: params.id]
+      }
+  }
+  
+  def update() {
+      def feedInstance = feedRunnerService.getDatafeed(params.id)
+      if (feedInstance) {
+          if (params.version) {
+              def version = params.version.toLong()
+              if (feedInstance.version > version) {
+                  
+                  feedInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'datafeed.label', default: 'Datafeed')] as Object[], "Another user has updated this feed while you were editing")
+                  render(view: "edit", model: [feedInstance: feedInstance])
+                  return
+              }
+          }
+          feedInstance.properties = params
+          if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
+              flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
+              redirect(action: "dashboard", id: feedInstance.id)
+          }
+          else {
+              render(view: "edit", model: [feedInstance: feedInstance])
+          }
+      }
+      else {
+          flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), params.id])}"
+          redirect(controller: "home", action: "index")
+      }
+  }
+  
 }
