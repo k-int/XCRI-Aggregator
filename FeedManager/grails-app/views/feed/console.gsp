@@ -2,11 +2,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="layout" content="feedlayout" />
+    <g:javascript>
+    $(document).ready(function()
+	{	
+		$('.console').addClass('active');
+	});
+	</g:javascript>
   </head>
 
   <body>
 
-    <h1>Console for feed ${feed.feedname}</h1>
+    <h1>Console for feed ${feed?.feedname}</h1>
 
     <table>
       <tr>
@@ -15,17 +21,17 @@
         <th>Logging Level</th>
         <th>Details</th>
       </tr>
-      <g:each in="${lastlog?.eventLog?.reverse()}" var="entry">
+      <g:each in="${lastlog?.eventLog}" var="entry">
         <g:if test="${entry.type=='msg'}">
           <tr>
-            <td>${entry.ts}</td>
+            <td><g:formatDate format="dd MMM HH:mm:ss" date="${entry.ts}"/></td>
             <td>${entry.type}</td>
             <td>${entry.lvl}</td>
             <td>${entry.msg}</td>
           </tr>
         </g:if>
         <g:else>
-          <tr><td colspan="4">Unhandled message type<br/>${entry}</td?</tr>
+          <tr><td colspan="4">Unhandled message type<br/>${entry}</td></tr>
         </g:else>
       </g:each>
     </table>

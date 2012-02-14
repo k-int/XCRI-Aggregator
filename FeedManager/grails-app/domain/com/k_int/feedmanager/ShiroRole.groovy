@@ -1,3 +1,5 @@
+package com.k_int.feedmanager
+
 class ShiroRole {
     String name
 

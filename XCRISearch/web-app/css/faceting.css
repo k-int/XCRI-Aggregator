@@ -1,0 +1,136 @@
+.facetFilter
+{
+	width: 200px;
+	float:left;
+	display:block;
+	margin-bottom: 10px;
+}
+
+
+.facetFilter div:first-child h1
+{
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.facetFilter div:last-child h1
+{
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.facetFilter div:last-child h1.open
+{
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.facetFilter h1
+{
+	font-size: 14px;
+	color: white;
+		
+	background-color: #2e2e2e;
+	background:-moz-linear-gradient(#666b74,#292b2e 70%);
+	background:-webkit-linear-gradient(#666b74,#292b2e 70%);
+	background:-o-linear-gradient(#666b74,#292b2e 70%);
+	background:linear-gradient(#666b74,#292b2e 70%);
+	
+	-web-box-shadow: inset 0 1px 0 #797e8a;
+	-moz-box-shadow: inset 0 1px 0 #797e8a;
+	box-shadow:inset 0 1px 0 #797e8a;
+		
+	border: 1px solid black;
+	
+	padding: 0;	
+	margin:0 0 1px 0;
+}
+
+.facetFilter a
+{
+	text-decoration:none;
+}
+
+.facetFilter h1 a
+{
+	padding: 5px 20px 5px 10px;
+	background:url(../images/facets/arrow-right-white.png) right center no-repeat;
+	display:block;
+	color:inherit;
+	font-weight:bold
+}
+
+.facetFilter h1.open a
+{
+	background:url(../images/facets/arrow-up-white.png) right center no-repeat;
+}
+
+.facetFilter ul li
+{
+	display:block;
+}
+
+.facetFilter ul li a
+{
+	padding: 3px 10px;
+	display: inherit;
+	font-size: 14px;
+}
+
+.facetFilter ul li a:hover
+{
+	background: #ddd;
+}
+
+.facetFilter ul li a.active
+{
+	background: #F3F5F8 url(../images/facets/cross-passive.png) right center no-repeat;
+	padding: 3px 25px 3px 10px;
+	font-weight:bold;
+}
+
+.facetFilter ul li a:hover.active
+{
+	background: #ddd url(../images/facets/cross.png) right center no-repeat;
+}
+
+.facetFilter ul
+{
+	background-color: #eaeaea;
+}
+
+.facetFilter span:first-child
+{
+	width:135px;
+	text-align:left;
+}
+
+.facetFilter a.active span:first-child
+{
+	width:115px;
+	text-align:left;
+}
+
+.facetFilter span
+{
+	display:inline-block;
+	zoom: 1;
+}
+
+.facetFilter span:last-child
+{
+	width:40px;
+	text-align: right;
+}
+
+#resultsarea
+{
+	width:740px;
+	margin-left: 220px;
+	display:block;
+}

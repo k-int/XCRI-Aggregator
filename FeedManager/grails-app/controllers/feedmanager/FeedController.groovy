@@ -12,18 +12,25 @@ import grails.converters.*
 class FeedController {
 
   def feedRunnerService
+  
+  def ESWrapperService
+  
+  def reversemap = ['subject':'subject']
 
   def index() {
     log.debug("index")
   }
-
+  
   /**
    * Run the feed now, testing, reporting any errors and processing any data
    */
   def collect() {
     log.debug("collect")
-    def feedDefinition = feedRunnerService.getDatafeed(params.id)
-    feedRunnerService.collect(feedDefinition)
+    //if force does not exist then set to false
+    params.force = (params.force ? params.force : "false")
+    // def feedDefinition = feedRunnerService.getDatafeed(params.id)
+    feedRunnerService.collect(params.boolean('force'), params.id)
+    redirect(controller:"home", action: "index")
   }
 
   // Allows the user to search any aggregations where the collected
@@ -42,6 +49,7 @@ class FeedController {
   def console() {
     def response = [:]
     response.feed = feedRunnerService.getDatafeed(params.id)
+    response.id = params.id
     // Convert the JSON object held in the jsonResponse property into some objects we can display
 
     if ( response.feed != null ) {
@@ -60,9 +68,139 @@ class FeedController {
   }
 
   def dashboard() {
+    def response = [:]
+    response.feed = feedRunnerService.getDatafeed(params.id)
+    response.id = params.id
+    response
   }
 
   def search() {
+    def response = [:]
+    response.feed = feedRunnerService.getDatafeed(params.id)
+	response.id = params.id
+	
+    if(!params.subject)  params.subject = []
+    else
+    {
+        params.subject = [params.subject].flatten()
+    }
+    
+	// Get hold of some services we might use ;)
+	org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+    org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+	
+
+    if(params != null && params.q != null && params.q.length() > 0)
+    {
+	  params.max = Math.min(params.max ? params.int('max') : 10, 100)
+	  params.offset = params.offset ? params.int('offset') : 0
+	  
+	  //set prov id
+      params.provid = response.feed?.resourceIdentifier
+      
+      def search_query_str = buildQuery(params)
+      
+	  def search = esclient.search
+	  {
+		indices "courses"
+		types "course"
+		source 
+		{
+		  from = params.offset
+		  size = params.max
+		  query
+		  {
+			  query_string (query: search_query_str)
+		  }
+          facets {
+              subject {
+                terms {
+                  field = 'subject'
+                }
+              }
+          }
+		}
+	  }
+	  
+	  response.searchresult = search.response
+	  render(view:'results',model:response)
+	}
+	else 
+	{
+		log.debug("No query.. Show search page")
+		render(view:'search',model:response)
+	}
+  }
+  
+  def buildQuery(params) {
+      
+    StringWriter sw = new StringWriter()
+      
+    if ( ( params != null ) && ( params.q != null ) )
+           sw.write(params.q)
+    else
+           sw.write("*:*")
+          
+          reversemap.each { mapping ->
+      
+            log.debug("testing ${mapping.key}");
+      
+            if ( params[mapping.key] != null ) {
+              if ( params[mapping.key].class == java.util.ArrayList) {
+                params[mapping.key].each { p ->
+                      sw.write(" AND ")
+                  sw.write(mapping.value)
+                  sw.write(":")
+                  sw.write("\"${p}\"")
+            }
+          }
+          else {
+            sw.write(" AND ")
+            sw.write(mapping.value)
+            sw.write(":")
+            sw.write("\"${params[mapping.key]}\"")
+          }
+        }
+      }
+  sw.toString()
+  }
+  
+  def edit() {
+      def feedInstance = feedRunnerService.getDatafeed(params.id)
+      if (!feedInstance) {
+          flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'feed.label', default: 'Datafeed'), params.id])}"
+          redirect(controller: "home", action: "index")
+      }
+      else {
+          return [feedInstance: feedInstance, id: params.id]
+      }
+  }
+  
+  def update() {
+      def feedInstance = feedRunnerService.getDatafeed(params.id)
+      if (feedInstance) {
+          if (params.version) {
+              def version = params.version.toLong()
+              if (feedInstance.version > version) {
+                  
+                  feedInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'datafeed.label', default: 'Datafeed')] as Object[], "Another user has updated this feed while you were editing")
+                  render(view: "edit", model: [feedInstance: feedInstance])
+                  return
+              }
+          }
+          feedInstance.properties = params
+          if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
+              flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
+              redirect(action: "dashboard", id: feedInstance.id)
+          }
+          else {
+              render(view: "edit", model: [feedInstance: feedInstance])
+          }
+      }
+      else {
+          flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), params.id])}"
+          redirect(controller: "home", action: "index")
+      }
   }
   
 }

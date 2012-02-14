@@ -1,10 +1,10 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
+grails.config.locations = [ // "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
 //                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
@@ -63,14 +63,19 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // enable query caching by default
 grails.hibernate.cache.queries = true
-
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
         grails.logging.jul.usebridge = true
+	/* this line prevents caching of css for grails 2.0 - MJ */
+	grails.gsp.reload.enable = true		
+	grails.resources.processing.enabled = false	
+        grails.resources.debug = true
     }
     production {
         grails.logging.jul.usebridge = false
+        /* this line prevents caching of css for grails 2.0 - MJ */
+        // grails.resources.processing.enabled = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
@@ -85,14 +90,9 @@ log4j = {
     //}
 
     appenders {
-        file name:'file', file:'/tmp/FeedManager.log'
+        //file name:'file', file:'/tmp/FeedManager.log'
         // file name:'file', file:'/tmp/FeedManager.log', threshold: org.apache.log4j.Level.ALL
-        // console name: "stdout", threshold: org.apache.log4j.Level.ALL
-    }
-
-    root {
-        // debug 'stdout', 'file'
-        warn 'file'
+        console name: "stdout", threshold: org.apache.log4j.Level.ALL
     }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
@@ -109,10 +109,10 @@ log4j = {
 
     //debug  'grails.app',
     debug  'grails.app.controllers',
-           'grails.app.conf',
-           //'grails.app.filters',
-           //'grails.app.taglib',
            'grails.app.services',
-           'grails.app.domain'
-
+           'grails.app.domain',
+		   'grails.app.conf',
+           'grails.app.jobs'
 }
+
+

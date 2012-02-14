@@ -4,3 +4,44 @@ Specifically, the repository contains the FeedManager and Discover applications.
 which require access to a configured mongo service.
 
 Invidvidual handlers may need specific additional components such as apache solr, elasticsearch, 4Store / BigData.
+
+HTML5 Info taken from http://ghads.wordpress.com/2011/01/21/grails-html5-works/
+
+
+
+Additional configuration
+
+create database FeedManagerLive default charset UTF8 default collate UTF8_BIN;
+grant all on FeedManagerLive.* to 'k-int'@'localhost';
+grant all on FeedManagerLive.* to 'k-int'@'localhost.localdomain';
+grant all on FeedManagerLive.* to 'k-int'@'%';
+
+
+create database hreplive default charset UTF8 default collate UTF8_BIN;
+grant all on hreplive.* to 'k-int'@'localhost';
+grant all on hreplive.* to 'k-int'@'localhost.localdomain';
+grant all on hreplive.* to 'k-int'@'%';
+
+create database Aggr3Live default charset UTF8 default collate UTF8_BIN;
+grant all on Aggr3Live.* to 'k-int'@'localhost';
+grant all on Aggr3Live.* to 'k-int'@'localhost.localdomain';
+grant all on Aggr3Live.* to 'k-int'@'%';
+
+
+To clear down the mongo store
+
+mongo client:
+
+>  use xcri
+switched to db xcri
+
+> db.dropDatabase()
+{ "dropped" : "xcri.$cmd", "ok" : 1 }
+
+
+
+To query
+mongo <<!!
+use xcri
+providers.find();
+!!

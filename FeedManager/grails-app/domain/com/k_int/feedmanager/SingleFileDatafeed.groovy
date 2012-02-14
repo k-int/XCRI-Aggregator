@@ -7,7 +7,10 @@ class SingleFileDatafeed extends Datafeed {
     }
 
     String baseurl
+    String checksum
 
     static constraints = {
+      baseurl(blank:false,nullable:false)
+      checksum(blank:false,nullable:true)
     }
 }
