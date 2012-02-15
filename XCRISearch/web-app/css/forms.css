@@ -188,3 +188,15 @@ form a
 				-moz-linear-gradient(white, #a4a4a4);
 	border: 1px solid #7b7b7b;
 }
+
+.inline-spinner 
+{
+    background: transparent url(../images/spinner.gif) 0 center no-repeat;
+    height: 16px;
+    width: auto;
+    padding: 0.5em;
+    padding-left: 20px;
+    position: relative;
+    text-indent: 26px;
+    display:inline;
+}
