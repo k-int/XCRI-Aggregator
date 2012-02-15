@@ -9,39 +9,38 @@ HTML5 Info taken from http://ghads.wordpress.com/2011/01/21/grails-html5-works/
 
 
 
-Additional configuration
+Database configuration
 
+# Feed manager database
 create database FeedManagerLive default charset UTF8 default collate UTF8_BIN;
 grant all on FeedManagerLive.* to 'k-int'@'localhost';
 grant all on FeedManagerLive.* to 'k-int'@'localhost.localdomain';
 grant all on FeedManagerLive.* to 'k-int'@'%';
 
+# Handler Repository
 
 create database hreplive default charset UTF8 default collate UTF8_BIN;
 grant all on hreplive.* to 'k-int'@'localhost';
 grant all on hreplive.* to 'k-int'@'localhost.localdomain';
 grant all on hreplive.* to 'k-int'@'%';
 
+# Aggregator DB
+
 create database Aggr3Live default charset UTF8 default collate UTF8_BIN;
 grant all on Aggr3Live.* to 'k-int'@'localhost';
 grant all on Aggr3Live.* to 'k-int'@'localhost.localdomain';
 grant all on Aggr3Live.* to 'k-int'@'%';
 
+-----
 
-To clear down the mongo store
+Clearing down...
 
-mongo client:
+In development it's sometimes useful to be able to clear down the datastores. The scripts directory contains a reset script that can be used
+to clear down the content of all repositories.
 
->  use xcri
-switched to db xcri
+Building...
 
-> db.dropDatabase()
-{ "dropped" : "xcri.$cmd", "ok" : 1 }
+Prereqs: Grails.
 
-
-
-To query
-mongo <<!!
-use xcri
-providers.find();
-!!
+We have added a copy of an install script in the scripts directory which checks out a clean copy of all dependencies and copies them to a local
+apache tomcat. Modify this or use it as a basis for your own build script.
