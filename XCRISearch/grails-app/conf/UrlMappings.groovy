@@ -8,8 +8,9 @@ class UrlMappings {
   //     }
   //   }
 
-
     "/course/$id" (controller:"course", action:"index")
+    
+    "/search/count" (controller:"search", action:"count")
 
     "/" (controller:"search", action:"index")
 

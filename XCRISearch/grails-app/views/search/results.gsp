@@ -15,21 +15,43 @@
         $('.adv-toggle').click(function(evt)
         {
             evt.preventDefault();
-            $('.adv').toggle(); 
+            $('.adv').toggle('blind', 500);
             $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
             $(this).toggleClass('active');
         });
     });
+    
+    function updateCount(data)
+    {
+       //alert(JSON.stringify(data));
+       
+       $('.searchCounter li:first-child').text(data.hits);
+    }
+    
+    function failCount(errorThrown)
+    {
+        $('.searchCounter li:first-child').text('0');
+    }
     </g:javascript>
   </head>
 
   <body>
    <div class="searchForm">
    <g:form action="index" method="get">
+      <div class="searchCounter">
+	    <ul>
+	        <li>
+	            ${hits.totalHits}
+	        </li>
+	        <li>
+	            Matches
+	        </li>
+	    </ul>
+	 </div>
      <ul>
        <li>
             <label for="q">Keyword(s)</label>
-            <input id="q" name="q" type="text" class="large" value="${params.q}" />
+            <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
             <div class="inline-spinner" style="display:none;">Searching</div>        
        </li>
        <li class="adv" style="display:none">
