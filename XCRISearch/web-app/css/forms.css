@@ -37,9 +37,17 @@ input[type="text"], input[type="password"], select
 	box-shadow: inset 3px 3px 5px #e5e5e5;
 }
 
+input[type="text"]:focus, input[type="password"]:focus, select:focus
+{
+    border-color: #016FB7;
+    -moz-box-shadow: inset 3px 3px 5px #cfe5f3;
+    box-shadow: inset 3px 3px 5px #cfe5f3;
+}
+
+
 select, select *
 {
-	background:transparent !important;
+	background:white !important;
 }
 
 /*input[type="submit"]
@@ -197,6 +205,18 @@ form a
     padding: 0.5em;
     padding-left: 20px;
     position: relative;
-    text-indent: 26px;
+    text-indent: 20px;
     display:inline;
+}
+
+form .adv-toggle
+{
+	background: transparent url(../images/up-plus.gif) 0 center no-repeat;  
+    text-decoration:none;	
+    padding: 20px;
+}
+
+form a.active
+{
+    background: transparent url(../images/down-minus.gif) 0 center no-repeat !important;	
 }
