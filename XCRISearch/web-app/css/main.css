@@ -767,6 +767,12 @@ p.result
 	margin-top:0px;
 }
 
+.result
+{
+	border-bottom: 1px dotted lightgray;
+    padding-bottom: 15px;
+}
+
 .searchForm
 {
 	padding: 10px;

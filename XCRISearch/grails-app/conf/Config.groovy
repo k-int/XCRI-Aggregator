@@ -104,3 +104,21 @@ log4j = {
            'org.elasticsearch'
 
 }
+
+search = [
+         studyMode : ['Any':'*',
+                      'Full Time':'Full Time', 
+                      'Part Time':'Part Time'
+                      ],
+         qualification : [  'All':'*',
+                            'Apprenticeship':'apprenticeship',
+                            'BA':'ba',
+                            'Bsc':'bsc',
+                            'Diploma':'diploma',
+                            'MA':'ma',
+                            'MPhil':'mphil',
+                            'MRes':'mres',
+                            'Msc':'msc',
+                            'Phd':'phd']
+         ]
+

@@ -23,21 +23,38 @@
     
     function updateCount(data)
     {
-       //alert(JSON.stringify(data));
-       
-       $('.searchCounter li:first-child').text(data.hits);
+        if(data.hits > 100)
+        {
+            $('.searchCounter li:first-child').removeClass('positive').addClass('negative');
+        }
+        else if(data.hits > 0)
+        {
+            $('.searchCounter li:first-child').removeClass('negative').addClass('positive');
+        }
+        else
+        {
+            $('.searchCounter li:first-child').removeClass('negative').removeClass('positive')
+        }        
+        
+        $('.searchCounter li:first-child').text(data.hits);
     }
     
     function failCount(errorThrown)
     {
-        $('.searchCounter li:first-child').text('0');
+        $('.searchCounter li:first-child').text('0').removeClass('positive').removeClass('negative');
     }
+    
+    function getQString()
+    {
+        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val();
+    }
+        
     </g:javascript>
   </head>
   <body>
     <h1>Discover course information...</h1>
     <g:form action="index" method="get">
-        <div class="searchCounter">
+        <div class="searchCounter default">
         <ul>
 	        <li>
 	            0
@@ -50,20 +67,24 @@
     	<ul>
     		<li>
     		  <label for="q">Keyword(s)</label>
-    		  <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
+    		  <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
     		  <div class="inline-spinner" style="display:none;">Searching</div>        
     		</li>
     		<li class="adv" style="display:none">
               <label for="qualification">Qualification</label>
-              <g:select name="attendance" from="${['Any','Part Time','Full Time']}" value="${params.attendance ? params.attendance : 'Any'}" class="small"/>       
+              <g:select name="qualification" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.qualification}" optionKey="value" optionValue="key" value="All" class="small"/>       
             </li>
     		<li class="adv" style="display:none">
-              <label for="attendance">Attendance</label>
-              <g:select name="attendance" from="${['Any','Part Time','Full Time']}" value="Any" class="small"/>       
+              <label for="studyMode">Attendance</label>
+              <g:select name="studyMode" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.studyMode}" optionKey="value" optionValue="key" value="Any" class="small"/>       
             </li>
     		<li class="adv" style="display:none">
               <label for="order">Order by</label>
               <g:select name="order" from="${['distance']}" value="distance" class="small"/>       
+            </li>
+            <li class="adv" style="display:none">
+              <label for="location">My location is</label>
+              <input id="location" name="location" type="text" class="large">  
             </li>
             <li class="adv" style="display:none">
               <label for="format">Display as</label>
