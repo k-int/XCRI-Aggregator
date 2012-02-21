@@ -121,7 +121,7 @@
       <div class="facetFilter">
         <g:each in="${facets}" var="facet">
           <div>      
-        <h1 class="open"><a href="">${facet.key}</a></h1>
+        <h1 class="open"><a href="">${facet.key == 'level' ? 'qualification level' : facet.key}</a></h1>
             <ul>
               <g:each in="${facet.value}" var="fe">
                       <% def ops = [:]

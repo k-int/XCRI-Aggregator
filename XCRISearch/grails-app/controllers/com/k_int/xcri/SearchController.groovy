@@ -10,7 +10,7 @@ class SearchController {
   def ESWrapperService
 
   // Map the parameter names we use in the webapp with the ES fields
-  def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type']
+  def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
   
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
@@ -46,6 +46,12 @@ class SearchController {
       {
           params.provider = [params.provider].flatten()
       } 
+      
+      if(!params.level) params.level = []
+      else
+      {
+          params.level = [params.level].flatten()
+      }
             
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
@@ -67,6 +73,12 @@ class SearchController {
             {
                 terms {
                      field = 'provid'
+                }
+            }
+            level
+            {
+                terms {
+                     field = 'qual.level'
                 }
             }
           }
