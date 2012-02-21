@@ -138,7 +138,7 @@ class FeedRunnerService {
           }
 
           response.failure = { resp ->
-            log.error("Failure - ${resp}");
+            log.error("Failure response from ${target_service} - ${resp} (${resp?.status}))");
             feed_definition.status=4
             feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
             // assert resp.status >= 400
