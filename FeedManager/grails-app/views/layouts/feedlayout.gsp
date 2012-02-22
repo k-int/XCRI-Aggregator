@@ -1,4 +1,5 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ page import="com.k_int.feedmanager.ShiroUser" %>
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -54,7 +55,16 @@
 			    <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
   			</ul>
   			<ul>
-  				<li><g:link controller="shiroUser" action="list" class="users"><span>Users</span></g:link></li>
+  				<li>
+  				  <g:link controller="shiroUser" action="list" class="users">
+	  				  <span>Users
+  				      <% def count = ShiroUser.countByActive(false) %>
+  				      <g:if test="${count > 0}">
+  				         <span class="count">${count}</span>
+  				      </g:if>
+  				      </span>
+  				  </g:link>
+  				</li>
   			</ul>
   			<ul style="float:right">
   				<li><span class="principal"><shiro:principal/></span></li>
