@@ -187,7 +187,10 @@
 
             <li class="result">
                 <h3>
-                  <g:link controller="course" action="index" id="${crs.source._id}">${crs.source.title}</g:link> via 
+                  <g:link controller="course" action="index" id="${crs.source._id}">
+                    <g:if test="${crs.source.title?.length() > 0}">${crs.source.title}</g:if>
+                    <g:else>Missing course title.</g:else>
+                  </g:link> via 
                   <g:if test="${crs.source.provtitle?.length() > 0}">${crs.source.provtitle}</g:if>
                   <g:else>Missing Provider Name (${crs.source.provid})</g:else>
                   <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${crs.source._id}" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span>

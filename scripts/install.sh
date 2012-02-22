@@ -1,38 +1,41 @@
 #!/bin/bash
 
 
-cd /home/xcri/apache-tomcat-7.0.23/bin
+# export tc=/home/xcri/apache-tomcat-7.0.23/bin
+export tc=~/apache-tomcat
+
+cd $tc/bin
 # ./shutdown sh
 rm -Rf ../webapps/FeedManager ../webapps/HandlerRegistry ../webapps/repository ../webapps/discover
 rm -Rf ../logs/*
-cd /home/xcri
-rm -Rf src
-mkdir src
-cd src
+cd ~
+rm -Rf xcri_src
+mkdir xcri_src
+cd xcri_src
 git clone git@github.com:k-int/XCRI-Aggregator.git
 git clone git@github.com:k-int/AggregatorCore.git
 
 
-cd ~/src/aggregator
+cd ~/xcri_src/AggregatorCore
 git checkout release
 git pull
-cd ~/src/aggregator/HandlerRegistry
+cd ~/xcri_src/AggregatorCore/HandlerRegistry
 grails prod war
-cd ~/src/aggregator/repository
+cd ~/xcri_src/AggregatorCore/repository
 grails prod war
 
 
-cd ~/src/XCRI-Aggregator
+cd ~/xcri_src/XCRI-Aggregator
 git checkout release
 git pull
-cd ~/src/XCRI-Aggregator/XCRISearch
+cd ~/xcri_src/XCRI-Aggregator/XCRISearch
 grails prod war
-cd ~/src/XCRI-Aggregator/FeedManager
+cd ~/xcri_src/XCRI-Aggregator/FeedManager
 grails prod war
 
 
-cp ~/src/XCRI-Aggregator/FeedManager/target/FeedManager-0.1.war ~/apache-tomcat-7.0.23/webapps/FeedManager.war
-cp ~/src/aggregator/repository/target/repository-0.1.war ~/apache-tomcat-7.0.23/webapps/repository.war
-cp ~/src/aggregator/HandlerRegistry/target/HandlerRegistry-0.1.war ~/apache-tomcat-7.0.23/webapps/HandlerRegistry.war
-cp ~/src/XCRI-Aggregator/XCRISearch/target/XCRISearch-0.1.war ~/apache-tomcat-7.0.23/webapps/discover.war
+cp ~/xcri_src/XCRI-Aggregator/FeedManager/target/FeedManager-0.1.war $tc/webapps/FeedManager.war
+cp ~/xcri_src/AggregatorCore/repository/target/repository-0.1.war $tc/webapps/repository.war
+cp ~/xcri_src/AggregatorCore/HandlerRegistry/target/HandlerRegistry-0.1.war $tc/webapps/HandlerRegistry.war
+cp ~/xcri_src/XCRI-Aggregator/XCRISearch/target/XCRISearch-0.1.war $tc/webapps/discover.war
 
