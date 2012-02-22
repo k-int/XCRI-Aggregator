@@ -16,12 +16,12 @@ git clone git@github.com:k-int/XCRI-Aggregator.git
 git clone git@github.com:k-int/AggregatorCore.git
 
 
-cd ~/xcri_src/aggregator
+cd ~/xcri_src/AggregatorCore
 git checkout release
 git pull
-cd ~/xcri_src/aggregator/HandlerRegistry
+cd ~/xcri_src/AggregatorCore/HandlerRegistry
 grails prod war
-cd ~/xcri_src/aggregator/repository
+cd ~/xcri_src/AggregatorCore/repository
 grails prod war
 
 
@@ -35,7 +35,7 @@ grails prod war
 
 
 cp ~/xcri_src/XCRI-Aggregator/FeedManager/target/FeedManager-0.1.war $tc/webapps/FeedManager.war
-cp ~/xcri_src/aggregator/repository/target/repository-0.1.war $tc/webapps/repository.war
-cp ~/xcri_src/aggregator/HandlerRegistry/target/HandlerRegistry-0.1.war $tc/webapps/HandlerRegistry.war
+cp ~/xcri_src/AggregatorCore/repository/target/repository-0.1.war $tc/webapps/repository.war
+cp ~/xcri_src/AggregatorCore/HandlerRegistry/target/HandlerRegistry-0.1.war $tc/webapps/HandlerRegistry.war
 cp ~/xcri_src/XCRI-Aggregator/XCRISearch/target/XCRISearch-0.1.war $tc/webapps/discover.war
 
