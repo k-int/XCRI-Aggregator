@@ -10,8 +10,8 @@ class SearchController {
   def ESWrapperService
 
   // Map the parameter names we use in the webapp with the ES fields
-  def reversemap = ['subject':'subject', 'provider':'provid']
-
+  def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
+  
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
     log.debug("Search Index, params.q=${params.q}")
@@ -25,7 +25,8 @@ class SearchController {
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-    
+    //get search config for advanced select boxes
+    result.search_config = grailsApplication.config.search
     
     if ( params.q && params.q.length() > 0) {
 
@@ -44,8 +45,13 @@ class SearchController {
       else
       {
           params.provider = [params.provider].flatten()
+      } 
+      
+      if(!params.level) params.level = []
+      else
+      {
+          params.level = [params.level].flatten()
       }
-
             
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
@@ -63,10 +69,17 @@ class SearchController {
                 field = 'subject'
               }
             }
-            provider {
-              terms {
-                field = 'provid'
-              }
+            provider
+            {
+                terms {
+                     field = 'provid'
+                }
+            }
+            level
+            {
+                terms {
+                     field = 'qual.level'
+                }
             }
           }
         }
@@ -88,8 +101,11 @@ class SearchController {
         search.response.facets.facets.each { facet ->
           def facet_values = []
           facet.value.entries.each { fe ->
-            facet_values.add([term:"${fe.term}",count:"${fe.count}"])
+              
+            log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
+            facet_values.add([term: fe.term,count:"${fe.count}"])
           }
+          
           result.facets[facet.key] = facet_values
         }
       }
@@ -253,4 +269,30 @@ class SearchController {
     result
   }
 
+  def count = {
+      
+      log.debug("in count method");
+    def result = [:]
+    // Get hold of some services we might use ;)
+    org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+    org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+
+    
+    if ( params.q && params.q.length() > 0)
+    {
+        def query_str = buildQuery(params)
+        log.debug("count query: ${query_str}");
+               
+        def search = esclient.count{
+            query {
+               query_string (query: query_str)
+            }
+        }
+
+        
+        result.hits = search.response.count
+    }
+    
+    render result as JSON
+  }
 }

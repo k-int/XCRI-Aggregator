@@ -49,7 +49,7 @@ class RegisterController {
 	  {
 		  userInstance.verified = Boolean.TRUE
 		  userInstance.save()
-		  flash.message = "Hello ${userInstance.name}, your account has been successfully activated. Once it has been approved by an administror you will be able to log in."
+		  flash.message = "Hello ${userInstance.name}, your account has been successfully activated. Once it has been approved by an administrator you will be able to log in."
 	  }
 	  else
 	  {

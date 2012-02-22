@@ -133,14 +133,18 @@ img {
 }
 
 .spinner {
-	background: url(../images/spinner.gif) 50% 50% no-repeat transparent;
+	background: url(../images/spinner.gif) 50% 50% no-repeat white;
 	height: 16px;
 	width: 16px;
-    padding: 0.5em;
+    padding: 0.25em;
     position: absolute;
     right: 0;
 	top: 0;
 	text-indent: -9999px;
+	-moz-border-radius:3px;
+    border-radius:3px;
+    border: 1px solid black;
+    margin: 3px;
 }
 
 /* NAVIGATION MENU */
@@ -761,6 +765,12 @@ p.result
 .result:first-child h3
 {
 	margin-top:0px;
+}
+
+.result
+{
+	border-bottom: 1px dotted lightgray;
+    padding-bottom: 15px;
 }
 
 .searchForm

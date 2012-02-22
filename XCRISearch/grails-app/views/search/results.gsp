@@ -3,14 +3,102 @@
   <head>
     <meta name="layout" content="main"/>
     <title>Search front page</title>
+    <g:javascript>
+    $(document).ready(function()
+    {   
+        $('form').submit(function() 
+        {
+            $('.inline-spinner').show();
+            return true;
+        });
+        
+        $('.adv-toggle').click(function(evt)
+        {
+            evt.preventDefault();
+            $('.adv').toggle('blind', 500);
+            $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
+            $(this).toggleClass('active');
+        });
+    });
+    
+    function updateCount(data)
+    {
+        if(data.hits > 100)
+        {
+            $('.searchCounter li:first-child').removeClass('positive').addClass('negative');
+        }
+        else if(data.hits > 0)
+        {
+            $('.searchCounter li:first-child').removeClass('negative').addClass('positive');
+        }
+        else
+        {
+            $('.searchCounter li:first-child').removeClass('negative').removeClass('positive')
+        }
+        
+       $('.searchCounter li:first-child').text(data.hits);
+    }
+    
+    function failCount(errorThrown)
+    {
+        $('.searchCounter li:first-child').text('0').removeClass('positive').removeClass('negative')
+    }
+    
+    function getQString()
+    {
+        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val();
+    }
+    </g:javascript>
   </head>
 
   <body>
    <div class="searchForm">
    <g:form action="index" method="get">
+      <div class="searchCounter default">
+	    <ul>
+	        <g:if test="${hits.totalHits > 100}">
+	           <li class="negative">${hits.totalHits}</li>
+	        </g:if>
+	        <g:elseif test="${hits.totalHits > 0}">
+	           <li class="positive">${hits.totalHits}</li>
+	        </g:elseif>
+	        <g:else>
+	           <li>${hits.totalHits}</li>
+	        </g:else>
+	        <li>
+	            Matches
+	        </li>
+	    </ul>
+	 </div>
      <ul>
-       <li><label for="q">Keyword(s)</label><input id="q" name="q" type="text" class="large" value="${params.q}" /></li>
-       <li><input type="submit" class="button-link button-link-positive" value="Search"/></li>
+       <li>
+            <label for="q">Keyword(s)</label>
+            <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: '\'q=\' + this.value', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
+            <div class="inline-spinner" style="display:none;">Searching</div>        
+       </li>
+       <li class="adv" style="display:none">
+            <label for="qualification">Qualification</label>
+            <g:select name="qualification" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.qualification}" optionKey="value" optionValue="key" value="${params.qualification ? params.qualification : 'All'}" class="small"/>       
+       </li>
+       <li class="adv" style="display:none">
+            <label for="studyMode">Attendance</label>
+            <g:select name="studyMode" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.studyMode}" optionKey="value" optionValue="key"  value="${params.studyMode ? params.studyMode : 'Any'}" class="small"/>       
+       </li>
+       <li class="adv" style="display:none">
+            <label for="order">Order by</label>
+            <g:select name="order" from="${['distance']}" value="distance" class="small"/>       
+       </li>
+       <li class="adv" style="display:none">
+            <label for="format">Display as</label>
+            <g:select name="format" from="${['html','xml','json']}" value="html" class="small"/>    
+       </li>
+       <li>
+            <label></label>
+            <g:link href="#" class="adv-toggle">Show advanced search</g:link>  
+       </li>
+       <li>
+            <input type="submit" class="button-link button-link-positive" value="Search"/>
+       </li>
      </ul>
     </g:form>
     </div>
@@ -33,20 +121,20 @@
       <div class="facetFilter">
         <g:each in="${facets}" var="facet">
           <div>      
-        <h1 class="open"><a href="">${facet.key}</a></h1>
+        <h1 class="open"><a href="">${facet.key == 'level' ? 'qualification level' : facet.key}</a></h1>
             <ul>
               <g:each in="${facet.value}" var="fe">
                       <% def ops = [:]
-                params.each 
+                    params.each 
                     {
-                ops."$it.key" = it.value
+                        ops."$it.key" = it.value
                     }
                   %>
                 <g:if test="${params[facet.key] && params[facet.key].contains(fe.term.toString())}">  
                   <%   
-                              def uniqueLink = []
-                              uniqueLink.addAll(params."${facet.key}")
-                              uniqueLink.remove(fe.term.toString())
+                      def uniqueLink = []
+                      uniqueLink.addAll(params."${facet.key}")
+                      uniqueLink.remove(fe.term.toString())
                       ops."${facet.key}" = uniqueLink
                     %>
                   <li>
@@ -66,8 +154,8 @@
                 <g:else>
                 <li>
                    <% 
-                             def uniqueLink = ["${fe.term}"]
-                             uniqueLink.addAll(params."${facet.key}")                                 
+                     def uniqueLink = ["${fe.term}"]
+                     uniqueLink.addAll(params."${facet.key}")                                 
                      ops."${facet.key}" = uniqueLink
                     %>
                   <g:link params='${ops}'>
@@ -107,6 +195,7 @@
                 </h3>
                 <ul>
                   <g:if test="${crs.source.description?.length() > 0}"> 
+                    <li>Qualification: ${crs.source.qual?.title}, ${crs.source.qual?.level}, ${crs.source.qual?.awardedBy}</li>
                     <li>
                       <g:if test="${crs.source.description?.length() > 500}"> 
                       ${crs.source.description.substring(0,300)}<g:link controller="course" action="index" id="${crs.source._id}">...</g:link>
@@ -117,19 +206,18 @@
                     </li> 
                   </g:if>
 
-        <li>Subjects: 
-          <g:each in="${crs.source.subject}" var="subject">
-            <g:link controller="search" action="index" params='[q:"subjectKw:${subject}"]'>${subject}</g:link>&nbsp;
-          </g:each>
+		        <li>Subjects: 
+		          <g:each in="${crs.source.subject}" var="subject">
+		            <g:link controller="search" action="index" params='[q:"subjectKw:${subject}"]'>${subject}</g:link>&nbsp;
+		          </g:each>
+		        </li>
+	
+	            <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li> 
+	        </ul>
+        <g:if test="${params.debug==true}">
+          <pre>For debugging, json follows<br/>${crs?.source}</pre>
+        </g:if>
         </li>
-
-        <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li>
-        <li>Qualification: ${crs.source.qual?.title} ${crs.source.qual?.level} ${crs.source.qual?.awardedBy}</li>
-                </ul>
-                <g:if test="${params.debug==true}">
-                  <pre>For debugging, json follows<br/>${crs?.source}</pre>
-                </g:if>
-            </li>
         </g:each>
         </ul>
       </div>

@@ -200,3 +200,15 @@ em + span
     float:right;
     display:block;
 }
+
+.inline-spinner 
+{
+    background: transparent url(../images/spinner.gif) 0 center no-repeat;
+    height: 16px;
+    width: auto;
+    padding: 0.5em;
+    padding-left: 20px;
+    position: relative;
+    text-indent: 26px;
+    display:inline;
+}
