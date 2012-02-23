@@ -50,7 +50,8 @@
       <th>Type</th>
       <th>Last Harvest</th>
       <th>Next Harvest</th>
-      <th>Published?</th>
+      <th>Published</th>
+      <th>Records</th>
       <th>Status</th>
     </tr>
     </thead>
@@ -71,6 +72,9 @@
         <td>
           <g:if test="${(feed.publicationStatus != null ) && (feed.publicationStatus == 1) }">Yes</g:if>
           <g:else>No</g:else>
+        </td>
+        <td>
+         ${feed.totalRecords}
         </td>
         <td>
           <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:[1-9]/)}">
