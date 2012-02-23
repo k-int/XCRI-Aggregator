@@ -52,7 +52,7 @@ nav li a
 
 }
 
-nav li a.active span
+nav li a.active > span
 {	
 	-web-box-shadow: inset 0 1px 4px #000000;
 	-moz-box-shadow: inset 0 1px 4px #000000;
@@ -142,5 +142,22 @@ nav .register span { background: transparent url(../images/icons/register.png) 1
 nav .register:hover span { background: transparent url(../images/icons/register-hover.png) 10px no-repeat;	}
 nav .logout span { background: transparent url(../images/icons/logout.png) 10px no-repeat;	}
 nav .logout:hover span { background: transparent url(../images/icons/logout-hover.png) 10px no-repeat;	}
-nav .users span { background: transparent url(../images/icons/users.png) 10px no-repeat;	}
-nav .users:hover span { background: transparent url(../images/icons/users-hover.png) 10px no-repeat;	}
+nav .users span:first-child { background: transparent url(../images/icons/users.png) 10px no-repeat; }
+nav .users:hover span:first-child { background: transparent url(../images/icons/users-hover.png) 10px no-repeat;	}
+
+nav .users span.count 
+{
+	background: #c80909 !important;
+	padding:0 5px;
+	-webkit-border-radius: 7px;
+    -moz-border-radius: 7px ;
+	border-radius: 7px;
+	border: 1px solid #292B2E;
+	color:#161719;
+	font-size: 11px;
+	margin-left: 8px;
+	
+	-web-box-shadow: inset 0 1px 0 #710000;
+    -moz-box-shadow: inset 0 1px 0 #710000;
+    box-shadow:      inset 0 1px 0 #710000;
+}
