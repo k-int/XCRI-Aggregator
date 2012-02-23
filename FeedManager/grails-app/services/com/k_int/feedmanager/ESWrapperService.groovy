@@ -4,6 +4,11 @@ import org.elasticsearch.groovy.node.GNode
 import org.elasticsearch.groovy.node.GNodeBuilder
 import static org.elasticsearch.groovy.node.GNodeBuilder.*
 
+
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+
+
+
 class ESWrapperService {
 
   static transactional = false
@@ -24,6 +29,7 @@ class ESWrapperService {
 
 
     def nodeBuilder = new org.elasticsearch.groovy.node.GNodeBuilder()
+    def clus_nm = ApplicationHolder.application.config.aggr.es.cluster ?: "aggr"
 
     log.debug("Construct node settings");
 
@@ -32,7 +38,7 @@ class ESWrapperService {
         client = true
       }
       cluster {
-        name = "aggr"
+        name = clus_nm
       }
       http {
         enabled = false

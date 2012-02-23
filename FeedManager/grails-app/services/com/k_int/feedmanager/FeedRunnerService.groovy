@@ -185,6 +185,8 @@ class FeedRunnerService {
       org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
       
       def search = esclient.count{
+          indices "courses"
+          types "course"
           query {
               query_string (query: "* AND provid:\"" + provid + "\"")
           }
