@@ -13,6 +13,7 @@ import java.security.MessageDigest
 
 class FeedRunnerService {
 
+  def ESWrapperService
   def running_feeds = [:]
 
   def collect(force_process, feed_definition_id) {
@@ -158,6 +159,10 @@ class FeedRunnerService {
     }
     finally {
       log.debug("uploadStream try block completed");
+      
+      //count records stored in elastic search
+      feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);
+      
       feed_definition.save(flush:true);
     }
     log.debug("uploadStream completed");
@@ -172,6 +177,20 @@ class FeedRunnerService {
     }
 
     result
+  }
+  
+  def getRecordCount(provid)
+  {
+      org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+      org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+      
+      def search = esclient.count{
+          query {
+              query_string (query: "* AND provid:\"" + provid + "\"")
+          }
+      }
+ 
+     return search.response.count
   }
 }
 

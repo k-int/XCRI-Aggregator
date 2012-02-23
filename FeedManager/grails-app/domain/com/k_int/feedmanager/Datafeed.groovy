@@ -21,7 +21,8 @@ class Datafeed {
     String providerTechnicalContact
     String providerEmail
     String iconUrl
-
+    Long totalRecords = 0
+    
     // null/0==Not published, 1==Publised
     int publicationStatus
  
@@ -45,5 +46,6 @@ class Datafeed {
       providerEmail(nullable:true)
       iconUrl(nullable:true)
       publicationStatus(nullable:true)
+      totalRecords(nullable:false)
     }
 }
