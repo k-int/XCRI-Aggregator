@@ -289,6 +289,7 @@ class SearchController {
                
         def search = esclient.count{
             indices "courses"
+            types "course"
             query {
                query_string (query: query_str)
             }

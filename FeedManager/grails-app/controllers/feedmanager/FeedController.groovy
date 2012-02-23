@@ -15,7 +15,7 @@ class FeedController {
   
   def ESWrapperService
   
-  def reversemap = ['subject':'subject']
+  def reversemap = ['subject':'subject','provider':'provid']
 
   def index() {
     log.debug("index")
@@ -96,7 +96,7 @@ class FeedController {
 	  params.offset = params.offset ? params.int('offset') : 0
 	  
 	  //set prov id
-      params.provid = response.feed?.resourceIdentifier
+      params.provider = response.feed?.resourceIdentifier
       
       def search_query_str = buildQuery(params)
       
@@ -133,36 +133,37 @@ class FeedController {
   }
   
   def buildQuery(params) {
-      
+
     StringWriter sw = new StringWriter()
-      
-    if ( ( params != null ) && ( params.q != null ) )
-           sw.write(params.q)
-    else
-           sw.write("*:*")
-          
-          reversemap.each { mapping ->
-      
-            log.debug("testing ${mapping.key}");
-      
-            if ( params[mapping.key] != null ) {
-              if ( params[mapping.key].class == java.util.ArrayList) {
-                params[mapping.key].each { p ->
-                      sw.write(" AND ")
-                  sw.write(mapping.value)
-                  sw.write(":")
-                  sw.write("\"${p}\"")
-            }
-          }
-          else {
-            sw.write(" AND ")
-            sw.write(mapping.value)
-            sw.write(":")
-            sw.write("\"${params[mapping.key]}\"")
+
+   if ( ( params != null ) && ( params.q != null ) )
+     sw.write(params.q)
+   else
+     sw.write("*:*")
+
+    reversemap.each { mapping ->
+
+      log.debug("testing ${mapping.key}");
+
+      if ( params[mapping.key] != null ) {
+        if ( params[mapping.key].class == java.util.ArrayList) {
+          params[mapping.key].each { p ->  
+                sw.write(" AND ")
+                sw.write(mapping.value)
+                sw.write(":")
+                sw.write("\"${p}\"")
           }
         }
+        else {
+          sw.write(" AND ")
+          sw.write(mapping.value)
+          sw.write(":")
+          sw.write("\"${params[mapping.key]}\"")
+        }
       }
-  sw.toString()
+    }
+
+    sw.toString()
   }
   
   def edit() {
