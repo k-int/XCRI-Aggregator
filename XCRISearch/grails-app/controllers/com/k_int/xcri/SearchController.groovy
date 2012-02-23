@@ -56,7 +56,8 @@ class SearchController {
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
           
-      def search_closure = {
+      def search = esclient.search{
+        indices "courses"
         source {
           from = params.offset
           size = params.max
@@ -85,9 +86,12 @@ class SearchController {
         }
       }
 
-      testSearchClosure(search_closure)
+     /*testSearchClosure(search_closure)
 
-      def search = esclient.search(search_closure)
+      def search = esclient.search{
+                                      indices "courses"
+                                      search_closure
+      }*/
 
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
@@ -284,6 +288,7 @@ class SearchController {
         log.debug("count query: ${query_str}");
                
         def search = esclient.count{
+            indices "courses"
             query {
                query_string (query: query_str)
             }
