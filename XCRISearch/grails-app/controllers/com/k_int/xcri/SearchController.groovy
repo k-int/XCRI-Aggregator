@@ -73,6 +73,7 @@ class SearchController {
             result.place = true
             result.fqn =  gaz_resp.places[0].fqn
             geo = true;
+            log.debug("Using lat/lon ${g_lat},${g_lon}");
           }
           else {
             log.error("Something badly wrong with geocoding");
@@ -129,8 +130,30 @@ class SearchController {
                 }
             }
           }
+          sort = [
+            '_geo_distance' : [
+              'provloc' : [
+                'lat':"${g_lat}",
+                'lon':"${g_lon}"
+              ],
+              'order' : 'asc',
+              'unit' : 'km'
+            ]
+          ]
         }
       }
+
+      /* It's possible to add the distance to the result even if not sorting by geo dist with
+          script_fields {
+            distance {
+              params {
+                lat=g_lat
+                lon=g_lon
+              }
+              script="doc[\u0027provloc\u0027].distanceInKm(lat,lon)"
+            }
+          }
+      */
 
      /*testSearchClosure(search_closure)
 
