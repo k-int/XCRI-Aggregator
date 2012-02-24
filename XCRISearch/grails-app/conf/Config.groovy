@@ -119,6 +119,9 @@ search = [
                             'MPhil':'mphil',
                             'MRes':'mres',
                             'Msc':'msc',
-                            'Phd':'phd']
+                            'Phd':'phd'],
+         order: ['Default':'default',
+                 'Distance (Closest)':'distance']
          ]
+         
 

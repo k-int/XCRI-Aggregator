@@ -304,3 +304,8 @@ form a.active
     font-weight:bold; 
     font-size:22px;	
 }
+
+input[name=location]
+{
+    margin-top: 4px;
+}

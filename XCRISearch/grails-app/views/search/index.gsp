@@ -19,6 +19,20 @@
             $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
             $(this).toggleClass('active');
         });
+        
+        $('select[name=order]').change(function()
+        {
+            if($('select[name=order] option:selected').val() == 'distance')
+            {
+                $('label[for=location]').show();
+                $('input[name=location]').show();
+            }
+            else
+            {
+                $('label[for=location]').hide();
+                $('input[name=location]').hide();
+            }
+        });
     });
     
     function updateCount(data)
@@ -80,11 +94,10 @@
             </li>
     		<li class="adv" style="display:none">
               <label for="order">Order by</label>
-              <g:select name="order" from="${['distance']}" value="distance" class="small"/>       
-            </li>
-            <li class="adv" style="display:none">
-              <label for="location">My location is</label>
-              <input id="location" name="location" type="text" class="large">  
+              <g:select name="order" from="${search_config.order}" optionKey="value" optionValue="key" value="default" class="small"/>       
+              <br/>
+              <label for="location" style="display:none">My location is</label>
+              <input id="location" style="display:none" name="location" type="text" class="large">  
             </li>
             <li class="adv" style="display:none">
               <label for="format">Display as</label>
