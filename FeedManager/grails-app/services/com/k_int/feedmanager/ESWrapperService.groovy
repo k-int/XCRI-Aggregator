@@ -18,7 +18,7 @@ class ESWrapperService {
 
   @javax.annotation.PostConstruct
   def init() {
-    log.debug("Init");
+    log.debug("Init (FeedManager ES Wrapper)");
 
     // System.setProperty("java.net.preferIPv4Stack","true");
     // log.debug("Attempting to create a transport client...");
