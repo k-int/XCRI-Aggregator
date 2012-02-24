@@ -182,11 +182,20 @@ class SearchController {
           facet.value.entries.each { fe ->
               
             log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
-            facet_values.add([term: fe.term,count:"${fe.count}"])
 
             if ( facet.key == 'provider' ) {
-              resolveTermIdentifier(fe.term)
+              def term = resolveTermIdentifier(fe.term)
+              if ( term != null ) {
+                facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+              }
+              else {
+                facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+              }
             }
+            else {
+              facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+            }
+
           }
           
           result.facets[facet.key] = facet_values
@@ -388,8 +397,8 @@ class SearchController {
   def resolveTermIdentifier(term) {
     def mongo = new com.gmongo.GMongo();
     def db = mongo.getDB("xcri")
-    log.debug("Lookup ${term}");
-    def prov = db.providers.findOne(identifier:term);
-    log.debug("looked up ${prov}");
+    // log.debug("Lookup ${term}");
+    db.providers.findOne(identifier:term);
+    // log.debug("looked up ${prov}");
   }
 }
