@@ -96,7 +96,7 @@ class SearchController {
                 }
                 filter {
                   geo_distance {
-                    distance = 10000
+                    distance = "100km"
                     provloc {
                       lat=g_lat
                       lon=g_lon
