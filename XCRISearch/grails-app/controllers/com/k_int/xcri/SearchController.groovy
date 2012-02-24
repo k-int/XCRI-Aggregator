@@ -3,6 +3,7 @@ package com.k_int.xcri
 import grails.converters.*
 import org.elasticsearch.groovy.common.xcontent.*
 import groovy.xml.MarkupBuilder
+import com.gmongo.GMongo
 
 
 class SearchController {
@@ -80,6 +81,9 @@ class SearchController {
           }
         }
       }
+      else {
+        log.debug("No spatial");
+      }
 
       def filters = geo;  // For adding more filters later.
           
@@ -130,16 +134,18 @@ class SearchController {
                 }
             }
           }
-          sort = [
-            '_geo_distance' : [
-              'provloc' : [
-                'lat':"${g_lat}",
-                'lon':"${g_lon}"
-              ],
-              'order' : 'asc',
-              'unit' : 'km'
+          if ( geo == true ) {
+            sort = [
+              '_geo_distance' : [
+                'provloc' : [
+                  'lat':"${g_lat}",
+                  'lon':"${g_lon}"
+                ],
+                'order' : 'asc',
+                'unit' : 'km'
+              ]
             ]
-          ]
+          }
         }
       }
 
@@ -177,6 +183,10 @@ class SearchController {
               
             log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
             facet_values.add([term: fe.term,count:"${fe.count}"])
+
+            if ( facet.key == 'provider' ) {
+              resolveTermIdentifier(fe.term)
+            }
           }
           
           result.facets[facet.key] = facet_values
@@ -373,5 +383,13 @@ class SearchController {
     }
     
     render result as JSON
+  }
+
+  def resolveTermIdentifier(term) {
+    def mongo = new com.gmongo.GMongo();
+    def db = mongo.getDB("xcri")
+    log.debug("Lookup ${term}");
+    def prov = db.providers.findOne(identifier:term);
+    log.debug("looked up ${prov}");
   }
 }
