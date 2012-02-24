@@ -103,7 +103,11 @@
     </g:form>
     </div>
 
-    <h1>Search Results</h1>
+    <h1>Search Results
+      <g:if test="${place==true}">
+        Near ${fqn}
+      </g:if>
+    </h1>
 
       <div class="paginateButtons">
         <g:if test="${params.int('offset')}">

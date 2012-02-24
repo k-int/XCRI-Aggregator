@@ -63,15 +63,15 @@ class SearchController {
       def geo = false;
       def g_lat = null;
       def g_lon = null;
-      def fqn = null;
       if ( ( params.location != null ) && ( params.location.length() > 0 ) ) {
         log.debug("Geocoding")
         def gaz_resp = gazetteerService.resolvePlaceName(params.location)
-        if ( gaz_resp.size() > 0 ) {
-          if ( gaz_resp[0] != null ) {
-            g_lat = gaz_resp[0].lat
-            g_lon = gaz_resp[0].lon
-            fqn = gaz_resp[0].fqn
+        if ( gaz_resp.places?.size() > 0 ) {
+          if ( gaz_resp.places[0] != null ) {
+            g_lat = gaz_resp.places[0].lat
+            g_lon = gaz_resp.places[0].lon
+            result.place = true
+            result.fqn =  gaz_resp.places[0].fqn
             geo = true;
           }
           else {
@@ -95,8 +95,8 @@ class SearchController {
                 }
                 filter {
                   geo_distance {
-                    distance = "10k"
-                    prov_location {
+                    distance = 10000
+                    provloc {
                       lat=g_lat
                       lon=g_lon
                     }
