@@ -55,21 +55,21 @@
    <div class="searchForm">
    <g:form action="index" method="get">
       <div class="searchCounter default">
-	    <ul>
-	        <g:if test="${hits.totalHits > 100}">
-	           <li class="negative">${hits.totalHits}</li>
-	        </g:if>
-	        <g:elseif test="${hits.totalHits > 0}">
-	           <li class="positive">${hits.totalHits}</li>
-	        </g:elseif>
-	        <g:else>
-	           <li>${hits.totalHits}</li>
-	        </g:else>
-	        <li>
-	            Matches
-	        </li>
-	    </ul>
-	 </div>
+      <ul>
+          <g:if test="${hits.totalHits > 100}">
+             <li class="negative">${hits.totalHits}</li>
+          </g:if>
+          <g:elseif test="${hits.totalHits > 0}">
+             <li class="positive">${hits.totalHits}</li>
+          </g:elseif>
+          <g:else>
+             <li>${hits.totalHits}</li>
+          </g:else>
+          <li>
+              Matches
+          </li>
+      </ul>
+   </div>
      <ul>
        <li>
             <label for="q">Keyword(s)</label>
@@ -103,7 +103,11 @@
     </g:form>
     </div>
 
-    <h1>Search Results</h1>
+    <h1>Search Results
+      <g:if test="${place==true}">
+        Near ${fqn}
+      </g:if>
+    </h1>
 
       <div class="paginateButtons">
         <g:if test="${params.int('offset')}">
@@ -209,17 +213,19 @@
                     </li> 
                   </g:if>
 
-		        <li>Subjects: 
-		          <g:each in="${crs.source.subject}" var="subject">
-		            <g:link controller="search" action="index" params='[q:"subjectKw:${subject}"]'>${subject}</g:link>&nbsp;
-		          </g:each>
-		        </li>
-	
-	            <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li> 
-	        </ul>
-        <g:if test="${params.debug==true}">
-          <pre>For debugging, json follows<br/>${crs?.source}</pre>
-        </g:if>
+            <li>Subjects: 
+              <g:each in="${crs.source.subject}" var="subject">
+                <g:link controller="search" action="index" params='[q:"subjectKw:${subject}"]'>${subject}</g:link>&nbsp;
+              </g:each>
+            </li>
+  
+              <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li> 
+
+              <g:if test="${place==true}">
+                <li>Distance: ${crs.sortValues[0]}</li>
+              </g:if>
+
+          </ul>
         </li>
         </g:each>
         </ul>

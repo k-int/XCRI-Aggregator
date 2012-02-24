@@ -31,7 +31,7 @@ class ESWrapperService {
     def nodeBuilder = new org.elasticsearch.groovy.node.GNodeBuilder()
     def clus_nm = ApplicationHolder.application.config.aggr.es.cluster ?: "aggr"
 
-    log.debug("Construct node settings");
+    log.debug("Construct node settings. Connectiong to cluster ${clus_nm}");
 
     nodeBuilder.settings {
       node {
