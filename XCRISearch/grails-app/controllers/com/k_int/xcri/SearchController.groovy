@@ -8,6 +8,7 @@ import groovy.xml.MarkupBuilder
 class SearchController {
 
   def ESWrapperService
+  def gazetteerService
 
   // Map the parameter names we use in the webapp with the ES fields
   def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
@@ -35,34 +36,79 @@ class SearchController {
 
       //def params_set=params.entrySet()
       
-      if(!params.subject)  params.subject = []
-      else
-      {
+      if(!params.subject) {
+         params.subject = []
+      }
+      else {
           params.subject = [params.subject].flatten()
       }
       
-      if(!params.provider) params.provider = []
-      else
-      {
+      if(!params.provider) {
+        params.provider = []
+      }
+      else {
           params.provider = [params.provider].flatten()
       } 
       
-      if(!params.level) params.level = []
-      else
-      {
+      if(!params.level) { 
+        params.level = []
+      }
+      else {
           params.level = [params.level].flatten()
       }
             
       def query_str = buildQuery(params)
       log.debug("query: ${query_str}");
+
+      def geo = false;
+      def g_lat = null;
+      def g_lon = null;
+      def fqn = null;
+      if ( ( params.location != null ) && ( params.location.length() > 0 ) ) {
+        log.debug("Geocoding")
+        def gaz_resp = gazetteerService.resolvePlaceName(params.location)
+        if ( gaz_resp.size() > 0 ) {
+          if ( gaz_resp[0] != null ) {
+            g_lat = gaz_resp[0].lat
+            g_lon = gaz_resp[0].lon
+            fqn = gaz_resp[0].fqn
+            geo = true;
+          }
+          else {
+            log.error("Something badly wrong with geocoding");
+          }
+        }
+      }
+
+      def filters = geo;  // For adding more filters later.
           
       def search = esclient.search{
         indices "courses"
         source {
           from = params.offset
           size = params.max
-          query {
-            query_string (query: query_str)
+          if ( filters == true ) {
+            query {
+              filtered {
+                query {
+                  query_string (query: query_str)
+                }
+                filter {
+                  geo_distance {
+                    distance = "10k"
+                    prov_location {
+                      lat=g_lat
+                      lon=g_lon
+                    }
+                  }
+                }
+              }
+            }
+          }
+          else {
+            query {
+              query_string (query: query_str)
+            }
           }
           facets {
             subject {
@@ -149,13 +195,14 @@ class SearchController {
   }
 
   def buildQuery(params) {
+    log.debug("BuildQuery...");
 
     StringWriter sw = new StringWriter()
 
-   if ( ( params != null ) && ( params.q != null ) )
-     sw.write(params.q)
-   else
-     sw.write("*:*")
+    if ( ( params != null ) && ( params.q != null ) )
+      sw.write(params.q)
+    else
+      sw.write("*:*")
 
     reversemap.each { mapping ->
 
@@ -171,10 +218,13 @@ class SearchController {
           }
         }
         else {
-          sw.write(" AND ")
-          sw.write(mapping.value)
-          sw.write(":")
-          sw.write("\"${params[mapping.key]}\"")
+          // Only add the param if it's length is > 0 or we end up with really ugly URLs
+          if ( params[mapping.key].length() > 0 ) {
+            sw.write(" AND ")
+            sw.write(mapping.value)
+            sw.write(":")
+            sw.write("\"${params[mapping.key]}\"")
+          }
         }
       }
     }
