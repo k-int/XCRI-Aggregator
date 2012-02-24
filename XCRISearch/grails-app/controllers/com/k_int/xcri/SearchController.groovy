@@ -3,6 +3,7 @@ package com.k_int.xcri
 import grails.converters.*
 import org.elasticsearch.groovy.common.xcontent.*
 import groovy.xml.MarkupBuilder
+import com.gmongo.GMongo
 
 
 class SearchController {
@@ -80,6 +81,9 @@ class SearchController {
           }
         }
       }
+      else {
+        log.debug("No spatial");
+      }
 
       def filters = geo;  // For adding more filters later.
           
@@ -96,7 +100,7 @@ class SearchController {
                 }
                 filter {
                   geo_distance {
-                    distance = 10000
+                    distance = "100km"
                     provloc {
                       lat=g_lat
                       lon=g_lon
@@ -130,16 +134,18 @@ class SearchController {
                 }
             }
           }
-          sort = [
-            '_geo_distance' : [
-              'provloc' : [
-                'lat':"${g_lat}",
-                'lon':"${g_lon}"
-              ],
-              'order' : 'asc',
-              'unit' : 'km'
+          if ( geo == true ) {
+            sort = [
+              '_geo_distance' : [
+                'provloc' : [
+                  'lat':"${g_lat}",
+                  'lon':"${g_lon}"
+                ],
+                'order' : 'asc',
+                'unit' : 'km'
+              ]
             ]
-          ]
+          }
         }
       }
 
@@ -176,7 +182,20 @@ class SearchController {
           facet.value.entries.each { fe ->
               
             log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
-            facet_values.add([term: fe.term,count:"${fe.count}"])
+
+            if ( facet.key == 'provider' ) {
+              def term = resolveTermIdentifier(fe.term)
+              if ( term != null ) {
+                facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+              }
+              else {
+                facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+              }
+            }
+            else {
+              facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+            }
+
           }
           
           result.facets[facet.key] = facet_values
@@ -373,5 +392,13 @@ class SearchController {
     }
     
     render result as JSON
+  }
+
+  def resolveTermIdentifier(term) {
+    def mongo = new com.gmongo.GMongo();
+    def db = mongo.getDB("xcri")
+    // log.debug("Lookup ${term}");
+    db.providers.findOne(identifier:term);
+    // log.debug("looked up ${prov}");
   }
 }
