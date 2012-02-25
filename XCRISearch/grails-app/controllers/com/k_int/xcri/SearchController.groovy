@@ -16,7 +16,7 @@ class SearchController {
   
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
-    log.debug("Search Index, params.q=${params.q}")
+    log.debug("Search Index, params.q=${params.q}, format=${format}")
 
     def pagename = 'index'
     def result = [:]
@@ -211,14 +211,14 @@ class SearchController {
     }
 
     withFormat {
+      html {
+        render(view:pagename,model:result)
+      }
       rss {
         renderRSSResponse(result)
       }
       atom {
         renderATOMResponse( result,params.max )
-      }
-      html {
-        render(view:pagename,model:result)
       }
       xml {
         render result as XML
@@ -343,7 +343,7 @@ class SearchController {
     // Result is an array of result elements
     def result = []
 
-    searchresults.hits.each { doc ->
+    searchresults.hits?.each { doc ->
       log.debug("adding ${doc} ${doc.source.title}");
       def docinfo = [];
 
