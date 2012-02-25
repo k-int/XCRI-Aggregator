@@ -16,7 +16,7 @@ class SearchController {
   
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
-    log.debug("Search Index, params.q=${params.q}, format=${format}")
+    log.debug("Search Index, params.q=${params.q}, format=${params.format}")
 
     def pagename = 'index'
     def result = [:]
