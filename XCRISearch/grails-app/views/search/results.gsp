@@ -19,21 +19,6 @@
             $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
             $(this).toggleClass('active');
         });
-        
-        $('select[name=order]').change(function()
-        {
-            if($('select[name=order] option:selected').val() == 'distance')
-            {
-                $('label[for=location]').show();
-                $('input[name=location]').show();
-            }
-            else
-            {
-                $('label[for=location]').hide();
-                $('input[name=location]').hide();
-            }
-        });
-        
     });
     
     function updateCount(data)
@@ -61,7 +46,7 @@
     
     function getQString()
     {
-        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val();
+        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val();
     }
     </g:javascript>
   </head>
@@ -100,11 +85,16 @@
             <g:select name="studyMode" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.studyMode}" optionKey="value" optionValue="key"  value="${params.studyMode ? params.studyMode : 'Any'}" class="small"/>       
        </li>
        <li class="adv" style="display:none">
+            <label for="distance">Within</label>
+            <g:select name="distance" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.distance}" optionKey="value" optionValue="key" value="${params.distance ? params.distance : '100km'}" class="small"/>       
+       </li>
+       <li class="adv" style="display:none">
             <label for="order">Order by</label>
-            <g:select name="order" from="${search_config.order}" optionKey="value" optionValue="key" value="default" class="small"/>       
-            <br/>
-            <label for="location" style="display:none">My location is</label>
-            <input id="location" style="display:none" name="location" type="text" class="large">  
+            <g:select name="order" from="${search_config.order}" optionKey="value" optionValue="key" value="${params.order ? params.order : 'distance'}" class="small"/>       
+       </li>
+       <li class="adv"  style="display:none">
+            <label for="location">My location is</label>
+            <input id="location" name="location" type="text" class="large" value="${params.location}">  
        </li>
        <li class="adv" style="display:none">
             <label for="format">Display as</label>
@@ -160,13 +150,13 @@
                       ops."${facet.key}" = uniqueLink
                     %>
                   <li>
-                    <g:link class="active" params='${ops}'>
+                    <g:link class="active" params='${ops}' title="${fe.display}">
                     <span>
-                      <g:if test="${fe.term.length() > 16}"> 
-                        ${fe.term.substring(0,13)}...
+                      <g:if test="${fe.display.length() > 16}"> 
+                        ${fe.display.substring(0,13)}...
                       </g:if>
                       <g:else>
-                        ${fe.term}
+                        ${fe.display}
                       </g:else>
                     </span>
                     <span> ${fe.count}</span>
@@ -180,13 +170,13 @@
                      uniqueLink.addAll(params."${facet.key}")                                 
                      ops."${facet.key}" = uniqueLink
                     %>
-                  <g:link params='${ops}'>
+                  <g:link params='${ops}' title="${fe.display}">
                     <span>
-                      <g:if test="${fe.term.length() > 18}"> 
-                        ${fe.term.substring(0,15)}...
+                      <g:if test="${fe.display.length() > 18}"> 
+                        ${fe.display.substring(0,15)}...
                       </g:if>
                       <g:else>
-                        ${fe.term}
+                        ${fe.display}
                       </g:else>
                     </span>
                     <span> ${fe.count}</span>
@@ -240,7 +230,7 @@
               <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li> 
 
               <g:if test="${place==true}">
-                <li>Distance: ${crs.sortValues[0]}</li>
+                <li>Distance: ${crs.sortValues[0].round(2)}km</li>
               </g:if>
 
           </ul>

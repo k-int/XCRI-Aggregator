@@ -89,9 +89,22 @@ class SearchController {
           
       def search = esclient.search{
         indices "courses"
+        types "course"
         source {
           from = params.offset
           size = params.max
+          if ( geo == true ) {
+              sort = [
+                '_geo_distance' : [
+                  'provloc' : [
+                    'lat':"${g_lat}",
+                    'lon':"${g_lon}"
+                  ],
+                  'order' : 'asc',
+                  'unit' : 'km'
+                ]
+              ]
+          }
           if ( filters == true ) {
             query {
               filtered {
@@ -100,7 +113,7 @@ class SearchController {
                 }
                 filter {
                   geo_distance {
-                    distance = "100km"
+                    distance = params.distance
                     provloc {
                       lat=g_lat
                       lon=g_lon
@@ -133,18 +146,6 @@ class SearchController {
                      field = 'qual.level'
                 }
             }
-          }
-          if ( geo == true ) {
-            sort = [
-              '_geo_distance' : [
-                'provloc' : [
-                  'lat':"${g_lat}",
-                  'lon':"${g_lon}"
-                ],
-                'order' : 'asc',
-                'unit' : 'km'
-              ]
-            ]
           }
         }
       }
@@ -378,13 +379,59 @@ class SearchController {
     {
         def query_str = buildQuery(params)
         log.debug("count query: ${query_str}");
+        
+        def geo = false;
+        def g_lat = null;
+        def g_lon = null;
+        if ( ( params.location != null ) && ( params.location.length() > 0 ) ) {
+          log.debug("Geocoding")
+          def gaz_resp = gazetteerService.resolvePlaceName(params.location)
+          if ( gaz_resp.places?.size() > 0 ) {
+            if ( gaz_resp.places[0] != null ) {
+              g_lat = gaz_resp.places[0].lat
+              g_lon = gaz_resp.places[0].lon
+              result.place = true
+              result.fqn =  gaz_resp.places[0].fqn
+              geo = true;
+              log.debug("Using lat/lon ${g_lat},${g_lon}");
+            }
+            else {
+              log.error("Something badly wrong with geocoding");
+            }
+          }
+        }
+        else {
+          log.debug("No spatial");
+        }
+  
+        def filters = geo;  // For adding more filters later.  
                
         def search = esclient.count{
             indices "courses"
             types "course"
+            if ( filters == true ) {
             query {
-               query_string (query: query_str)
+              filtered {
+                query {
+                  query_string (query: query_str)
+                }
+                filter {
+                  geo_distance {
+                    distance = params.distance
+                    provloc {
+                      lat=g_lat
+                      lon=g_lon
+                    }
+                  }
+                }
+              }
             }
+          }
+          else {
+            query {
+              query_string (query: query_str)
+            }
+          }
         }
 
         
@@ -398,6 +445,8 @@ class SearchController {
     def mongo = new com.gmongo.GMongo();
     def db = mongo.getDB("xcri")
     // log.debug("Lookup ${term}");
+    log.debug(db.providers.findOne(identifier:term) as JSON)
+    
     db.providers.findOne(identifier:term);
     // log.debug("looked up ${prov}");
   }

@@ -64,6 +64,10 @@ class FeedRunnerService {
       feed_definition.save(flush:true)
       log.debug("Removing feed from running_feeds map")
       running_feeds.remove(feed_definition_id)
+      
+      //count records stored in elastic search
+      feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);   
+      feed_definition.save(flush:true);
     }
   }
 
@@ -159,10 +163,7 @@ class FeedRunnerService {
     }
     finally {
       log.debug("uploadStream try block completed");
-      
-      //count records stored in elastic search
-      feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);
-      
+       
       feed_definition.save(flush:true);
     }
     log.debug("uploadStream completed");

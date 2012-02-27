@@ -120,8 +120,11 @@ search = [
                             'MRes':'mres',
                             'Msc':'msc',
                             'Phd':'phd'],
-         order: ['Default':'default',
-                 'Distance (Closest)':'distance']
+         order: ['Distance (Closest)':'distance'],
+         distance: ['25km':'25km',
+                    '50km':'50km',
+                    '100km':'100km',
+                    '250km':'250km']
          ]
          
 
