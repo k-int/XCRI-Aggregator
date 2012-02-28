@@ -126,7 +126,7 @@ class FeedRunnerService {
 
           if ( feed_definition.publicationStatus == 0 ) {
             log.debug("Feed publication status == private");
-            multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+            multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
           }
           else {
             log.debug("Feed publication status == public");
