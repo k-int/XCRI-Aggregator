@@ -225,9 +225,7 @@ class FeedController {
       default:
         break;
     }
-    else {
-      feedInstance.publicationStatus = 0;
-    }
+
     if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
       flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
       redirect(action: "dashboard", id: feedInstance.id)
