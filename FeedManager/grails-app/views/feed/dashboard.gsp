@@ -26,8 +26,12 @@
     <g:if test="${feed?.lastCheck && feed?.checkInterval}"><p>The next collection is due in ${use(DurationFormatter){TimeCategory.minus(new Date(feed?.lastCheck+feed?.checkInterval), new Date()).toString()}}</p></g:if>
     <br/>
     <p>This feed is 
-    <g:if test="${(feed.publicationStatus != null) && (feed.publicationStatus == 1)}">Published. You can withdraw the records by clicking <a href="">here</a></g:if>
-    <g:else>not published. You can make these records active by clicking <a href="">here</a></g:else></p>
+    <g:if test="${(feed.publicationStatus != null) && (feed.publicationStatus == 1)}">Published. You can withdraw the records by clicking 
+      <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+    </g:if>
+    <g:else>not published. You can make these records active by clicking 
+      <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+    </g:else></p>
     
   </body>
 </html>
