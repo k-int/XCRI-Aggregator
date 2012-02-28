@@ -114,6 +114,8 @@ class FeedRunnerService {
       log.debug("Length of input stream is ${resource_to_deposit.length}, Checksum is ${md5sumHex}");
 
       if ( ( force_process ) ||
+           ( feed_definition.publicationStatus == 1 ) ||
+           ( feed_definition.publicationStatus == 3 ) ||
            ( feed_definition.checksum == null ) ||
            ( feed_definition.checksum != md5sumHex ) ) {
 
