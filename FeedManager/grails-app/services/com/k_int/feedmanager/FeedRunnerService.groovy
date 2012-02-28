@@ -124,6 +124,15 @@ class FeedRunnerService {
           def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
           multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
 
+          if ( feed_definition.publicationStatus == 0 ) {
+            log.debug("Feed publication status == private");
+            multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+          }
+          else {
+            log.debug("Feed publication status == public");
+            multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+          }
+
           def uploaded_file_body_part = new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'text/xml', 'filename')
           multipart_entity.addPart( "upload", uploaded_file_body_part)
 
