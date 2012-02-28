@@ -243,7 +243,7 @@ class SearchController {
     StringWriter sw = new StringWriter()
 
     if ( ( params != null ) && ( params.q != null ) )
-      sw.write(params.q)
+      sw.write("\"${params.q}\"")
     else
       sw.write("*:*")
 
@@ -366,78 +366,29 @@ class SearchController {
     result
   }
 
-  def count() {
+  def count = {
       
-    log.debug("in count method, distance is ${params.distance}, location is ${params.location}, params=${params}");
+      log.debug("in count method");
     def result = [:]
     // Get hold of some services we might use ;)
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
     
-    if ( params.q && params.q.length() > 0) {
+    if ( params.q && params.q.length() > 0)
+    {
         def query_str = buildQuery(params)
-        log.debug("count query: ${query_str}, location=${params.location}");
-        
-        def geo = false;
-        def g_lat = null;
-        def g_lon = null;
-        if ( ( params.location != null ) && ( params.location.length() > 0 ) ) {
-          log.debug("Geocoding")
-          def gaz_resp = gazetteerService.resolvePlaceName(params.location)
-          if ( gaz_resp.places?.size() > 0 ) {
-            if ( gaz_resp.places[0] != null ) {
-              g_lat = "${gaz_resp.places[0].lat}"
-              g_lon = "${gaz_resp.places[0].lon}"
-              result.place = true
-              result.fqn =  gaz_resp.places[0].fqn
-              geo = true;
-              log.debug("Using lat/lon ${g_lat},${g_lon}");
-            }
-            else {
-              log.error("Something badly wrong with geocoding");
-            }
-          }
-        }
-        else {
-          log.debug("No spatial");
-        }
-  
-        def filters = geo;  // For adding more filters later.  
-               
+        log.debug("count query: ${query_str}");
+                       
         def search = esclient.count{
-          indices "courses"
-          types "course"
-          if ( filters == true ) {
-            query {
-              filtered {
-                query {
-                  query_string (query: query_str)
-                }
-                filter {
-                  geo_distance {
-                    distance = "100km"
-                    provloc {
-                      lat=g_lat
-                      lon=g_lon
-                    }
-                  }
-                }
-              }
-            }
-          }
-          else {
+            indices "courses"
+            types "course"
             query {
               query_string (query: query_str)
             }
-          }
         }
-
         
         result.hits = search.response.count
-    }
-    else {
-      log.warn("No q param in call to count");
     }
     
     render result as JSON
@@ -451,5 +402,45 @@ class SearchController {
     
     db.providers.findOne(identifier:term);
     // log.debug("looked up ${prov}");
+  }
+  
+  def autocomplete()
+  {
+      def results = [:]
+      
+      org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+      org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+          
+      log.debug("autcomplete called for val " + params.q)
+      
+      params.q = params.term
+      
+      if ( params.q && params.q.length() > 0)
+      {
+          
+          params.q = '*' + params.q + '*'
+          def query_str = buildQuery(params)
+          
+          def search = esclient.search{
+              indices "courses"
+              types "course"
+              source {
+                from = "0"
+                size = "20"
+                query {
+                    query_string (query: query_str, analyze_wildcard: true)
+                }
+                fields = ["title"]
+              }
+          }
+          
+          results.hits = search.response.hits;
+          
+          /*result.hits = search.response.hits
+          result.resultsTotal = search.response.hits.totalHits*/
+
+      }
+      
+      render results as JSON
   }
 }

@@ -11,6 +11,7 @@ class UrlMappings {
     "/course/$id" (controller:"course", action:"index")
     
     "/search/count" (controller:"search", action:"count")
+    "/search/autocomplete" (controller:"search", action:"autocomplete")
 
     "/" (controller:"search", action:"index")
 
