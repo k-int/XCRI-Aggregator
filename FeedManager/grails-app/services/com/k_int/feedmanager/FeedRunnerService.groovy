@@ -146,8 +146,6 @@ class FeedRunnerService {
               feed_definition.publicationStatus = 0
               break;
           }
-          else {
-          }
 
           def uploaded_file_body_part = new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'text/xml', 'filename')
           multipart_entity.addPart( "upload", uploaded_file_body_part)
