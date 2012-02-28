@@ -39,6 +39,7 @@
       <g:if test="${feed.publicationStatus==3}">
         Pending removal from the public search interface. To cancel and return to "Published", click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
       </g:if>
+    </g:if>
     </p>
     
   </body>
