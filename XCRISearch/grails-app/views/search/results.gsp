@@ -20,6 +20,8 @@
             $(this).toggleClass('active');
         });
         
+        var CONTEXT_PATH = '<%= request.getContextPath()%>';
+        
         $("#q").autocomplete(
         {
             source: function( request, response ) 
