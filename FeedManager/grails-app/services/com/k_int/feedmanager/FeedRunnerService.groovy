@@ -124,7 +124,7 @@ class FeedRunnerService {
           def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
           multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
 
-          switch ( feed_definition.publicationStatus == 0 ) {
+          switch ( feed_definition.publicationStatus ) {
             case 0:
               log.debug("Feed publication status == private");
               multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))

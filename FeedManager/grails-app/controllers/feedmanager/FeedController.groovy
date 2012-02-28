@@ -208,8 +208,9 @@ class FeedController {
     def feedInstance = feedRunnerService.getDatafeed(params.id)
     // null/0==Not published, 1==Pending Publish, 2==Published, 3==Pending withdraw
     int publicationStatus
+    log.debug("publish, current status is ${feedInstance.publicationStatus}");
 
-    switch ( feedInstance.publicationStatus == 0 ) {
+    switch ( feedInstance.publicationStatus ) {
       case 0:
         feedInstance.publicationStatus = 1;
         break;
