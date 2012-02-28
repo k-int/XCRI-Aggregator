@@ -206,8 +206,24 @@ class FeedController {
   
   def publish() {
     def feedInstance = feedRunnerService.getDatafeed(params.id)
-    if ( feedInstance.publicationStatus == 0 ) {
-      feedInstance.publicationStatus = 1;
+    // null/0==Not published, 1==Pending Publish, 2==Published, 3==Pending withdraw
+    int publicationStatus
+
+    switch ( feedInstance.publicationStatus == 0 ) {
+      case 0:
+        feedInstance.publicationStatus = 1;
+        break;
+      case 1:
+        feedInstance.publicationStatus = 0;
+        break;
+      case 2:
+        feedInstance.publicationStatus = 3;
+        break;
+      case 3:
+        feedInstance.publicationStatus = 2;
+        break;
+      default:
+        break;
     }
     else {
       feedInstance.publicationStatus = 0;
