@@ -3,24 +3,84 @@ package com.k_int.xcri
 import grails.converters.*
 import org.elasticsearch.groovy.common.xcontent.*
 import groovy.xml.MarkupBuilder
+import java.text.SimpleDateFormat;
 
 class OaiController {
 
   def ESWrapperService
+  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
   def index() { 
-
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
-
-    switch ( params.verb ) {
-      case 'listRecords':
+    switch ( params.verb?.toUpperCase() ) {
+      case 'GETRECORD':
+        getRecord(params,esclient)
+        break;
+      case 'LISTRECORDS':
         listRecords(params,esclient)
+        break;
+      case 'LISTIDENTIFIERS':
+        listIdentifiers(params,esclient)
+        break;
+      case 'IDENTIFY':
+        identify()
+        break;
+      case 'LISTMETADATAFORMATS':
+        listMetadataFormats()
+        break;
+      case 'LISTSETS':
+        listSets()
         break;
       default:
         log.debug('Unhandled');
         break;
     }
+  }
+
+  def identify() {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb)
+      Identify {
+        repositoryName('XCRI Aggregator - OAI API')
+        baseUrl('http://coursedata.k-int.com/discover/oai')
+        protocolVersion('2.0')
+      }
+    }
+    render(contentType:"application/xml", text: writer.toString())
+  }
+
+  def getRecord(params, esclient) {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb,
+              'metadataPrefix':params.metadataPrefix)
+      GetRecord {
+        header {
+          identifier(hit.source._id)
+          dateStamp(hit.source.lastModified)
+        }
+        metadata {
+          course {
+            recordAsXML(xml,hit.source)
+          }
+        }        
+      }
+    }
+    render(contentType:"application/xml", text: writer.toString())
   }
 
   def listRecords(params, esclient) {
@@ -36,7 +96,9 @@ class OaiController {
     def last_rec = null;
 
     Long from = null;
+    from = params.from != null ? new Long ( formatter.parse(params.from).getTime() ) : null;
     Long until = null;
+    until = params.until != null ? new Long ( formatter.parse(params.to).getTime() ) : null;
 
     if ( params.resumptionToken != null ) {
       log.debug("Processing resumption token ${params.resumptionToken}");
@@ -60,17 +122,10 @@ class OaiController {
       resp = findFor(null, null, esclient);
     }
 
-    //resp?.hits.each { hit ->
-    //  log.debug("Processing a hit...");
-    //  log.debug("${hit.source.lastModified}");
-     // last_rec = hit;
-    //}
-    
-
     xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
                   'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
                   'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
-      responseDate('today')
+      responseDate(formatter.format(new Date()))
       request('verb':params.verb,
               'from':params.from,
               'until':params.to,
@@ -85,10 +140,10 @@ class OaiController {
               identifier(hit.source._id)
               dateStamp(hit.source.lastModified)
             }
-          }
-          metadata {
-            course {
-              recordAsXML(xml,hit.source)
+            metadata {
+              course {
+                recordAsXML(xml,hit.source)
+              }
             }
           }
         }
@@ -101,6 +156,41 @@ class OaiController {
     }
 
     log.debug("Render...");
+    render(contentType:"application/xml", text: writer.toString())
+  }
+
+  def listMetadataFormats() {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb)
+      ListMetadataFormats {
+        metadataFormat {
+          metadataPrefix('course')
+        }
+      }
+    }
+    render(contentType:"application/xml", text: writer.toString())
+  }
+
+  def listSets() {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb)
+      ListSets {
+      }
+    }
     render(contentType:"application/xml", text: writer.toString())
   }
 
