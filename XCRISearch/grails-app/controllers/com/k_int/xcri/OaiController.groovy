@@ -15,22 +15,22 @@ class OaiController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
     switch ( params.verb?.toUpperCase() ) {
       case 'GETRECORD':
-        getRecord(params,esclient)
+        doGetRecord(params,esclient)
         break;
       case 'LISTRECORDS':
-        listRecords(params,esclient)
+        doListRecords(params,esclient)
         break;
       case 'LISTIDENTIFIERS':
-        listIdentifiers(params,esclient)
+        doListIdentifiers(params,esclient)
         break;
       case 'IDENTIFY':
-        identify()
+        doIdentify()
         break;
       case 'LISTMETADATAFORMATS':
-        listMetadataFormats()
+        doListMetadataFormats()
         break;
       case 'LISTSETS':
-        listSets()
+        doListSets()
         break;
       default:
         log.debug('Unhandled');
@@ -38,7 +38,7 @@ class OaiController {
     }
   }
 
-  def identify() {
+  def doIdentify() {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
     xml.setOmitEmptyAttributes(true);
@@ -57,7 +57,7 @@ class OaiController {
     render(contentType:"application/xml", text: writer.toString())
   }
 
-  def getRecord(params, esclient) {
+  def doGetRecord(params, esclient) {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
     xml.setOmitEmptyAttributes(true);
@@ -83,7 +83,7 @@ class OaiController {
     render(contentType:"application/xml", text: writer.toString())
   }
 
-  def listRecords(params, esclient) {
+  def doListRecords(params, esclient) {
     log.debug('List Records');
 
     def writer = new StringWriter()
@@ -159,7 +159,7 @@ class OaiController {
     render(contentType:"application/xml", text: writer.toString())
   }
 
-  def listMetadataFormats() {
+  def doListMetadataFormats() {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
     xml.setOmitEmptyAttributes(true);
@@ -178,7 +178,7 @@ class OaiController {
     render(contentType:"application/xml", text: writer.toString())
   }
 
-  def listSets() {
+  def doListSets() {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
     xml.setOmitEmptyAttributes(true);
