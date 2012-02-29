@@ -824,3 +824,17 @@ h4 em
 	font-weight: bold;
 	font-style:normal;
 }
+
+.collect
+{
+	height:16px;
+	width:16px;
+	vertical-align: sub;
+	display:inline-block;
+	background: transparent url(../images/icons/feed.png) center center no-repeat;  
+}
+
+.collect:hover
+{
+    background: transparent url(../images/icons/feed-hover.png) center center no-repeat; 
+}

@@ -50,7 +50,7 @@
       <th>Type</th>
       <th>Last Harvest</th>
       <th>Next Harvest</th>
-      <th>Published</th>
+      <th>Public</th>
       <th>Records</th>
       <th>Status</th>
     </tr>
@@ -70,7 +70,7 @@
           <g:else>Unknown</g:else>
         </td>
         <td>
-          <g:if test="${(feed.publicationStatus != null ) && (feed.publicationStatus == 1) }">Yes</g:if>
+          <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}">Yes</g:if>
           <g:else>No</g:else>
         </td>
         <td>

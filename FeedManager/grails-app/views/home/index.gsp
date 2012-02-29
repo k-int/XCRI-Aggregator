@@ -53,10 +53,10 @@
           <th>Type</th>
           <th>Last Harvest</th>
           <th>Next Harvest</th>
-          <th>Published</th>
+          <th>Public</th>
           <th>Records</th>
           <th>Status</th>
-          <th>Select</th>
+          <th>Collect</th>
       </tr>
 
       <g:each in="${feeds}" var="feed">
@@ -74,7 +74,7 @@
             <g:else>Unknown</g:else>
           </td>
           <td>
-            <g:if test="${(feed.publicationStatus!=null)&&(feed.publicationStatus==1)}">Yes</g:if>
+            <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}">Yes</g:if>
             <g:else>No</g:else>
           </td>
           <td>
@@ -85,13 +85,12 @@
             <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
           </td>
           <td>
-            <g:if test="${feed.status in [1,3,4]}"><g:radio class="centered" name="id" value="${feed.id}"/></g:if>
+            <g:if test="${feed.status in [1,3,4]}"><g:link controller="feed" action="collect" id="${feed.id}" class="button-link button-link-positive"><span class="collect"></span></g:link></g:if>
           </td>
         </tr>
       </g:each>
     </table>   
     <div class="paginateButtons">
-     <span><label><g:checkBox name="force" value="${true}" /> Force  </label><g:submitButton name="collect" value="Collect" class="button-link" /></span>
     </div>
     </g:form>
   </body>
