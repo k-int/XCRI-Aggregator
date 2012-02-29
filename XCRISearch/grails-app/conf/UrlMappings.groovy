@@ -12,6 +12,7 @@ class UrlMappings {
     
     "/search/count" (controller:"search", action:"count")
     "/search/autocomplete" (controller:"search", action:"autocomplete")
+    "/oai" (controller:"oai", action:"index")
 
     "/" (controller:"search", action:"index")
 
