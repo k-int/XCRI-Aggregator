@@ -304,3 +304,8 @@ form a.active
     font-weight:bold; 
     font-size:22px;	
 }
+
+.ui-autocomplete
+{
+    font-size: 0.8em !important;
+}

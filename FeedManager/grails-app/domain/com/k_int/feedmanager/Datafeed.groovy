@@ -23,7 +23,7 @@ class Datafeed {
     String iconUrl
     Long totalRecords = 0
     
-    // null/0==Not published, 1==Publised
+    // null/0==Not published, 1==Pending Publish, 2==Published, 3==Pending withdraw
     int publicationStatus
  
 

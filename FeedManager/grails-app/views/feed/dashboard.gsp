@@ -26,12 +26,21 @@
     <g:if test="${feed?.lastCheck && feed?.checkInterval}"><p>The next collection is due in ${use(DurationFormatter){TimeCategory.minus(new Date(feed?.lastCheck+feed?.checkInterval), new Date()).toString()}}</p></g:if>
     <br/>
     <p>This feed is 
-    <g:if test="${(feed.publicationStatus != null) && (feed.publicationStatus == 1)}">Published. You can withdraw the records by clicking 
-      <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+    <g:if test="${(feed.publicationStatus != null)}">
+      <g:if test="${feed.publicationStatus==0}">
+        Not currently published. Mark the feed as to be published by clicking <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+      </g:if>
+      <g:if test="${feed.publicationStatus==1}">
+        Pending publication, to cancel and return to unpublished, click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+      </g:if>
+      <g:if test="${feed.publicationStatus==2}">
+        Published. To mark the courses from this feed for withdrawl from the public search interface click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+      </g:if>
+      <g:if test="${feed.publicationStatus==3}">
+        Pending removal from the public search interface. To cancel and return to "Published", click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+      </g:if>
     </g:if>
-    <g:else>not published. You can make these records active by clicking 
-      <g:link controller="feed" action="publish" id="${id}">Here</g:link>
-    </g:else></p>
+    </p>
     
   </body>
 </html>

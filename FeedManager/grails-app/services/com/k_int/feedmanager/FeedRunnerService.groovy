@@ -114,6 +114,8 @@ class FeedRunnerService {
       log.debug("Length of input stream is ${resource_to_deposit.length}, Checksum is ${md5sumHex}");
 
       if ( ( force_process ) ||
+           ( feed_definition.publicationStatus == 1 ) ||
+           ( feed_definition.publicationStatus == 3 ) ||
            ( feed_definition.checksum == null ) ||
            ( feed_definition.checksum != md5sumHex ) ) {
 
@@ -124,13 +126,27 @@ class FeedRunnerService {
           def multipart_entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
           multipart_entity.addPart( "owner", new StringBody( feed_definition.dataProvider, "text/plain", Charset.forName( "UTF-8" )))  // Owner
 
-          if ( feed_definition.publicationStatus == 0 ) {
-            log.debug("Feed publication status == private");
-            multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
-          }
-          else {
-            log.debug("Feed publication status == public");
-            multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+          switch ( feed_definition.publicationStatus ) {
+            case 0:
+              log.debug("Feed publication status == private");
+              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+              break;
+            case 1:
+              log.debug("Publish");
+              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam.force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
+              feed_definition.publicationStatus = 2
+              break;
+            case 2:
+              log.debug("Feed publication status == public");
+              multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+              break;
+            case 3:
+              log.debug("Unpublish");
+              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam.force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
+              feed_definition.publicationStatus = 0
+              break;
           }
 
           def uploaded_file_body_part = new org.apache.http.entity.mime.content.ByteArrayBody(resource_to_deposit, 'text/xml', 'filename')

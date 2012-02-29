@@ -206,12 +206,27 @@ class FeedController {
   
   def publish() {
     def feedInstance = feedRunnerService.getDatafeed(params.id)
-    if ( feedInstance.publicationStatus == 0 ) {
-      feedInstance.publicationStatus = 1;
+    // null/0==Not published, 1==Pending Publish, 2==Published, 3==Pending withdraw
+    int publicationStatus
+    log.debug("publish, current status is ${feedInstance.publicationStatus}");
+
+    switch ( feedInstance.publicationStatus ) {
+      case 0:
+        feedInstance.publicationStatus = 1;
+        break;
+      case 1:
+        feedInstance.publicationStatus = 0;
+        break;
+      case 2:
+        feedInstance.publicationStatus = 3;
+        break;
+      case 3:
+        feedInstance.publicationStatus = 2;
+        break;
+      default:
+        break;
     }
-    else {
-      feedInstance.publicationStatus = 0;
-    }
+
     if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
       flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
       redirect(action: "dashboard", id: feedInstance.id)

@@ -19,6 +19,32 @@
             $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
             $(this).toggleClass('active');
         });
+        
+        var CONTEXT_PATH = '<%= request.getContextPath()%>';
+        
+        $("#q").autocomplete(
+        {
+            source: function( request, response ) 
+            {
+                $.getJSON(CONTEXT_PATH + "/search/autocomplete", request, function(data) 
+                {
+                    response($.map(data.hits.hits, function(item)
+                                                   {
+						                                return item.fields.title.value;
+						                            }));
+                });
+            },
+            select: function(event, ui) 
+            { 
+                //alert(JSON.stringify(ui.item));
+            
+                $.getJSON(CONTEXT_PATH + '/search/count?q=' + ui.item.value + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val(), function(data) 
+                {
+                    updateCount(data);
+                });
+            },  
+            minLength: 2
+        });
     });
     
     function updateCount(data)
