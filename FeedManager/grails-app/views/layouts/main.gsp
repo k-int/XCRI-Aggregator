@@ -29,29 +29,30 @@
   <g:layoutHead/>
   <r:layoutResources />
   <script>
-  	/* HTML5 elements for ie */
-	document.createElement('header');
-	document.createElement('nav');
-	document.createElement('article');
-	document.createElement('footer');
+    /* HTML5 elements for ie */
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('article');
+    document.createElement('footer');
   </script>
 </head>
 <body>
-	<header>
-		<div class="inner-cont">
-			<h1>XCRI-CAP Aggregator</h1>
-		</div>
-	</header>
-	<nav>
-		<div class="inner-cont">
-			<shiro:authenticated>
-			<ul>
-			    <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
-  			</ul>
-  			<ul>
-  				<li>
-  				  <g:link controller="shiroUser" action="list" class="users">
-  				  <span>Users
+    <header>
+        <div class="inner-cont">
+            <h1>XCRI-CAP Aggregator</h1>
+        </div>
+    </header>
+    <nav>
+        <div class="inner-cont">
+            <shiro:authenticated>
+            <ul>
+                <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
+            </ul>
+            <shiro:hasRole name="Administrator">
+            <ul>
+                <li>
+                  <g:link controller="shiroUser" action="list" class="users">
+                  <span>Users
                       <% def count = ShiroUser.countByActive(false) %>
                       <g:if test="${count > 0}">
                          <span class="count">${count}</span>
@@ -59,36 +60,37 @@
                   </span>
                   </g:link>
                 </li>
-  			</ul>
-  			<ul style="float:right">
-  				<li><span class="principal"><shiro:principal/></span></li>
-			    <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
-  			</ul>
-  			</shiro:authenticated>
-  			<shiro:notAuthenticated>
-  			<ul>
-  				<li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
-  			</ul>
-  			<ul style="float:right">
-			    <li><g:link controller="home" action="index" class="login"><span>Login</span></g:link></li>
-			    <li><g:link controller="register" action="index" class="register"><span>Register</span></g:link></li>
-  			</ul>
-  			</shiro:notAuthenticated>
-		</div>
-	</nav>
-	<div id="content" class="outer-cont">
-		<div class="inner-cont">
-		 	<g:layoutBody/>
-		</div>
-	</div>
-	<footer>
-		<div class="inner-cont" role="contentinfo">
-			<span>XCRI-CAP Aggregator &copy; 2011 - <a href="http://www.k-int.com" target="_blank" class="grey-contrast-txt">Knowledge Integration</a></span>
-		</div>
-	</footer>
-	<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+            </ul>
+            </shiro:hasRole>
+            <ul style="float:right">
+                <li><span class="principal blue"><shiro:principal/></span></li>
+                <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
+            </ul>
+            </shiro:authenticated>
+            <shiro:notAuthenticated>
+            <ul>
+                <li><g:link controller="frontpage" action="index" class="home"><span>Home</span></g:link></li>
+            </ul>
+            <ul style="float:right">
+                <li><g:link controller="home" action="index" class="login"><span>Login</span></g:link></li>
+                <li><g:link controller="register" action="index" class="register"><span>Register</span></g:link></li>
+            </ul>
+            </shiro:notAuthenticated>
+        </div>
+    </nav>
+    <div id="content" class="outer-cont">
+        <div class="inner-cont">
+            <g:layoutBody/>
+        </div>
+    </div>
+    <footer>
+        <div class="inner-cont" role="contentinfo">
+            <span>XCRI-CAP Aggregator &copy; 2011 - <a href="http://www.k-int.com" target="_blank" class="grey-contrast-txt">Knowledge Integration</a></span>
+        </div>
+    </footer>
+    <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
-	<g:javascript library="application"/>
-	<r:layoutResources />
+    <g:javascript library="application"/>
+    <r:layoutResources />
 </body>
 </html>

@@ -173,7 +173,7 @@ class FeedController {
           redirect(controller: "home", action: "index")
       }
       else {
-          return [feedInstance: feedInstance, id: params.id]
+          return [feed: feedInstance, id: params.id]
       }
   }
   
@@ -195,7 +195,7 @@ class FeedController {
               redirect(action: "dashboard", id: feedInstance.id)
           }
           else {
-              render(view: "edit", model: [feedInstance: feedInstance])
+              render(view: "edit", model: [feed: feedInstance])
           }
       }
       else {

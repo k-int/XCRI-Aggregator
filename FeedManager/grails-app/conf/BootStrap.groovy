@@ -7,13 +7,25 @@ class BootStrap {
 
     def init = { servletContext ->
       log.debug("Verify default Shiro User");
+      
+      def adminRole = ShiroRole.findByName("Administrator")
+      
+      if(adminRole == null){
+          adminRole = new ShiroRole(name: "Administrator")
+          adminRole.addToPermissions("*:*")
+          adminRole.save(flush:true, failOnError:true)
+          log.debug adminRole.dump()
+      }
+  
       def user = ShiroUser.findByUsername("admin")
+     
       if ( user == null ) {
 		  
 		log.error("${ApplicationHolder.application.config.locations}")
         log.debug("admin user not found.. creating default");
         user = new ShiroUser(username: "admin", name: "Mr Administrator", passwordHash: new Sha256Hash("password").toHex(), email: "email@somedomain.com", verified: Boolean.TRUE, active: Boolean.TRUE)
         user.addToPermissions("*:*")
+        user.addToRoles(adminRole)
         user.save()
 
         // If there is a default feed manager set up, use it to set up a default config
@@ -60,6 +72,9 @@ class BootStrap {
       }
       else {
         log.debug("Admin user verified");
+        
+        user.addToRoles(adminRole)
+        user.save()
       }
 
       log.debug("Bootstrap completed");
