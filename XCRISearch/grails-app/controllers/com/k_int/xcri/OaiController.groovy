@@ -11,6 +11,8 @@ class OaiController {
   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
   def index() { 
+    log.debug("oai action: ${params}");
+
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
     switch ( params.verb?.toUpperCase() ) {
@@ -71,7 +73,7 @@ class OaiController {
       GetRecord {
         header {
           identifier(hit.source._id)
-          dateStamp(hit.source.lastModified)
+          dateStamp(formatter.format(new Date(hit.source.lastModified)))
         }
         metadata {
           course {
@@ -97,6 +99,7 @@ class OaiController {
 
     Long from = null;
     from = params.from != null ? new Long ( formatter.parse(params.from).getTime() ) : null;
+
     Long until = null;
     until = params.until != null ? new Long ( formatter.parse(params.to).getTime() ) : null;
 
@@ -117,9 +120,9 @@ class OaiController {
     else {
       log.debug("Processing first request");
       // This OAI Service only supports the metadata prefix XCRICourseInstance
-      from = processDate(params.from)
-      until = processDate(params.from)
-      resp = findFor(null, null, esclient);
+      //from = processDate(params.from)
+      //until = processDate(params.from)
+      resp = findFor(from, until, esclient);
     }
 
     xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
@@ -138,7 +141,7 @@ class OaiController {
           record {
             header {
               identifier(hit.source._id)
-              dateStamp(hit.source.lastModified)
+              dateStamp(formatter.format(new Date(hit.source.lastModified)))
             }
             metadata {
               course {
@@ -195,18 +198,18 @@ class OaiController {
   }
 
   def recordAsXML(builder, record) {
-    log.debug("recordAsXML, ${record.getClass().getName()}");
+    //log.debug("recordAsXML, ${record.getClass().getName()}");
     if ( record instanceof java.util.Map ) {
       record.each { ent ->
         if ( ent.value instanceof java.util.Map ) {
           if ( ent.value.size() > 0 ) {
-            log.debug("1. ${ent.key}");
+            //log.debug("1. ${ent.key}");
             builder."${ent.key}"(recordAsXML(builder, ent.value))
           }
         }
         else if ( ent.value instanceof List ) {
           ent.value.each { le ->
-            log.debug("2. ${ent.key}");
+            //log.debug("2. ${ent.key}");
             if ( ( ( le instanceof java.util.Map ) || ( le instanceof java.util.List ) ) && ( le.size() > 0 ) ) {
               builder."${ent.key}"() {
                 recordAsXML(builder, le)
@@ -221,7 +224,7 @@ class OaiController {
           def str_value = ent.value.toString();
           def str_len = str_value.length()
           if ( str_len > 0 ) {
-            log.debug("3. ${ent.key} \"${str_value}\" ${ent.value.getClass().getName()}");
+            //log.debug("3. ${ent.key} \"${str_value}\" ${ent.value.getClass().getName()}");
             builder."${ent.key}"(str_value)
           }
         }
