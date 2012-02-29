@@ -60,7 +60,7 @@ class ShiroUserController
 					return
 				}
 			}
-            if(userInstance.active == false && params.active == true)
+            if(userInstance.active == false && params.active.equalsIgnoreCase("true"))
             {
                 sendMail
                 {

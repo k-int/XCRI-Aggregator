@@ -47,7 +47,6 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Name</th>
           <th>Active</th>
           <th>Type</th>
@@ -61,7 +60,6 @@
 
       <g:each in="${feeds}" var="feed">
         <tr>
-          <td>${feed.id}</td>
           <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
           <td><g:img dir="images/table" file="${feed.active}.png" class="centered" /></td>
           <td>${feed.feedtype}</td>
