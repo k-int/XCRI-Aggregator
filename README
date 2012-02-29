@@ -44,3 +44,5 @@ Prereqs: Grails.
 
 We have added a copy of an install script in the scripts directory which checks out a clean copy of all dependencies and copies them to a local
 apache tomcat. Modify this or use it as a basis for your own build script.
+
+Requires a local 4store installed (deb apt-get install 4store, mkdir /var/lib/4store, 4s-backend-setup default)
