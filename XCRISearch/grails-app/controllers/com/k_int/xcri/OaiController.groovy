@@ -41,7 +41,13 @@ class OaiController {
 
     }
 
-    findFor(null, null, esclient);
+    def resp = findFor(null, null, esclient);
+    resp.hits.each { hit ->
+      log.debug("Processing a hit...");
+      log.debug("${hit.source.
+    }
+
+    
 
     xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
                   'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
@@ -68,14 +74,20 @@ class OaiController {
       indices "courses"
       types "course"
       source {
-        from = params.offset
-        size = params.max
+        from = 0
+        size = 50
         query {
           query_string (query: '*')
         }
+        sort = [
+          [ 'lastModified' : [ 'order' : 'asc' ] ],
+          [ '_id' : [ 'order' : 'asc' ] ]
+        ]
       }
     }
 
     log.debug("search complete, found ${search.response.hits.totalHits} records");
+
+    search.response
   }
 }

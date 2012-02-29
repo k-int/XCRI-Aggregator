@@ -20,8 +20,14 @@ cd ~/xcri_src/AggregatorCore
 git checkout release
 git pull
 cd ~/xcri_src/AggregatorCore/HandlerRegistry
+grails upgrade <<!!
+y
+!!
 grails prod war
 cd ~/xcri_src/AggregatorCore/repository
+grails upgrade <<!!
+y
+!!
 grails prod war
 
 
@@ -29,8 +35,14 @@ cd ~/xcri_src/XCRI-Aggregator
 git checkout release
 git pull
 cd ~/xcri_src/XCRI-Aggregator/XCRISearch
+grails upgrade <<!!
+y
+!!
 grails prod war
 cd ~/xcri_src/XCRI-Aggregator/FeedManager
+grails upgrade <<!!
+y
+!!
 grails prod war
 
 
