@@ -30,61 +30,66 @@
   <g:layoutHead/>
   <r:layoutResources />
   <script>
-  	/* HTML5 elements for ie */
-	document.createElement('header');
-	document.createElement('nav');
-	document.createElement('article');
-	document.createElement('footer');
+    /* HTML5 elements for ie */
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('article');
+    document.createElement('footer');
   </script>
 </head>
 <body>
-	<header>
-		<div class="inner-cont">
-			<h1>XCRI-CAP Aggregator</h1>
-		</div>
-	</header>
-	<nav>
-		<div class="inner-cont">
-			<ul>
-			    <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
-  			</ul>
-			<ul>
-			    <li><g:link controller="feed" action="dashboard" id="${id}" class="dashboard"><span>Dashboard</span></g:link></li>
-			    <li><g:link controller="feed" action="edit" id="${id}" class="edit"><span>Edit</span></g:link></li>
-			    <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>
-			    <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
-  			</ul>
-  			<ul>
-  				<li>
-  				  <g:link controller="shiroUser" action="list" class="users">
-	  				  <span>Users
-  				      <% def count = ShiroUser.countByActive(false) %>
-  				      <g:if test="${count > 0}">
-  				         <span class="count">${count}</span>
-  				      </g:if>
-  				      </span>
-  				  </g:link>
-  				</li>
-  			</ul>
-  			<ul style="float:right">
-  				<li><span class="principal"><shiro:principal/></span></li>
-			    <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
-  			</ul>
-		</div>
-	</nav>
-	<div id="content">
-		<div class="inner-cont">
-		 	<g:layoutBody/>
-		</div>
-	</div>
-	<footer>
-		<div class="inner-cont" role="contentinfo">
-			<span>XCRI-CAP Aggregator &copy; 2011 - <a href="http://www.k-int.com" target="_blank" class="grey-contrast-txt">Knowledge Integration</a></span>
-		</div>
-	</footer>
-	<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+    <header>
+        <div class="inner-cont">
+            <h1>XCRI-CAP Aggregator</h1>
+        </div>
+    </header>
+    <nav>
+        <div class="inner-cont">
+            <ul>
+                <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
+            </ul>
+            <ul>
+                <li><span class="feed blue" title="${feed.feedname}">${feed.feedname.length() > 18 ? feed.feedname.substring(0,15) + '...' : feed.feedname}</span></li>
+                <li><g:link controller="feed" action="dashboard" id="${id}" class="dashboard"><span>Dashboard</span></g:link></li>
+                <li><g:link controller="feed" action="edit" id="${id}" class="edit"><span>Edit</span></g:link></li>
+                <g:if test="${feed.status > 1 && feed.resourceIdentifier && feed.resourceIdentifier.trim().length() > 0 && feed.totalRecords > 0}">
+                <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>       
+                <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
+                </g:if>
+            </ul>
+            <shiro:hasRole name="Administrator">
+            <ul>
+                <li>
+                  <g:link controller="shiroUser" action="list" class="users">
+                      <span>Users
+                      <% def count = ShiroUser.countByActive(false) %>
+                      <g:if test="${count > 0}">
+                         <span class="count">${count}</span>
+                      </g:if>
+                      </span>
+                  </g:link>
+                </li>
+            </ul>
+            </shiro:hasRole>
+            <ul style="float:right">
+                <li><span class="principal blue"><shiro:principal/></span></li>
+                <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="content">
+        <div class="inner-cont">
+            <g:layoutBody/>
+        </div>
+    </div>
+    <footer>
+        <div class="inner-cont" role="contentinfo">
+            <span>XCRI-CAP Aggregator &copy; 2011 - <a href="http://www.k-int.com" target="_blank" class="grey-contrast-txt">Knowledge Integration</a></span>
+        </div>
+    </footer>
+    <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
-	<g:javascript library="application"/>
-	<r:layoutResources />
+    <g:javascript library="application"/>
+    <r:layoutResources />
 </body>
 </html>
