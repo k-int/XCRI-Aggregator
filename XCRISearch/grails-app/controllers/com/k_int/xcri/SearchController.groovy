@@ -284,9 +284,8 @@ class SearchController {
 
     xml.rss(version: '2.0') {
       channel {
-        title("Open Family Services RSS Response")
-        description("Open Family Services RSS Description")
-        copyright("(c) Open Family Services")
+        title("XCRI Aggregator")
+        description("XCRI Aggregator")
         "opensearch:totalResults"(results.hits.totalHits)
         // "opensearch:startIndex"(results.search_results.results.start)
         "opensearch:itemsPerPage"(10)
@@ -313,9 +312,8 @@ class SearchController {
 
     xml.feed(xmlns:'http://www.w3.org/2005/Atom') {
         // add the top level information about this feed.
-        title("Open Family Services ATOM Response")
-        description("Open Family Services ATOM Response")
-        copyright("(c) Open Family Services")
+        title("XCRI Aggregator")
+        description("XCRI Aggregator")
         "opensearch:totalResults"(results.hits.totalHits)
         // "opensearch:startIndex"(results.search_results.results.start)
         "opensearch:itemsPerPage"("${hpp}")
