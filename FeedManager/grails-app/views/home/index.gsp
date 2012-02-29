@@ -11,8 +11,8 @@
 	    
 	    $('img[title]').qtip(
 	    {
-	      position: 
-	      {
+	       position: 
+	       {
 	          my: 'top center',  // Position my top right...
 	          at: 'bottom center', // at the top center of...
 	       },
@@ -23,7 +23,7 @@
 	       hide: 
 	       {
 	            fixed: true
-	         }
+	       }
 	    });
 	});
   </g:javascript>

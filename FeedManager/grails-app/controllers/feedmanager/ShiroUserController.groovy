@@ -60,6 +60,17 @@ class ShiroUserController
 					return
 				}
 			}
+            if(userInstance.active == false && params.active == true)
+            {
+                sendMail
+                {
+                    to user.email
+                    from "no-reply@k-int.com" //needs changing and putting into config
+                    subject "Account Activated"
+                    html g.render(template:"activationMail",  model:[username:params.name])
+                }
+            }
+            
 			userInstance.properties = params
 			if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'shiroUser.label', default: 'User'), userInstance.id])}"
