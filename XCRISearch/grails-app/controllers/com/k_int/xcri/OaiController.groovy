@@ -32,21 +32,39 @@ class OaiController {
     xml.setOmitEmptyAttributes(true);
     xml.setOmitNullAttributes(true);
 
-    if ( params.resumptionToken ) {
-      log.debug("Processing resumption token");
+    def resp;
+    def last_rec = null;
+
+    Long from = null;
+    Long until = null;
+
+    if ( params.resumptionToken != null ) {
+      log.debug("Processing resumption token ${params.resumptionToken}");
+
+      String[] components = params.resumptionToken.split(';');
+
+      if ( components.length == 3 ) {
+        from = new Long(Long.parseLong(components[1]))
+        log.debug("From is ${from} components were ${components}");
+      }
+      else {
+        log.error("Could not parse resumption token");
+      }
+      resp = findFor(from, null, esclient);
     }
     else {
       log.debug("Processing first request");
       // This OAI Service only supports the metadata prefix XCRICourseInstance
-
+      from = processDate(params.from)
+      until = processDate(params.from)
+      resp = findFor(null, null, esclient);
     }
 
-    def resp = findFor(null, null, esclient);
-    resp.hits.each { hit ->
-      log.debug("Processing a hit...");
-      log.debug("${hit.source.
-    }
-
+    //resp?.hits.each { hit ->
+    //  log.debug("Processing a hit...");
+    //  log.debug("${hit.source.lastModified}");
+     // last_rec = hit;
+    //}
     
 
     xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
@@ -60,24 +78,98 @@ class OaiController {
               'resumptionToken':params.resumptionToken,
               'metadataPrefix':params.metadataPrefix) {
       }
+      listRecords {
+        resp?.hits.each { hit ->
+          record {
+            header {
+              identifier(hit.source._id)
+              dateStamp(hit.source.lastModified)
+            }
+          }
+          metadata {
+            course {
+              recordAsXML(xml,hit.source)
+            }
+          }
+        }
+      }
+      if ( resp?.hits != null ) {
+        if ( resp.hits.hits.length == 51 ) {
+          resumptionToken("rt;${resp.hits.getAt(50).source.lastModified};${resp.hits.getAt(50).source._id}");
+        }
+      }
     }
 
     log.debug("Render...");
     render(contentType:"application/xml", text: writer.toString())
   }
 
+  def recordAsXML(builder, record) {
+    log.debug("recordAsXML, ${record.getClass().getName()}");
+    if ( record instanceof java.util.Map ) {
+      record.each { ent ->
+        if ( ent.value instanceof java.util.Map ) {
+          if ( ent.value.size() > 0 ) {
+            log.debug("1. ${ent.key}");
+            builder."${ent.key}"(recordAsXML(builder, ent.value))
+          }
+        }
+        else if ( ent.value instanceof List ) {
+          ent.value.each { le ->
+            log.debug("2. ${ent.key}");
+            if ( ( ( le instanceof java.util.Map ) || ( le instanceof java.util.List ) ) && ( le.size() > 0 ) ) {
+              builder."${ent.key}"() {
+                recordAsXML(builder, le)
+              }
+            }
+            else {
+              builder."${ent.key}"(le.toString())
+            }
+          }
+        }
+        else {
+          def str_value = ent.value.toString();
+          def str_len = str_value.length()
+          if ( str_len > 0 ) {
+            log.debug("3. ${ent.key} \"${str_value}\" ${ent.value.getClass().getName()}");
+            builder."${ent.key}"(str_value)
+          }
+        }
+      }
+    }
+    else {
+    }
+  }
+
   def findFor(from, until, esclient) {
 
     log.debug("findFor ${from} ${until}..");
+    StringWriter sw = new StringWriter();
+
+    sw.write("*");
+
+    if ( ( from != null ) && ( until == null ) ) {
+      sw.write("AND lastModified:[${from} TO *]")
+    }
+    else if ( ( from == null ) && ( until != null ) ) {
+      sw.write("AND lastModified:[* TO ${until}]")
+    }
+    else if ( ( from != null ) && ( until != null ) ) {
+      sw.write("AND lastModified:[${from} TO ${until}]")
+    }
+
+    def qry = sw.toString();
+
+    log.debug("Using query: ${qry}");
 
     def search = esclient.search{
       indices "courses"
       types "course"
       source {
         from = 0
-        size = 50
+        size = 51
         query {
-          query_string (query: '*')
+          query_string (query: qry)
         }
         sort = [
           [ 'lastModified' : [ 'order' : 'asc' ] ],
@@ -89,5 +181,21 @@ class OaiController {
     log.debug("search complete, found ${search.response.hits.totalHits} records");
 
     search.response
+  }
+
+  // Convert datestr into ms since epoch
+  def processDate(datestr) {
+    Long result = null;
+    if ( datestr != null ) {
+      try {
+        
+      }
+      catch ( Exception e ) {
+        log.warn("Problem parsing date",e);
+      }
+      finally {
+      }
+    }
+    result;
   }
 }
