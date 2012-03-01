@@ -834,7 +834,30 @@ h4 em
 	background: transparent url(../images/icons/feed.png) center center no-repeat;  
 }
 
-.collect:hover
+a:hover .collect
 {
     background: transparent url(../images/icons/feed-hover.png) center center no-repeat; 
+}
+
+.deletion
+{
+    height:16px;
+    width:16px;
+    vertical-align: sub;
+    display:inline-block;
+    background: transparent url(../images/icons/trash.png) center center no-repeat;  
+}
+
+a:hover .deletion
+{
+    background: transparent url(../images/icons/trash-hover.png) center center no-repeat; 
+}
+
+/* vertical table */
+
+.vertical th, .vertical td
+{
+	background: white;
+	border-bottom: 1px dashed #DFDFDF;
+	padding: 0.5em 0.6em;
 }

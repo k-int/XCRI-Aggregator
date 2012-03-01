@@ -97,9 +97,9 @@ nav a:hover span
     color:white;
 }
 
-nav li span.blue
+nav li span.principal
 {
-    color: #d6d6d6 !important;
+	color: #d6d6d6 !important;
     font-weight: bold;
     text-decoration:none;
     border: 1px solid #000;
@@ -117,23 +117,11 @@ nav li span.blue
     border-bottom-left-radius: 5px;
         
     padding: 5px 10px 5px 30px;
-}
-
-nav li span.principal
-{
+    
     background:url(../images/icons/user.png) 10px no-repeat, -moz-linear-gradient(#0188e0,#014779);
     background:url(../images/icons/user.png) 10px no-repeat, -webkit-linear-gradient(#0188e0,#014779);
     background:url(../images/icons/user.png) 10px no-repeat, -o-linear-gradient(#0188e0,#014779);
     background:url(../images/icons/user.png) 10px no-repeat, linear-gradient(#0188e0,#014779);
-}
-
-nav li span.feed
-{
-    background:-moz-linear-gradient(#0188e0,#014779);
-    background:-webkit-linear-gradient(#0188e0,#014779);
-    background:-o-linear-gradient(#0188e0,#014779);
-    background:linear-gradient(#0188e0,#014779);
-    padding: 5px 10px;
 }
 
 nav .console span { background: transparent url(../images/icons/console.png) 10px no-repeat; }
@@ -156,6 +144,8 @@ nav .logout span { background: transparent url(../images/icons/logout.png) 10px 
 nav .logout:hover span { background: transparent url(../images/icons/logout-hover.png) 10px no-repeat;  }
 nav .users span:first-child { background: transparent url(../images/icons/users.png) 10px no-repeat; }
 nav .users:hover span:first-child { background: transparent url(../images/icons/users-hover.png) 10px no-repeat;    }
+nav .delete span:first-child { background: transparent url(../images/icons/trash.png) 10px no-repeat; }
+nav .delete:hover span:first-child { background: transparent url(../images/icons/trash-hover.png) 10px no-repeat;    }
 
 nav .users span.count 
 {

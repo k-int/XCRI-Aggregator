@@ -63,7 +63,7 @@
             </ul>
             </shiro:hasRole>
             <ul style="float:right">
-                <li><span class="principal blue"><shiro:principal/></span></li>
+                <li><span class="principal"><shiro:principal/></span></li>
                 <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
             </ul>
             </shiro:authenticated>

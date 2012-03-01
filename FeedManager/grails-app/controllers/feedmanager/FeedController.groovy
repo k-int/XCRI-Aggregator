@@ -30,6 +30,8 @@ class FeedController {
     params.force = "true";
     // def feedDefinition = feedRunnerService.getDatafeed(params.id)
     feedRunnerService.collect(params.boolean('force'), params.id)
+    
+    flash.message = "Feed ${params.id} has been collected"  
     redirect(controller:"home", action: "index")
   }
 
@@ -233,6 +235,26 @@ class FeedController {
     }
 
     render(view: "dashboard", model: [feed: feedInstance, id:params.id])
+  }
+  
+  
+  def delete = {
+      def feedInstance = feedRunnerService.getDatafeed(params.id)
+      if (feedInstance) {
+          try {
+              feedInstance.delete(flush: true)
+              flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'feed.label', default: 'Feed'), params.id])}"
+              redirect(controller: "home", action: "index")
+          }
+          catch (org.springframework.dao.DataIntegrityViolationException e) {
+              flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'feed.label', default: 'Feed'), params.id])}"
+              redirect(action: "dashboard", id: params.id)
+          }
+      }
+      else {
+          flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'feed.label', default: 'Feed'), params.id])}"
+          redirect(controller: "home", action: "index")
+      }
   }
 
 }
