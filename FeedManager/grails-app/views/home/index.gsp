@@ -31,6 +31,9 @@
 
   <body>
     <h1>Your Feeds <span class="h-link-small">&lt;<g:link action="index" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span></h1>
+    <g:if test="${flash.message}">
+        <div class="message">${flash.message}</div>
+    </g:if>
     <div class="paginateButtons">
       <g:if test="${params.int('offset')}">
            Showing Feeds <em>${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))}</em> of <em>${feedsTotal}</em>
@@ -49,9 +52,9 @@
         <tr>
           <th>Name</th>
           <th>Active</th>
-          <th>Type</th>
           <th>Last Harvest</th>
-          <th>Next Harvest</th>
+          <th>Last Check</th>
+          <th>Next Check</th>
           <th>Public</th>
           <th>Records</th>
           <th>Status</th>
@@ -62,14 +65,17 @@
         <tr>
           <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
           <td><g:img dir="images/table" file="${feed.active}.png" class="centered" /></td>
-          <td>${feed.feedtype}</td>
+          <td>
+            <g:if test="${feed?.lastCollect}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCollect}"/></g:if>
+            <g:else>Never</g:else>
+          </td>
           <td>
             <g:if test="${feed?.lastCheck}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCheck}"/></g:if>
             <g:else>Never</g:else>
           </td>
           <td>
-            <g:if test="${feed?.lastCheck && feed?.checkInterval}">${use(DurationFormatter){TimeCategory.minus(new Date(feed?.lastCheck+feed?.checkInterval), new Date()).toString()}}</g:if>
-            <g:else>Unknown</g:else>
+            <g:if test="${feed?.lastCheck && feed?.checkInterval}"><g:formatDate format="dd MMM HH:mm" date="${(feed.lastCheck + feed.checkInterval)}"/></g:if>
+            <g:else>---</g:else>
           </td>
           <td>
             <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}">Yes</g:if>
@@ -79,7 +85,7 @@
              ${feed.totalRecords}
           </td>
           <td>
-            <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:[1-9]/)}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:if>
+            <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:\-?[1-9]/)}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:if>
             <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
           </td>
           <td>

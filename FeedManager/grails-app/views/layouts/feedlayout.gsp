@@ -49,9 +49,8 @@
                 <li><g:link controller="home" action="index" class="home"><span>Home</span></g:link></li>
             </ul>
             <ul>
-                <li><span class="feed blue" title="${feed.feedname}">${feed.feedname.length() > 18 ? feed.feedname.substring(0,15) + '...' : feed.feedname}</span></li>
                 <li><g:link controller="feed" action="dashboard" id="${id}" class="dashboard"><span>Dashboard</span></g:link></li>
-                <li><g:link controller="feed" action="edit" id="${id}" class="edit"><span>Edit</span></g:link></li>
+                <li><g:link controller="feed" action="edit" id="${id}" class="edit"><span>Edit</span></g:link></li>    
                 <g:if test="${feed.status > 1 && feed.resourceIdentifier && feed.resourceIdentifier.trim().length() > 0 && feed.totalRecords > 0}">
                 <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>       
                 <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
@@ -72,7 +71,7 @@
             </ul>
             </shiro:hasRole>
             <ul style="float:right">
-                <li><span class="principal blue"><shiro:principal/></span></li>
+                <li><span class="principal"><shiro:principal/></span></li>
                 <li><g:link controller="auth" action="signOut" class="logout"><span>Logout</span></g:link></li>
             </ul>
         </div>

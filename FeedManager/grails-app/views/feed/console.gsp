@@ -30,9 +30,6 @@
             <td>${entry.msg}</td>
           </tr>
         </g:if>
-        <g:else>
-          <tr><td colspan="4">Unhandled message type<br/>${entry}</td></tr>
-        </g:else>
       </g:each>
     </table>
 

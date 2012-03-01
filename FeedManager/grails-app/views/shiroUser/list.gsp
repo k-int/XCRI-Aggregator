@@ -41,7 +41,6 @@
                 <table>
                     <thead>
                         <tr>                    
-                            <g:sortableColumn property="id" title="${message(code: 'shiroUser.id.label', default: 'Id')}" />
                             <g:sortableColumn property="username" title="${message(code: 'shiroUser.username.label', default: 'Username')}" />
                             <g:sortableColumn property="name" title="${message(code: 'shiroUser.name.label', default: 'Name')}" />
                             <g:sortableColumn property="email" title="${message(code: 'shiroUser.email.label', default: 'Email')}" />
@@ -53,8 +52,7 @@
                     <tbody>
                     <g:each in="${usersList}" status="i" var="userInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
-                            <td><g:link action="show" id="${userInstance.id}" class="show">${fieldValue(bean: userInstance, field: "id")}</g:link></td>
-                            <td>${fieldValue(bean: userInstance, field: "username")}</td>
+                            <td><g:link action="show" id="${userInstance.id}" class="show">${fieldValue(bean: userInstance, field: "username")}</g:link></td>
                             <td>${fieldValue(bean: userInstance, field: "name")}</td>
                             <td>${fieldValue(bean: userInstance, field: "email")}</td>
                             <td>${fieldValue(bean: userInstance, field: "institution")}</td>
