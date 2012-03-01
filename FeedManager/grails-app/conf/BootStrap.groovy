@@ -64,7 +64,7 @@ class BootStrap {
             [name:'Higher York', url:'http://www.xxp.org/getHYCourses.html',dp:'HY']
           ]
 
-          validate(feeds,user,test_aggr);
+          // validate(feeds,user,test_aggr);
         }
         else {
           log.debug("No default aggr configured for this system");
