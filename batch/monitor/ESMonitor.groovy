@@ -23,10 +23,34 @@ while(next) {
 
   def i=0;
   batch.each { r ->
+    xml = buildRDFXML(r)
     println("* ${i++}");
   }
 
   println("batch: ${batch}");
 
   next=false;
+}
+
+def buildRDFXML(jsonobj) {
+  println("buildRDFXML");
+  def writer = new StringWriter()
+  def xml = new groovy.xml.MarkupBuilder(writer)
+  xml.setOmitEmptyAttributes(true);
+  xml.setOmitNullAttributes(true);
+
+  println ("Processing record ${jsonobj}");
+
+  xml.'rdf:RDF'('xmlns':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+                'xmlns:dcterms':'http://purl.org/dc/terms/',
+                'xmlns:dc':'http://purl.org/dc/elements/1.1/') {
+    'rdf:resource'('rdf:about':"urn:xcri:course:${jsonobj._id}") {
+      'dc:title'(jsonobj.title)
+    }
+  }
+
+  def result = writer.toString();
+
+  println(result);
+  result;
 }
