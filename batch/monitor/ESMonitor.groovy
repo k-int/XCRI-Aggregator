@@ -44,10 +44,26 @@ iterateLatest(db,'courses') { jsonobj ->
 
   def result = writer.toString();
 
-  println(result);
+  // println(result);
 }
 
 def iterateLatest(db, collection, processing_closure) {
+
+  // Lookup a monitor record for the identified collection
+  // Create one if it doesn't exist.
+  def monitor_info = db.monitors.findOne(coll:collection);
+  if ( monitor_info == null ) {
+    println("Create new monitor info for ${collection}");
+    monitor_info = [:]
+    monitor_info.coll = collection
+    monitor_info.maxts = 0;
+    monitor_info.maxid = ''
+  }
+  else {
+    println("Using existing monitor info");
+  }
+
+  println("Finding all entries from ${collection} where lastModified > ${monitor_info.maxts} and id > \"${monitor_info.maxid}\"");
 
   def next=true;
   while(next) {
@@ -56,11 +72,15 @@ def iterateLatest(db, collection, processing_closure) {
     def i=0;
     batch.each { r ->
       xml = processing_closure.call(r)
-      println("* ${i++}");
+      // println("* ${i++}");
     }
 
-    println("batch: ${batch}");
+    // println("batch: ${batch}");
+
+    println("Saving monitor info");
+    db.monitors.save(monitor_info);
 
     next=false;
   }
+
 }
