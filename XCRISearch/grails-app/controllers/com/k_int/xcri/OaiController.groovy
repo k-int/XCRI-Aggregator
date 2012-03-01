@@ -204,7 +204,9 @@ class OaiController {
         if ( ent.value instanceof java.util.Map ) {
           if ( ent.value.size() > 0 ) {
             //log.debug("1. ${ent.key}");
-            builder."${ent.key}"(recordAsXML(builder, ent.value))
+            builder."${ent.key}"() {
+              recordAsXML(builder, ent.value)
+            }
           }
         }
         else if ( ent.value instanceof List ) {
