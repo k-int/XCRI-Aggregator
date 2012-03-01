@@ -39,13 +39,21 @@ def buildRDFXML(jsonobj) {
   xml.setOmitEmptyAttributes(true);
   xml.setOmitNullAttributes(true);
 
-  println ("Processing record ${jsonobj}");
+  // println ("Processing record ${jsonobj}");
 
+  //
+  // see http://svn.cetis.ac.uk/xcri/trunk/bindings/rdf/xcri_rdfs.xml
+  //
   xml.'rdf:RDF'('xmlns':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
                 'xmlns:dcterms':'http://purl.org/dc/terms/',
-                'xmlns:dc':'http://purl.org/dc/elements/1.1/') {
+                'xmlns:dc':'http://purl.org/dc/elements/1.1/',
+                'xmlns:xcri':'http://xcri.org/profiles/catalog/1.2/') {
     'rdf:resource'('rdf:about':"urn:xcri:course:${jsonobj._id}") {
       'dc:title'(jsonobj.title)
+      'xcri:provid'(jsonobj.provid)
+      'xcri:provname'(jsonobj.provname)
+      'xcri:uri'(jsonobj.url)
+      'xcri:abstract'(jsonobj.description)
     }
   }
 
