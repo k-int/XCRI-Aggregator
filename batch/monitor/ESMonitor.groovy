@@ -14,25 +14,10 @@ def starttime = System.currentTimeMillis();
 // l.load('uk_gaz_with_geo-2011-05-08.csv');
 println("ES Monitor run completed");
 
-def next=true;
-while(next) {
-  def mongo = new com.gmongo.GMongo()
-  def db = mongo.getDB("xcri")
+def mongo = new com.gmongo.GMongo()
+def db = mongo.getDB("xcri")
 
-  def batch = db.courses.find( [ lastModified : [ $gt : 0 ] ] ).limit(51);
-
-  def i=0;
-  batch.each { r ->
-    xml = buildRDFXML(r)
-    println("* ${i++}");
-  }
-
-  println("batch: ${batch}");
-
-  next=false;
-}
-
-def buildRDFXML(jsonobj) {
+iterateLatest(db,'courses') { jsonobj ->
   println("buildRDFXML");
   def writer = new StringWriter()
   def xml = new groovy.xml.MarkupBuilder(writer)
@@ -60,5 +45,22 @@ def buildRDFXML(jsonobj) {
   def result = writer.toString();
 
   println(result);
-  result;
+}
+
+def iterateLatest(db, collection, processing_closure) {
+
+  def next=true;
+  while(next) {
+    def batch = db."${collection}".find( [ lastModified : [ $gt : 0 ] ] ).limit(51);
+
+    def i=0;
+    batch.each { r ->
+      xml = processing_closure.call(r)
+      println("* ${i++}");
+    }
+
+    println("batch: ${batch}");
+
+    next=false;
+  }
 }
