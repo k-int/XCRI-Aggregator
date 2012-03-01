@@ -262,7 +262,7 @@ class SearchController {
         }
         else {
           // Only add the param if it's length is > 0 or we end up with really ugly URLs
-          if ( params[mapping.key].length() > 0 ) {
+          if ( params[mapping.key].length() > 0 && params[mapping.key].equalsIgnoreCase('*') ) {
             sw.write(" AND ")
             sw.write(mapping.value)
             sw.write(":")
