@@ -1,6 +1,8 @@
 class RepoMonitor {
 
-  def iterateLatest(db, collection, processing_closure) {
+  def iterateLatest(db, collection, max_iterations, processing_closure) {
+
+    println("iterateLatest");
 
     // Lookup a monitor record for the identified collection
     // Create one if it doesn't exist.
@@ -10,25 +12,31 @@ class RepoMonitor {
       monitor_info = [:]
       monitor_info.coll = collection
       monitor_info.maxts = 0;
-      monitor_info.maxid = ''
+      monitor_info.maxid = 0;
     }
     else {
       println("Using existing monitor info");
     }
 
-
     def next=true;  
     def batch_size = 10;
     def iteration_count = 0;
-    // set max_iterations to -1 for unlimited
-    def max_iterations = 2;
     def highest_last_modified = 0;
-    def highest_identifier = "";
+    def highest_identifier = null;
 
     while( ( ( max_iterations == -1 ) || ( iteration_count < max_iterations ) ) && next) {
       next=false;
       println("${next} Finding all entries from ${collection} where lastModified > ${monitor_info.maxts} and id > \"${monitor_info.maxid}\"");
-      def batch = db."${collection}".find( [ lastModified : [ $gt : monitor_info.maxts ], _id : [ $gt : monitor_info.maxid ]  ] ).limit(batch_size+1).sort(lastModified:1,_id:1);
+      def batch
+
+      if ( highest_identifier != null ) {
+        batch = db."${collection}".find( [ lastModified : [ $gt : monitor_info.maxts ], _id : [ $gt : monitor_info.maxid ]  ] ).limit(batch_size+1).sort(lastModified:1,_id:1);
+      } else {
+        batch = db."${collection}".find( [ lastModified : [ $gt : monitor_info.maxts ] ] ).limit(batch_size+1).sort(lastModified:1,_id:1);
+      }
+
+      println("Query completed, batchsize = ${batch.size()}");
+
       int counter = 0;
 
       batch.each { r ->
@@ -52,5 +60,7 @@ class RepoMonitor {
       iteration_count++;
       db.monitors.save(monitor_info);
     }
+
+    println("Complere");
   }
 }

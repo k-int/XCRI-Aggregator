@@ -19,7 +19,7 @@ println("ES Monitor run completed");
 def mongo = new com.gmongo.GMongo()
 def db = mongo.getDB("xcri")
 
-monitor.iterateLatest(db,'courses') { jsonobj ->
+monitor.iterateLatest(db,'courses', 10) { jsonobj ->
   println("buildRDFXML");
   def writer = new StringWriter()
   def xml = new groovy.xml.MarkupBuilder(writer)
