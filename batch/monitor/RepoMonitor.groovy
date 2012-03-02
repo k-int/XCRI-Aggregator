@@ -12,7 +12,7 @@ class RepoMonitor {
       monitor_info = [:]
       monitor_info.coll = collection
       monitor_info.maxts = 0;
-      monitor_info.maxid = 0;
+      monitor_info.maxid = null;
     }
     else {
       println("Using existing monitor info");
@@ -21,15 +21,13 @@ class RepoMonitor {
     def next=true;  
     def batch_size = 10;
     def iteration_count = 0;
-    def highest_last_modified = 0;
-    def highest_identifier = null;
 
     while( ( ( max_iterations == -1 ) || ( iteration_count < max_iterations ) ) && next) {
       next=false;
       println("${next} Finding all entries from ${collection} where lastModified > ${monitor_info.maxts} and id > \"${monitor_info.maxid}\"");
       def batch
 
-      if ( highest_identifier != null ) {
+      if ( monitor_info.maxid != null ) {
         batch = db."${collection}".find( [ lastModified : [ $gt : monitor_info.maxts ], _id : [ $gt : monitor_info.maxid ]  ] ).limit(batch_size+1).sort(lastModified:1,_id:1);
       } else {
         batch = db."${collection}".find( [ lastModified : [ $gt : monitor_info.maxts ] ] ).limit(batch_size+1).sort(lastModified:1,_id:1);
@@ -43,9 +41,9 @@ class RepoMonitor {
         if ( counter < batch_size ) {
           counter++;
           processing_closure.call(r)
-          highest_last_modified = r.lastModified;
-          highest_identifier = r._id;
-          println("* ${iteration_count}/${counter}/${batch_size} : ${highest_last_modified}, ${highest_identifier}");
+          monitor_info.maxts = r.lastModified;
+          monitor_info.maxid = r._id;
+          println("* ${iteration_count}/${counter}/${batch_size} : ${monitor_info.maxts}, ${monitor_info.maxid}");
         }
         else {
           // We've reached record batch_size+1, which means there is at least 1 more record to process. We should loop,
@@ -55,8 +53,6 @@ class RepoMonitor {
         }
       }
       println("Saving monitor info ${monitor_info}");
-      monitor_info.maxts = highest_last_modified;
-      monitor_info.maxid = highest_identifier
       iteration_count++;
       db.monitors.save(monitor_info);
     }
