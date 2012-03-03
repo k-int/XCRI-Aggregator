@@ -50,7 +50,7 @@ class TripleStoreService {
         ] 
 
         response.success = { resp, data ->
-          println("response status: ${resp.statusLine} ${data}")
+          println("Update graph \"${graph_uri}\"response status: ${resp.statusLine} ${data}")
         }
 
         response.failure = { resp ->
@@ -77,11 +77,11 @@ class TripleStoreService {
       uri.path = "data/${graph_uri}"
 
       response.success = { resp, data ->
-        println("response status: ${resp.statusLine} ${data}")
+        println("delete graph \"${graph_uri}\" : response status: ${resp.statusLine} ${data}")
       }
 
       response.failure = { resp ->
-        println("Failure - ${resp.statusLine} ${resp}");
+        // println("Failure - ${resp.statusLine} ${resp}");
       }
     }
   }
