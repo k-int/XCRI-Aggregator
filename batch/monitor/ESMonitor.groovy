@@ -24,6 +24,22 @@ def db = mongo.getDB("xcri")
 
 println("Monitor starting after ${System.currentTimeMillis() - starttime}");
 
+monitor.iterateLatest(db,'providers', -1) { jsonobj ->
+  
+  def writer = new StringWriter()
+  def xml = new groovy.xml.MarkupBuilder(writer)
+  xml.setOmitEmptyAttributes(true);
+  xml.setOmitNullAttributes(true);
+  xml.'xcri:provider'('rdf:about':"urn:xcri:provider:${jsonobj._id}",
+                      'xmlns:rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+                      'xmlns:dcterms':'http://purl.org/dc/terms/',
+                      'xmlns:dc':'http://purl.org/dc/elements/1.1/',
+                      'xmlns:xcri':'http://xcri.org/profiles/catalog/1.2/') {
+    'dc:title'(jsonobj.label)
+  }
+
+}
+
 monitor.iterateLatest(db,'courses', -1) { jsonobj ->
   println("buildRDFXML");
   def writer = new StringWriter()
@@ -47,7 +63,7 @@ monitor.iterateLatest(db,'courses', -1) { jsonobj ->
                     'xmlns:dc':'http://purl.org/dc/elements/1.1/',
                     'xmlns:xcri':'http://xcri.org/profiles/catalog/1.2/') {
     'dc:title'(jsonobj.title)
-    'xcri:provid'(jsonobj.provid)
+    'xcri:provid'("urn:xcri:provider:${jsonobj.provid}")
     'xcri:provname'(jsonobj.provname)
     'xcri:uri'(jsonobj.url)
     'xcri:abstract'(jsonobj.description)
