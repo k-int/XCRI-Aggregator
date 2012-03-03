@@ -38,6 +38,10 @@ monitor.iterateLatest(db,'providers', -1) { jsonobj ->
     'dc:title'(jsonobj.label)
   }
 
+  def result = writer.toString();
+  tse.removeGraph("urn:xcri:course:${jsonobj._id}");
+  tse.update(result, "urn:xcri:course:${jsonobj._id}", 'application/rdf');
+  println("Updated provider ( ${System.currentTimeMillis() - starttime} )");
 }
 
 monitor.iterateLatest(db,'courses', -1) { jsonobj ->
@@ -72,7 +76,7 @@ monitor.iterateLatest(db,'courses', -1) { jsonobj ->
   def result = writer.toString();
   tse.removeGraph("urn:xcri:course:${jsonobj._id}");
   tse.update(result, "urn:xcri:course:${jsonobj._id}", 'application/rdf');
-  println("Updated ( ${System.currentTimeMillis() - starttime} )");
+  println("Updated course ( ${System.currentTimeMillis() - starttime} )");
 }
 
 println("Completed after ${System.currentTimeMillis() - starttime}");
