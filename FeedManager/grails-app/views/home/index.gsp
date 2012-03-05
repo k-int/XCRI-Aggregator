@@ -59,7 +59,7 @@
           <th>Last Harvest</th>
           <th>Last Check</th>
           <th>Next Check</th>
-          <th>Public</th>
+          <th>Public?</th>
           <th>Records</th>
           <th>Status</th>
           <th>Collect</th>
@@ -83,8 +83,8 @@
             <g:else>---</g:else>
           </td>
           <td>
-            <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}">Yes</g:if>
-            <g:else>No</g:else>
+            <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}"><g:img dir="images/table" file="true.png"/></g:if>
+            <g:else><g:img dir="images/table" file="false.png"/></g:else>
           </td>
           <td>
              ${feed.totalRecords}
