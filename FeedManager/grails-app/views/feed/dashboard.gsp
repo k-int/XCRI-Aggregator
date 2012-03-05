@@ -20,6 +20,14 @@
     <br/>
     <table class="vertical">
         <tr>
+            <th>Short Code</th>
+            <td>${feed.dataProvider}</td>
+        </tr>
+        <tr>
+            <th>URL</th>
+            <td>${feed.baseurl}</td>
+        </tr>
+        <tr>
             <th>Type</th>
             <td>${feed.feedtype}</td>
         </tr>
@@ -98,5 +106,6 @@
     <g:if test="${feed.status in [1,3,4]}">
         <g:link controller="feed" action="collect" id="${feed.id}" class="button-link button-link-positive"><span class="collect"></span> Collect</g:link>
     </g:if>
+    <br/><br/>
   </body>
 </html>

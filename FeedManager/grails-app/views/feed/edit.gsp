@@ -28,6 +28,11 @@
         <li><label for="baseurl">URL</label><g:textField name="baseurl" value="${fieldValue(bean: feed, field: 'baseurl')}" class="large" /></li>
         <li><label for="feedname">Feed Name</label><g:textField name="feedname" value="${fieldValue(bean: feed, field: 'feedname')}" class="large" /></li>
         <li><label for="active">Active</label><g:select name="active" from="${[true, false]}" value="${fieldValue(bean: feed, field: 'active')}" class="small"/></li>
+        <li>&nbsp;</li>
+        <li><label for="checkInterval">Check Interval:</label></li>
+        <li><label for="intervalDays">Days</label><g:select name="intervalDays" from="${0..31}" value="${interval?.intervalDays}" class="small"/></li>
+        <li><label for="intervalHours">Hours</label><g:select name="intervalHours" from="${0..23}" value="${interval?.intervalHours}" class="small"/></li>
+        <li><label for="intervalMinutes">Minutes</label><g:select name="intervalMinutes" from="${0..59}" value="${interval?.intervalMinutes}" class="small"/></li>
         <li>
             <g:actionSubmit class="save button-link button button-link-positive" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
             <g:link controller="feed" action="dashboard" id="${feed?.id}" class="button-link"><span>Cancel</span></g:link>

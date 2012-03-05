@@ -80,7 +80,7 @@
          ${feed.totalRecords}
         </td>
         <td>
-          <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:[1-9]/)}">
+          <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:\-?[1-9]/)}">
             <g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/>
           </g:if>
           <g:else>

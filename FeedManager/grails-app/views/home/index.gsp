@@ -5,6 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="layout" content="main" />
     <g:javascript>
+            
+    var CONTEXT_PATH = '<%= request.getContextPath()%>';
+        
     $(document).ready(function()
     {  
 	    $('.home').addClass('active');
@@ -26,6 +29,7 @@
 	       }
 	    });
 	});
+
   </g:javascript>
   </head>
 
@@ -74,7 +78,8 @@
             <g:else>Never</g:else>
           </td>
           <td>
-            <g:if test="${feed?.lastCheck && feed?.checkInterval}"><g:formatDate format="dd MMM HH:mm" date="${(feed.lastCheck + feed.checkInterval)}"/></g:if>
+            <g:if test="${feed?.forceHarvest}">Imminent</g:if>
+            <g:elseif test="${feed?.lastCheck && feed?.checkInterval}"><g:formatDate format="dd MMM HH:mm" date="${(feed.lastCheck + feed.checkInterval)}"/></g:elseif>
             <g:else>---</g:else>
           </td>
           <td>
@@ -89,7 +94,7 @@
             <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
           </td>
           <td>
-            <g:if test="${feed.status in [1,3,4]}"><g:link controller="feed" action="collect" id="${feed.id}" class="button-link button-link-positive"><span class="collect"></span></g:link></g:if>
+            <g:if test="${feed.status in [1,3,4]}"><g:link id="${feed.id}" controller="feed" action="collect" class="button-link button-link-positive"><span class="collect"></span></g:link></g:if>
           </td>
         </tr>
       </g:each>

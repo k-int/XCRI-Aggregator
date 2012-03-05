@@ -61,6 +61,7 @@ class FeedRunnerService {
     finally {
       feed_definition.lastCheck = System.currentTimeMillis()
       feed_definition.lastCollect = feed_definition.lastCheck
+      feed_definition.forceHarvest = false
       feed_definition.save(flush:true)
       log.debug("Removing feed from running_feeds map")
       running_feeds.remove(feed_definition_id)

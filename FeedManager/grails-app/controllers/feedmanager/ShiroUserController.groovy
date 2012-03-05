@@ -64,7 +64,7 @@ class ShiroUserController
             {
                 sendMail
                 {
-                    to user.email
+                    to userInstance.email
                     from "no-reply@k-int.com" //needs changing and putting into config
                     subject "Account Activated"
                     html g.render(template:"activationMail",  model:[username:params.name])
