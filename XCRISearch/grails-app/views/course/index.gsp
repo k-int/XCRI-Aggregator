@@ -27,7 +27,7 @@
       </p>
       </g:if>
       <h4>Course Identifier</h4><p>${course.source.identifier}</p>
-      <h4>Course Link</h4><p>${course.source.url}</p>
+      <h4>Course Link</h4><a href="${course.source.url}">${course.source.url}</a></p>
       <h4>Qualifications</h4>
       <p>
       <g:if test="${course.source.qual.title}">${course.source.qual.title}</g:if><g:if test="${course.source.qual.level}"> (Level: ${course.source.qual.level})</g:if>
