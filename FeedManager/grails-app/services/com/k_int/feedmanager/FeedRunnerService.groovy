@@ -130,23 +130,26 @@ class FeedRunnerService {
           switch ( feed_definition.publicationStatus ) {
             case 0:
               log.debug("Feed publication status == private");
-              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
               break;
             case 1:
               log.debug("Publish");
-              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
-              multipart_entity.addPart( "ulparam.force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
               feed_definition.publicationStatus = 2
               break;
             case 2:
               log.debug("Feed publication status == public");
-              multipart_entity.addPart( "ulparams.feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparams_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
               break;
             case 3:
               log.debug("Unpublish");
-              multipart_entity.addPart( "ulparam.feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
-              multipart_entity.addPart( "ulparam.force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
               feed_definition.publicationStatus = 0
+              break;
+            default:
+              log.warn("Unhandled feed publication status ${feed_definition.publicationStatus}");
               break;
           }
 
