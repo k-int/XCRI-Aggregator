@@ -14,6 +14,7 @@ class Datafeed {
     Long checkInterval
     String jsonResponse
     boolean active
+    boolean forceHarvest
     // ID to be used inside aggregator
     String dataProvider
     String resourceIdentifier

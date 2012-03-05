@@ -15,10 +15,11 @@ class RegisterFeedController {
 		params.owner = userInstance
 		params.target = AggregationService.get(1)
         params.active = true //set true, this should mean that it almost immediately gets picked up for harvesting
+        params.forceHarvest = false
         params.status = 1
         params.lastCheck = 0
-        //check interval set to 16hrs 48mins ??
-        params.checkInterval = 60*60*24*7*100  // Sec * Min * Hours * Days * Milliseconds
+        //check interval set to 1 week
+        params.checkInterval = 60*60*24*7*1000  // Sec * Min * Hours * Days * Milliseconds
      
         def feedInstance = new SingleFileDatafeed(params)
 

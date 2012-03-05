@@ -2,6 +2,7 @@ package feedmanager
 
 import com.k_int.feedmanager.*
 import grails.converters.*
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -25,14 +26,25 @@ class FeedController {
    * Run the feed now, testing, reporting any errors and processing any data
    */
   def collect() {
-    log.debug("collect")
-    //if force does not exist then set to false
-    params.force = "true";
-    // def feedDefinition = feedRunnerService.getDatafeed(params.id)
-    feedRunnerService.collect(params.boolean('force'), params.id)
+
+    def feedInstance = feedRunnerService.getDatafeed(params.id)
     
-    flash.message = "Feed ${params.id} has been collected"  
-    redirect(controller:"home", action: "index")
+    if (!feedInstance) {
+        flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'feed.label', default: 'Datafeed'), params.id])}"
+        redirect(controller: "home", action: "index")
+    }
+    else {
+        feedInstance.forceHarvest = true
+        
+        if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
+            flash.message = "Feed ${params.id} will be collected in next run"
+            redirect(controller:"home", action: "index")
+        }
+        else {
+            flash.message = "Unable to force collect on Feed ${params.id}"
+            redirect(controller:"home", action: "index")
+        }
+    }
   }
 
   // Allows the user to search any aggregations where the collected
@@ -175,7 +187,19 @@ class FeedController {
           redirect(controller: "home", action: "index")
       }
       else {
-          return [feed: feedInstance, id: params.id]
+          
+          
+       /*   TimeUnit.MILLISECONDS.toMinutes(millis),
+          TimeUnit.MILLISECONDS.toSeconds(millis) -
+          TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))*/
+          def intervalComplex = [:]
+          intervalComplex.intervalDays = TimeUnit.MILLISECONDS.toDays(feedInstance.checkInterval)
+          intervalComplex.intervalHours = TimeUnit.MILLISECONDS.toHours(feedInstance.checkInterval) - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(feedInstance.checkInterval))
+          intervalComplex.intervalMinutes = TimeUnit.MILLISECONDS.toMinutes(feedInstance.checkInterval) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(feedInstance.checkInterval))
+          
+          log.debug(intervalComplex.intervalDays + " days, " + intervalComplex.intervalHours + " hours, " + intervalComplex.intervalMinutes + " minutes")
+          
+          return [feed: feedInstance, interval: intervalComplex, id: params.id]
       }
   }
   
@@ -191,7 +215,11 @@ class FeedController {
                   return
               }
           }
+          
+          params.checkInterval = TimeUnit.DAYS.toMillis(params.long('intervalDays')) + TimeUnit.HOURS.toMillis(params.long('intervalHours')) + TimeUnit.MINUTES.toMillis(params.long('intervalMinutes')) 
+
           feedInstance.properties = params
+                 
           if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
               flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
               redirect(action: "dashboard", id: feedInstance.id)

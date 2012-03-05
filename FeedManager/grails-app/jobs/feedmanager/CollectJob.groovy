@@ -32,7 +32,8 @@ class CollectJob {
       feeds.each { feed ->
         log.debug("Checking ${feed.baseurl}");
         if ( ( feed.active ) &&
-             ( ( feed.lastCheck == null ) ||
+             ( ( feed.forceHarvest ) ||
+               ( feed.lastCheck == null ) ||
                ( feed.lastCheck == 0 ) || 
                ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
           log.debug("Collecting......");

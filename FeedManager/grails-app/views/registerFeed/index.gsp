@@ -22,7 +22,7 @@
     </g:hasErrors>
     <g:form action="save" name="addFeedForm">
       <ul>
-        <li><label for="dataProvider">Provider</label><input name="dataProvider" type="text" class="large" value="${feed?.dataProvider}"></li>
+        <li><label for="dataProvider">Short Code</label><input name="dataProvider" type="text" class="large" value="${feed?.dataProvider}"></li>
         <li><label for="baseurl">URL</label><input name="baseurl" type="text" class="large" value="${feed?.baseurl}"></li>
         <li><label for="feedname">Feed Name</label><input name="feedname" type="text" class="large" value="${feed?.feedname}"></li>
         <li><input type="submit" class="button-link" value="Submit"/></li>
