@@ -121,7 +121,7 @@ search = [
                             'Msc':'msc',
                             'Phd':'phd'],
          order: ['Distance (Closest)':'distance',
-                 'Relevance':'*'],
+                 'Relevance':'relevance'],
          distance: ['25km':'25km',
                     '50km':'50km',
                     '100km':'100km',

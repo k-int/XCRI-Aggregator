@@ -72,7 +72,7 @@
     
     function getQString()
     {
-        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val();
+        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val() + '&provider=' + $('select[name=provider] option:selected').val();
     }
         
     </g:javascript>
@@ -95,6 +95,10 @@
     		  <label for="q">Keyword(s)</label>
     		  <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
     		  <div class="inline-spinner" style="display:none;">Searching</div>        
+    		</li>
+    		<li class="adv" style="display:none">
+              <label for="provider">Providers</label>
+    		  <g:select name="provider" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.provider}" optionKey="value" optionValue="key" class="large"/>
     		</li>
     		<li class="adv" style="display:none">
               <label for="qualification">Qualification</label>

@@ -30,6 +30,8 @@ class SearchController {
     //get search config for advanced select boxes
     result.search_config = grailsApplication.config.search
     
+    result.search_config.provider = list_providers()
+    
     if ( params.q && params.q.length() > 0) {
 
       params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -64,7 +66,7 @@ class SearchController {
       def geo = false;
       def g_lat = null;
       def g_lon = null;
-      if ( ( params.location != null ) && ( params.location.length() > 0 ) ) {
+      if (params.order && params.order.equalsIgnoreCase('distance') && params.location != null && params.location.length() > 0 ) {
         log.debug("Geocoding")
         def gaz_resp = gazetteerService.resolvePlaceName(params.location)
         if ( gaz_resp.places?.size() > 0 ) {
@@ -243,9 +245,17 @@ class SearchController {
     StringWriter sw = new StringWriter()
 
     if ( ( params != null ) && ( params.q != null ) )
-      sw.write("\"${params.q}\"")
+        if(params.q.equals("*")){
+            sw.write(params.q)
+        }
+        else{
+            sw.write("\"${params.q}\"")
+        }
     else
       sw.write("*:*")
+      
+    //ensure search is always on public
+    //sw.write(" AND recstatus:\"private\"")
 
     reversemap.each { mapping ->
 
@@ -433,12 +443,24 @@ class SearchController {
           }
           
           results.hits = search.response.hits;
-          
-          /*result.hits = search.response.hits
-          result.resultsTotal = search.response.hits.totalHits*/
-
       }
       
       render results as JSON
+  }
+  
+  def list_providers()
+  {
+      def provider = ['All':'*']
+      
+      def mongo = new com.gmongo.GMongo();
+      def db = mongo.getDB("xcri")
+      
+      db.providers.find().each {
+          provider.(it.label) = it.identifier
+      }
+      
+      
+      
+      return provider
   }
 }
