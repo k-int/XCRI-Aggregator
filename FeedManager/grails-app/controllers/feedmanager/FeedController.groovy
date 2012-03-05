@@ -256,6 +256,7 @@ class FeedController {
       default:
         break;
     }
+    feedInstance.forceHarvest = true;
 
     if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
       flash.message = "${message(code: 'default.updated.message', args: [message(code: 'datafeed.label', default: 'Datafeed'), feedInstance.id])}"
