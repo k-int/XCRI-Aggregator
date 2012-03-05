@@ -90,7 +90,9 @@
              ${feed.totalRecords}
           </td>
           <td>
-            <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:\-?[1-9]/)}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:if>
+            <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:\-?[1-9]/)}">
+              <g:link controller="feed" action="console" id="${feed.id}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:link>
+            </g:if>
             <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
           </td>
           <td>
