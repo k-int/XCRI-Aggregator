@@ -14,11 +14,11 @@
     <h1>Register</h1>
     <g:form method="post" action="processRegistration" name="registrationForm">
     	<ul>
-    		<li><label for="new_username">Username</label><input name="new_username" type="text" class="medium"/></li>
+    		<li><label for="username">Username</label><input name="username" type="text" class="medium"/></li>
     		<li><label for="new_name">Name</label><input name="new_name" type="text" class="medium"/></li>
     		<li><label for="new_institution">Institution</label><input name="new_institution" type="text" class="medium"/></li>
     		<li><label for="new_email">Email</label><input name="new_email" type="text" class="medium"/></li>
-    		<li><label for="new_password">Password</label><input name="new_password" type="password" class="medium"/></li>
+    		<li><label for="password">Password</label><input name="password" type="password" class="medium"/></li>
     		<li><label for="new_confirmation">Confirm Password</label><input name="new_confirmation" type="password" class="medium"/></li>    		
     		<li><input type="submit" class="button-link" value="Register"/></li>
     	</ul>
@@ -33,11 +33,11 @@
 					oForm.submit();
 				},
 		        rules: {
-		            new_username: { required: true, minlength: 5 },
+		            username: { required: true, minlength: 5 },
 		            new_name: { required: true },
 		            new_email: { required: true, email: true },
-		            new_password: { required: true, minlength: 6 },
-		            new_confirmation: { required: true, minlength: 6, equalTo: "[name=new_password]" }
+		            password: { required: true, minlength: 6 },
+		            new_confirmation: { required: true, minlength: 6, equalTo: "[name=password]" }
 		        } 		
 			});			
 		});

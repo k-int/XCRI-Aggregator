@@ -11,15 +11,15 @@ class RegisterController {
   }
 
   def processRegistration() {
-    log.debug("processRegistration for ${params.new_username}");
-    if ( ( params.new_username != null ) &&
-         ( params.new_password != null ) &&
+    log.debug("processRegistration for ${params.username}");
+    if ( ( params.username != null ) &&
+         ( params.password != null ) &&
 		 ( params.new_email != null ) &&
-         ( params.new_password == params.new_confirmation ) ) {
-      def user = ShiroUser.findByUsername(params.new_username)
+         ( params.password == params.new_confirmation ) ) {
+      def user = ShiroUser.findByUsername(params.username)
       if ( user == null ) {
-        log.debug("${params.new_username} user not found.. creating default");
-        user = new ShiroUser(username: params.new_username, name: params.new_name, email: params.new_email, institution: params.new_institution, passwordHash: new Sha256Hash(params.new_password).toHex())
+        log.debug("${params.username} user not found.. creating default");
+        user = new ShiroUser(username: params.username, name: params.new_name, email: params.new_email, institution: params.new_institution, passwordHash: new Sha256Hash(params.password).toHex())
         user.addToPermissions("*:*")
         user.save()
 		
