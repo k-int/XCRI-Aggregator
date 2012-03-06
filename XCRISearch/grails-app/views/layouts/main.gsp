@@ -33,7 +33,14 @@
 	document.createElement('article');
 	document.createElement('footer');
   </script>
-
+  <!--[if lte IE 8]>
+  <script>
+    String.prototype.trim = function() 
+    {
+	  return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");
+	};
+  </script>
+  <![endif]-->
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '${grailsApplication.config.coursedata.analytics.code}']);
