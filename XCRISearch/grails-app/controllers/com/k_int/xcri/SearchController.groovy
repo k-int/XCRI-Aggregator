@@ -247,7 +247,7 @@ class SearchController {
       sw.write("*:*")
       
     //ensure search is always on public
-    //sw.write(" AND recstatus:\"private\"")
+    sw.write(" AND recstatus:\"public\"")
 
     reversemap.each { mapping ->
 
@@ -445,7 +445,7 @@ class SearchController {
   
   def list_providers()
   {
-      def provider = ['All':'*']
+      def provider = ['All':'']
       
       def mongo = new com.gmongo.GMongo();
       def db = mongo.getDB("xcri")
