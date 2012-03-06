@@ -37,10 +37,6 @@
 	            <td>Yes<g:if test="${feed.lastCollect}">, last ran on <g:formatDate format="dd MMMM HH:mm" date="${feed.lastCollect}"/></g:if></td>     
 	        </tr>
 	        <tr>
-                <th>Last Check</th>
-                <td><g:if test="${feed.lastCheck}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCheck}"/></g:if><g:else>Never</g:else></td>
-            </tr>
-	        <tr>
 	            <th>Next Check</th>
 	            <td>
 	                <g:if test="${feed.lastCheck && feed.checkInterval}">
