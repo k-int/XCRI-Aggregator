@@ -72,7 +72,27 @@
     
     function getQString()
     {
-        return 'q=' + $('input[name=q]').val() + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val() + '&provider=' + $('select[name=provider] option:selected').val();
+        var query_str = 'q=' + $('input[name=q]').val().trim();
+                
+        if($('select[name=studyMode] option:selected').val() != '*')
+        {
+            query_str += '&studyMode=' + $('select[name=studyMode] option:selected').val();
+        }
+        if($('select[name=qualification] option:selected').val() != '*')
+        {
+             query_str += '&qualification=' + $('select[name=qualification] option:selected').val();
+        }
+        if($('input[name=location]').val() && $('input[name=location]').val().trim().length > 0)
+        {
+            query_str += '&location=' + $('input[name=location]').val();
+            query_str += '&distance=' + $('select[name=distance] option:selected').val();
+        }
+        if($('select[name=provider] option:selected').val().trim().length > 0)
+        {
+            query_str += '&provider=' + $('select[name=provider] option:selected').val();
+        }
+        
+        return  query_str;
     }
         
     </g:javascript>

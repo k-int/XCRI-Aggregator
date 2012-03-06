@@ -70,16 +70,16 @@
                 <td>
                 <g:if test="${(feed.publicationStatus != null)}">
 			      <g:if test="${feed.publicationStatus==0}">
-			        private (unpublished). To make it public, mark the feed as 'to be published' by clicking <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+			        private (unpublished). Request publication by clicking <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
 			      <g:if test="${feed.publicationStatus==1}">
-			        pending publication, to cancel and return to private (unpublished), click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+			        pending publication, to cancel and return to private (unpublished), click <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
 			      <g:if test="${feed.publicationStatus==2}">
-			        public (published). To mark the courses from this feed for withdrawl from the public search interface click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+			        public (published). Request withdrawl from the public search interface by clicking <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
 			      <g:if test="${feed.publicationStatus==3}">
-			        pending removal from the public search interface. To cancel and return to "Published", click <g:link controller="feed" action="publish" id="${id}">Here</g:link>
+			        pending removal from the public search interface. To cancel and return to "Published", click <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
                 </g:if>
                 </td>
