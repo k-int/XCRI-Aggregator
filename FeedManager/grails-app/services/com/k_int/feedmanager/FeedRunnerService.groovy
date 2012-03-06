@@ -140,7 +140,7 @@ class FeedRunnerService {
               break;
             case 2:
               log.debug("Feed publication status == public");
-              multipart_entity.addPart( "ulparams_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
               break;
             case 3:
               log.debug("Unpublish");
