@@ -56,7 +56,6 @@
         <tr>
           <th>Name</th>
           <th>Active</th>
-          <th>Last Harvest</th>
           <th>Last Check</th>
           <th>Next Check</th>
           <th>Public?</th>
@@ -69,10 +68,6 @@
         <tr>
           <td><g:link controller="feed" action="dashboard" id="${feed.id}">${feed.feedname}</g:link></td>
           <td><g:img dir="images/table" file="${feed.active}.png" class="centered" /></td>
-          <td>
-            <g:if test="${feed?.lastCollect}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCollect}"/></g:if>
-            <g:else>Never</g:else>
-          </td>
           <td>
             <g:if test="${feed?.lastCheck}"><g:formatDate format="dd MMM HH:mm" date="${feed.lastCheck}"/></g:if>
             <g:else>Never</g:else>
