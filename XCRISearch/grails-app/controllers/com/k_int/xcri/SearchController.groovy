@@ -164,18 +164,10 @@ class SearchController {
           }
       */
 
-     /*testSearchClosure(search_closure)
-
-      def search = esclient.search{
-                                      indices "courses"
-                                      search_closure
-      }*/
-
       println "Search returned $search.response.hits.totalHits total hits"
       println "First hit course is $search.response.hits[0]"
       result.hits = search.response.hits
       result.resultsTotal = search.response.hits.totalHits
-      // result.facets = search.response.facets?.facets
 
       // We pre-process the facet response to work around some translation issues in ES
       if ( search.response.facets != null ) {
@@ -272,7 +264,9 @@ class SearchController {
         }
         else {
           // Only add the param if it's length is > 0 or we end up with really ugly URLs
-          if ( params[mapping.key].length() > 0 && params[mapping.key].equalsIgnoreCase('*') ) {
+          // II : Changed to only do this if the value is NOT an *
+          if ( params[mapping.key].length() > 0 && 
+               ! ( params[mapping.key].equalsIgnoreCase('*') ) ) {
             sw.write(" AND ")
             sw.write(mapping.value)
             sw.write(":")
@@ -282,7 +276,8 @@ class SearchController {
       }
     }
 
-    sw.toString()
+    def result = sw.toString();
+    result;
   }
 
   def renderRSSResponse(results) {
