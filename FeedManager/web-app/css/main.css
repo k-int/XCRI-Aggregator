@@ -861,3 +861,29 @@ a:hover .deletion
 	border-bottom: 1px dashed #DFDFDF;
 	padding: 0.5em 0.6em;
 }
+
+/* parallel dt dl dd */
+
+.parallel *
+{
+    padding:0;
+    margin:0;
+}
+
+dl.parallel
+{
+	display:block;
+    width:300px;
+    overflow:hidden;
+}
+.parallel dt 
+{
+    float:left;
+    width:90px; /* adjust the width; make sure the total of both is 100% */
+    font-weight: bold;
+}
+.parallel dd 
+{
+    float:left;
+    width:180px; /* adjust the width; make sure the total of both is 100% */
+}

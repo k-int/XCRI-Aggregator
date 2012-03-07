@@ -164,7 +164,7 @@ class FeedRunnerService {
             log.debug("Assigning json response to database object");
             feed_definition.jsonResponse = data as JSON
             feed_definition.status=3
-            feed_definition.statusMessage="Deposit:OK - code:${data?.code} / status:${data.status} / message:${data.message}";
+            feed_definition.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
             if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) )
               feed_definition.resourceIdentifier=data.resource_identifier
             feed_definition.checksum = md5sumHex

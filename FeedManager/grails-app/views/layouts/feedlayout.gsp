@@ -29,6 +29,14 @@
   <script src="${resource(dir:'js/qtip', file:'jquery.qtip.min.js')}" type="text/javascript"></script>     
   <g:layoutHead/>
   <r:layoutResources />
+  <!--[if lte IE 8]>
+  <script>
+    String.prototype.trim = function() 
+    {
+      return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");
+    };
+  </script>
+  <![endif]-->
   <script>
     /* HTML5 elements for ie */
     document.createElement('header');

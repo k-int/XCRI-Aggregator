@@ -12,7 +12,8 @@
     {  
 	    $('.home').addClass('active');
 	    
-	    $('img[title]').qtip(
+
+	    $('img[title]:not(.complex-msg)').qtip(
 	    {
 	       position: 
 	       {
@@ -21,14 +22,59 @@
 	       },
 	       style:
 	       {
-	         classes: 'ui-tooltip-rounded ui-tooltip-dark'
+	          classes: 'ui-tooltip-rounded ui-tooltip-dark'
 	       },
 	       hide: 
 	       {
-	            fixed: true
+	          fixed: true
 	       }
 	    });
+	    
+	    $('.complex-msg').qtip(
+        {
+           content: 
+           {
+              text: function(api) 
+              {
+                // Retrieve content from custom attribute of the selector element.
+                return splitMessage($(this).attr('title'));
+              }
+           },
+           position: 
+           {
+              my: 'top center',  // Position my top right...
+              at: 'bottom center', // at the top center of...
+           },
+           style:
+           {
+              classes: 'ui-tooltip-rounded ui-tooltip-dark'
+           },
+           hide: 
+           {
+              fixed: true
+           }
+        });
 	});
+	
+	function splitMessage(fullString)
+	{
+        var messages = fullString.split("/");    
+	      
+        var tip = $('<dl class="parallel"></dl>');
+	       
+        for(var i = 0; i < messages.length; ++i)
+        {   
+            var oKey = messages[i].split(':')[0].trim();
+            var oValue = messages[i].split(':')[1].trim();
+      
+            if(oKey != null && oValue != null && oKey != '' && oValue != '' && oKey != 'null' && oValue != 'null')
+            {
+                tip.append('<dt>' + oKey + '</dt>')
+                   .append('<dd>' + oValue + '</dd>');
+            }
+        }
+        return tip;   
+	}
 
   </g:javascript>
   </head>
@@ -85,10 +131,17 @@
              ${feed.totalRecords}
           </td>
           <td>
-            <g:if test="${feed.status == 3 && feed.statusMessage.find(/code:\-?[1-9]/)}">
-              <g:link controller="feed" action="console" id="${feed.id}"><g:img dir="images/table" file="error.png" class="centered" title="${feed.statusMessage}"/></g:link>
+            <g:if test="${feed.status == 3 && feed.statusMessage?.find(/Code:\-?[1-9]/)}">
+                <g:link controller="feed" action="console" id="${feed.id}">
+                    <g:img dir="images/table" file="error.png" class="centered complex-msg" title="${feed.statusMessage}"/>
+                </g:link>
             </g:if>
-            <g:else><g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/></g:else>
+            <g:elseif test="${feed.statusMessage?.find(/Code:\-?[0-9]/)}">
+                <g:img dir="images/table" file="status-${feed.status}.png" class="centered complex-msg" title="${feed.statusMessage}"/> 
+            </g:elseif>
+            <g:else> 
+                <g:img dir="images/table" file="status-${feed.status}.png" class="centered" title="${feed.statusMessage}"/>       
+            </g:else>
           </td>
           <td>
             <g:if test="${feed.status in [1,3,4]}"><g:link id="${feed.id}" controller="feed" action="collect" class="button-link button-link-positive"><span class="collect"></span></g:link></g:if>
