@@ -5,9 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="layout" content="main" />
     <g:javascript>
-            
-    var CONTEXT_PATH = '<%= request.getContextPath()%>';
-        
     $(document).ready(function()
     {  
 	    $('.home').addClass('active');
