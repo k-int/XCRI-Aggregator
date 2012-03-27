@@ -27,182 +27,192 @@ class SearchController {
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-    //get search config for advanced select boxes
-    result.search_config = grailsApplication.config.search
-    
-    result.search_config.provider = list_providers()
-    
-    if ( params.q && params.q.length() > 0) {
-
-      params.max = Math.min(params.max ? params.int('max') : 10, 100)
-      params.offset = params.offset ? params.int('offset') : 0
-
-      //def params_set=params.entrySet()
+    try {
+      //get search config for advanced select boxes
+      result.search_config = grailsApplication.config.search
       
-      if(!params.subject) {
-         params.subject = []
-      }
-      else {
-          params.subject = [params.subject].flatten()
-      }
+      result.search_config.provider = list_providers()
       
-      if(!params.provider) {
-        params.provider = []
-      }
-      else {
-          params.provider = [params.provider].flatten()
-      } 
-      
-      if(!params.level) { 
-        params.level = []
-      }
-      else {
-          params.level = [params.level].flatten()
-      }
-            
-      def query_str = buildQuery(params)
-      log.debug("query: ${query_str}");
-
-      def geo = false;
-      def g_lat = null;
-      def g_lon = null;
-      if (params.order && params.order.equalsIgnoreCase('distance') && params.location != null && params.location.length() > 0 ) {
-        log.debug("Geocoding")
-        def gaz_resp = gazetteerService.resolvePlaceName(params.location)
-        if ( gaz_resp.places?.size() > 0 ) {
-          if ( gaz_resp.places[0] != null ) {
-            g_lat = gaz_resp.places[0].lat
-            g_lon = gaz_resp.places[0].lon
-            result.place = true
-            result.fqn =  gaz_resp.places[0].fqn
-            geo = true;
-            log.debug("Using lat/lon ${g_lat},${g_lon}");
-          }
-          else {
-            log.error("Something badly wrong with geocoding");
+      if ( params.q && params.q.length() > 0) {
+  
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.offset = params.offset ? params.int('offset') : 0
+  
+        //def params_set=params.entrySet()
+        
+        if(!params.subject) {
+           params.subject = []
+        }
+        else {
+            params.subject = [params.subject].flatten()
+        }
+        
+        if(!params.provider) {
+          params.provider = []
+        }
+        else {
+            params.provider = [params.provider].flatten()
+        } 
+        
+        if(!params.level) { 
+          params.level = []
+        }
+        else {
+            params.level = [params.level].flatten()
+        }
+              
+        def query_str = buildQuery(params)
+        log.debug("query: ${query_str}");
+  
+        def geo = false;
+        def g_lat = null;
+        def g_lon = null;
+        if (params.order && params.order.equalsIgnoreCase('distance') && params.location != null && params.location.length() > 0 ) {
+          log.debug("Geocoding")
+          def gaz_resp = gazetteerService.resolvePlaceName(params.location)
+          if ( gaz_resp.places?.size() > 0 ) {
+            if ( gaz_resp.places[0] != null ) {
+              g_lat = gaz_resp.places[0].lat
+              g_lon = gaz_resp.places[0].lon
+              result.place = true
+              result.fqn =  gaz_resp.places[0].fqn
+              geo = true;
+              log.debug("Using lat/lon ${g_lat},${g_lon}");
+            }
+            else {
+              log.error("Something badly wrong with geocoding");
+            }
           }
         }
-      }
-      else {
-        log.debug("No spatial");
-      }
-
-      def filters = geo;  // For adding more filters later.
-          
-      def search = esclient.search{
-        indices "courses"
-        types "course"
-        source {
-          from = params.offset
-          size = params.max
-          if ( geo == true ) {
-              sort = [
-                '_geo_distance' : [
-                  'provloc' : [
-                    'lat':"${g_lat}",
-                    'lon':"${g_lon}"
-                  ],
-                  'order' : 'asc',
-                  'unit' : 'km'
+        else {
+          log.debug("No spatial");
+        }
+  
+        def filters = geo;  // For adding more filters later.
+            
+        def search = esclient.search{
+          indices "courses"
+          types "course"
+          source {
+            from = params.offset
+            size = params.max
+            if ( geo == true ) {
+                sort = [
+                  '_geo_distance' : [
+                    'provloc' : [
+                      'lat':"${g_lat}",
+                      'lon':"${g_lon}"
+                    ],
+                    'order' : 'asc',
+                    'unit' : 'km'
+                  ]
                 ]
-              ]
-          }
-          if ( filters == true ) {
-            query {
-              filtered {
-                query {
-                  query_string (query: query_str)
-                }
-                filter {
-                  geo_distance {
-                    distance = params.distance
-                    provloc {
-                      lat=g_lat
-                      lon=g_lon
+            }
+            if ( filters == true ) {
+              query {
+                filtered {
+                  query {
+                    query_string (query: query_str)
+                  }
+                  filter {
+                    geo_distance {
+                      distance = params.distance
+                      provloc {
+                        lat=g_lat
+                        lon=g_lon
+                      }
                     }
                   }
                 }
               }
             }
-          }
-          else {
-            query {
-              query_string (query: query_str)
-            }
-          }
-          facets {
-            subject {
-              terms {
-                field = 'subject'
+            else {
+              query {
+                query_string (query: query_str)
               }
             }
-            provider
-            {
+            facets {
+              subject {
                 terms {
-                     field = 'provid'
+                  field = 'subject'
                 }
-            }
-            level
-            {
-                terms {
-                     field = 'qual.level'
-                }
+              }
+              provider
+              {
+                  terms {
+                       field = 'provid'
+                  }
+              }
+              level
+              {
+                  terms {
+                       field = 'qual.level'
+                  }
+              }
             }
           }
         }
-      }
-
-      /* It's possible to add the distance to the result even if not sorting by geo dist with
-          script_fields {
-            distance {
-              params {
-                lat=g_lat
-                lon=g_lon
+  
+        /* It's possible to add the distance to the result even if not sorting by geo dist with
+            script_fields {
+              distance {
+                params {
+                  lat=g_lat
+                  lon=g_lon
+                }
+                script="doc[\u0027provloc\u0027].distanceInKm(lat,lon)"
               }
-              script="doc[\u0027provloc\u0027].distanceInKm(lat,lon)"
             }
-          }
-      */
-
-      println "Search returned $search.response.hits.totalHits total hits"
-      println "First hit course is $search.response.hits[0]"
-      result.hits = search.response.hits
-      result.resultsTotal = search.response.hits.totalHits
-
-      // We pre-process the facet response to work around some translation issues in ES
-      if ( search.response.facets != null ) {
-        result.facets = [:]
-        search.response.facets.facets.each { facet ->
-          def facet_values = []
-          facet.value.entries.each { fe ->
-              
-            log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
-
-            if ( facet.key == 'provider' ) {
-              def term = resolveTermIdentifier(fe.term)
-              if ( term != null ) {
-                facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+        */
+  
+        println "Search returned $search.response.hits.totalHits total hits"
+        println "First hit course is $search.response.hits[0]"
+        result.hits = search.response.hits
+        result.resultsTotal = search.response.hits.totalHits
+  
+        // We pre-process the facet response to work around some translation issues in ES
+        if ( search.response.facets != null ) {
+          result.facets = [:]
+          search.response.facets.facets.each { facet ->
+            def facet_values = []
+            facet.value.entries.each { fe ->
+                
+              log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
+  
+              if ( facet.key == 'provider' ) {
+                def term = resolveTermIdentifier(fe.term)
+                if ( term != null ) {
+                  facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+                }
+                else {
+                  facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+                }
               }
               else {
                 facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
               }
+  
             }
-            else {
-              facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
-            }
-
+            
+            result.facets[facet.key] = facet_values
           }
-          
-          result.facets[facet.key] = facet_values
         }
+  
+        pagename='results'
+        // render(view:'results',model:result) 
       }
-
-      pagename='results'
-      // render(view:'results',model:result) 
+      else {
+        log.debug("No query.. Show search page")
+        // render(view:'index',model:result)
+      }
     }
-    else {
-      log.debug("No query.. Show search page")
-      // render(view:'index',model:result)
+    finally {
+      try {
+        mongo.close();
+      }
+      catch ( Exception e ) {
+        log.error("problem",e);
+      }
     }
 
     withFormat {
