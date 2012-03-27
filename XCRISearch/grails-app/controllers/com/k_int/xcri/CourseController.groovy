@@ -17,45 +17,53 @@ class CourseController {
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-    if ( params.id != null ) {
-      // Form passed in a query
-
-
-      def course = esclient.get {
-          index "courses"
-          type "course"
-          id params.id
-      }
-
-      if ( course != null ) {
-        result.course = course.response
-        // def caj = course as JSON
-        // log.debug("Got course ${caj}");
+    try {
+  
+      if ( params.id != null ) {
+        // Form passed in a query
+  
+  
+        def course = esclient.get {
+            index "courses"
+            type "course"
+            id params.id
+        }
+  
+        if ( course != null ) {
+          result.course = course.response
+          // def caj = course as JSON
+          // log.debug("Got course ${caj}");
+          
+        }
+        else {
+          log.error("Id search matched ${search.response.hits.totalHits} items.");
+          render(view:'notfound',model:result)
+        }
+  
+        result
         
+        withFormat {
+            html {
+              result
+            }
+            xml {
+              render result as XML
+            }
+            json {
+              render result as JSON
+            }
+          }
       }
       else {
-        log.error("Id search matched ${search.response.hits.totalHits} items.");
+        log.warn("No query.. Show search page")
         render(view:'notfound',model:result)
       }
-
-      result
-      
-      withFormat {
-          html {
-            result
-          }
-          xml {
-            render result as XML
-          }
-          json {
-            render result as JSON
-          }
-        }
+  
     }
-    else {
-      log.warn("No query.. Show search page")
-      render(view:'notfound',model:result)
+    catch ( Exception e ) {
     }
-
+    finally {
+      mongo.close();
+    }
   }
 }
