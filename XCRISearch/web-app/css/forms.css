@@ -99,7 +99,7 @@ form input[type="submit"]:first-child
 	margin-left:15.5%;
 }
 
-form a
+form a:not(.button-link)
 {
 	padding-top: 5px !important;
 	padding-bottom: 5px !important; 
