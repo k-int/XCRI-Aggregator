@@ -27,6 +27,11 @@ class SearchController {
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
+    def dunit = "miles"
+    if ( params.dunit == 'km' ) {
+      dunit = "km"
+    }
+
     try {
       //get search config for advanced select boxes
       result.search_config = grailsApplication.config.search
@@ -68,7 +73,7 @@ class SearchController {
         def g_lat = null;
         def g_lon = null;
         if (params.order && params.order.equalsIgnoreCase('distance') && params.location != null && params.location.length() > 0 ) {
-          log.debug("Geocoding")
+          // log.debug("Geocoding")
           def gaz_resp = gazetteerService.resolvePlaceName(params.location)
           if ( gaz_resp.places?.size() > 0 ) {
             if ( gaz_resp.places[0] != null ) {
@@ -77,7 +82,7 @@ class SearchController {
               result.place = true
               result.fqn =  gaz_resp.places[0].fqn
               geo = true;
-              log.debug("Using lat/lon ${g_lat},${g_lon}");
+              log.debug("Using lat/lon ${g_lat},${g_lon} distance unit is ${dunit}");
             }
             else {
               log.error("Something badly wrong with geocoding");
@@ -104,7 +109,7 @@ class SearchController {
                       'lon':"${g_lon}"
                     ],
                     'order' : 'asc',
-                    'unit' : 'km'
+                    'unit' : dunit
                   ]
                 ]
             }
@@ -116,7 +121,7 @@ class SearchController {
                   }
                   filter {
                     geo_distance {
-                      distance = params.distance
+                      distance = "${params.distance}${dunit}"
                       provloc {
                         lat=g_lat
                         lon=g_lon
@@ -165,11 +170,11 @@ class SearchController {
             }
         */
   
-        println "Search returned $search.response.hits.totalHits total hits"
-        println "First hit course is $search.response.hits[0]"
+        // println "Search returned $search.response.hits.totalHits total hits"
+        // println "First hit course is $search.response.hits[0]"
         result.hits = search.response.hits
         result.resultsTotal = search.response.hits.totalHits
-  
+
         // We pre-process the facet response to work around some translation issues in ES
         if ( search.response.facets != null ) {
           result.facets = [:]
@@ -177,7 +182,7 @@ class SearchController {
             def facet_values = []
             facet.value.entries.each { fe ->
                 
-              log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
+              // log.debug('adding to '+ facet.key + ': ' + fe.term + ' (' + fe.count + ' )')
   
               if ( facet.key == 'provider' ) {
                 def term = resolveTermIdentifier(fe.term)
@@ -215,6 +220,8 @@ class SearchController {
       }
     }
 
+
+
     withFormat {
       html {
         render(view:pagename,model:result)
@@ -235,7 +242,6 @@ class SearchController {
   }
 
   def testSearchClosure(c) {
-    log.debug("testSearchClosure");
     def builder = new GXContentBuilder()
     def b = builder.buildAsString(c)
     log.debug(b.toString())
@@ -261,7 +267,7 @@ class SearchController {
 
     reversemap.each { mapping ->
 
-      log.debug("testing ${mapping.key}");
+      // log.debug("testing ${mapping.key}");
 
       if ( params[mapping.key] != null ) {
         if ( params[mapping.key].class == java.util.ArrayList) {
@@ -275,8 +281,7 @@ class SearchController {
         else {
           // Only add the param if it's length is > 0 or we end up with really ugly URLs
           // II : Changed to only do this if the value is NOT an *
-          if ( params[mapping.key].length() > 0 && 
-               ! ( params[mapping.key].equalsIgnoreCase('*') ) ) {
+          if ( params[mapping.key].length() > 0 && ! ( params[mapping.key].equalsIgnoreCase('*') ) ) {
             sw.write(" AND ")
             sw.write(mapping.value)
             sw.write(":")
@@ -358,7 +363,7 @@ class SearchController {
     def result = []
 
     searchresults.hits?.each { doc ->
-      log.debug("adding ${doc} ${doc.source.title}");
+      ////  log.debug("adding ${doc} ${doc.source.title}");
       def docinfo = [];
 
       docinfo.add(['dc.title',doc.source.title])
@@ -381,7 +386,6 @@ class SearchController {
 
   def count = {
       
-      log.debug("in count method");
     def result = [:]
     // Get hold of some services we might use ;)
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
@@ -411,46 +415,62 @@ class SearchController {
     def mongo = new com.gmongo.GMongo();
     def db = mongo.getDB("xcri")
     // log.debug("Lookup ${term}");
-    log.debug(db.providers.findOne(identifier:term) as JSON)
+    // log.debug(db.providers.findOne(identifier:term) as JSON)
     
     db.providers.findOne(identifier:term);
     // log.debug("looked up ${prov}");
   }
   
-  def autocomplete()
-  {
-      def results = [:]
+  def autocomplete() {
+
+    def results = [:]
       
-      org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
-      org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+    org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
+    org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
+
           
-      log.debug("autcomplete called for val " + params.q)
+    log.debug("autcomplete called for val " + params.term)
+
+    if ( params.term ) {
       
       params.q = params.term
+      // params.q = '*' + params.q + '*'
       
-      if ( params.q && params.q.length() > 0)
-      {
-          
-          params.q = '*' + params.q + '*'
-          def query_str = buildQuery(params)
-          
-          def search = esclient.search{
-              indices "courses"
-              types "course"
-              source {
-                from = "0"
-                size = "20"
-                query {
-                    query_string (query: query_str, analyze_wildcard: true)
-                }
-                fields = ["title"]
-              }
+      if ( params.q && params.q.length() > 0) {
+            
+        // params.q = '*' + params.q + '*'
+        def query_str = buildQuery(params)
+            
+        def search = esclient.search{
+          indices "courses"
+          types "course"
+          source {
+            from = "0"
+            size = "20"
+            query {
+              query_string (query: query_str, analyze_wildcard: true)
+            }
+            fields = ["title"]
           }
-          
-          results.hits = search.response.hits;
+        }
+            
+        results.hits = search.response.hits;
+      }
+
+      if ( results.hits.maxScore ) {
+        log.debug("results.hits.maxscore: ${results.hits.maxScore}");
+        if ( results.hits.maxScore == Float.NaN ) {
+          results.hits.maxScore = -1;
+        }
       }
       
-      render results as JSON
+      try {
+        render results as JSON
+      }
+      catch ( Exception e ) {
+        log.error("Problem...",e);
+      }
+    }
   }
   
   def list_providers()

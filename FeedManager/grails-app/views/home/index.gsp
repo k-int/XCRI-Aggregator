@@ -91,7 +91,7 @@
       <g:else>
         Showing <em>${feedsTotal}</em> Feeds
       </g:else>
-      <span><g:link controller="registerFeed" action="index" class="button-link">Register New Feed</g:link><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${feedsTotal}" /></span>
+      <span><g:link controller="registerFeed" action="index" class="button-link">Register New XCRI Data Feed</g:link><g:paginate params="${params}" next="&nbsp;" prev="&nbsp;" maxsteps="1" total="${feedsTotal}" /></span>
     </div>
     <g:form controller="feed" action="collect">
     <table>
