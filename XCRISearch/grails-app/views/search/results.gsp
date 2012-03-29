@@ -136,7 +136,7 @@
        </li>
        <li class="adv" style="display:none">
             <label for="distance">Within</label>
-            <g:select name="distance" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.distance}" optionKey="value" optionValue="key" value="default" class="small"/> <g:select name="dunit" from="${search_config.dunit}" optionKey="value" optionValue="key" value="Miles"/>
+            <g:select name="distance" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.distance}" optionKey="value" optionValue="key" value="${params.distance}" class="small"/> <g:select name="dunit" from="${search_config.dunit}" optionKey="value" optionValue="key" value="${params.dunit}"/>
        </li>
        <li class="adv" style="display:none">
             <label for="order">Order by</label>
