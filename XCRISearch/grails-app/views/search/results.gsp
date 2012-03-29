@@ -275,7 +275,7 @@
 
             <li>Subjects: 
               <g:each in="${crs.source.subject}" var="subject">
-                <g:link controller="search" action="index" params='[q:"subject:${subject}"]'>${subject}</g:link>&nbsp;
+                <g:link controller="search" action="index" params='[q:"*",subject:"${subject}"]'>${subject}</g:link>&nbsp;
               </g:each>
             </li>
   
