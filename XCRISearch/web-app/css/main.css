@@ -662,7 +662,7 @@ footer span
 	color: #d6d6d6 !important;
 	font-weight: bold;
 	text-decoration:none;
-	padding: 4px 10px !important;
+	padding: 4px 10px;
 
 	-web-box-shadow: inset 0 1px 0 #797e8a;
 	-moz-box-shadow: inset 0 1px 0 #797e8a;

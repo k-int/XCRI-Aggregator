@@ -105,6 +105,17 @@ form a:not(.button-link)
 	padding-bottom: 5px !important; 
 }
 
+@-moz-document url-prefix()
+{
+	form a
+	{
+	    padding-top: 5px !important;
+	    padding-bottom: 5px !important; 
+	}
+}
+
+
+
 /* PAGINATION */
 
 .paginateButtons {
