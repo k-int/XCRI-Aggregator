@@ -136,7 +136,7 @@
        </li>
        <li class="adv" style="display:none">
             <label for="distance">Within</label>
-            <g:select name="distance" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.distance}" optionKey="value" optionValue="key" value="${params.distance ? params.distance : '100km'}" class="small"/>       
+            <g:select name="distance" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.distance}" optionKey="value" optionValue="key" value="default" class="small"/> <g:select name="dunit" from="${search_config.dunit}" optionKey="value" optionValue="key" value="Miles"/>
        </li>
        <li class="adv" style="display:none">
             <label for="order">Order by</label>
@@ -255,10 +255,12 @@
                   </g:link> via 
                   <g:if test="${crs.source.provtitle?.length() > 0}">${crs.source.provtitle}</g:if>
                   <g:else>Missing Provider Name (${crs.source.provid})</g:else>
-                  <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${crs.source._id}" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span>
-                  <span class="h-link-small">&lt;<g:link controller="course" action="index" id="${crs.source._id}" target="_blank" params="[format:'xml']">XML</g:link>&gt;</span>
                 </h3>
+
                 <ul>
+                  <g:if test="${place==true}">
+                    <li>Distance from ${params.location} : ${crs.sortValues[0].round(2)} ${params.dunit}</li>
+                  </g:if>
                   <g:if test="${crs.source.description?.length() > 0}"> 
                     <li>Qualification: ${crs.source.qual?.title}, ${crs.source.qual?.level}, ${crs.source.qual?.awardedBy}</li>
                     <li>
@@ -279,9 +281,6 @@
   
               <li>Course Link: <a href="${crs.source.url}">${crs.source.url}</a></li> 
 
-              <g:if test="${place==true}">
-                <li>Distance: ${crs.sortValues[0].round(2)}km</li>
-              </g:if>
 
           </ul>
         </li>
