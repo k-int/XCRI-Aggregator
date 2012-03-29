@@ -143,7 +143,7 @@
             <g:select name="order" from="${search_config.order}" optionKey="value" optionValue="key" value="${params.order ? params.order : 'distance'}" class="small"/>       
        </li>
        <li class="adv"  style="display:none">
-            <label for="location">My location is</label>
+            <label for="location">My postcode is</label>
             <input id="location" name="location" type="text" class="large" value="${params.location}">  
        </li>
        <li class="adv" style="display:none">
