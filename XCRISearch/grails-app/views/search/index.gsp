@@ -4,8 +4,9 @@
     <meta name="layout" content="main"/>
     <title>Search front page</title>
     <g:javascript>
-    $(document).ready(function()
-    {   
+    $(document).ready(function() {   
+
+
         $('form').submit(function() 
         {
             $('.inline-spinner').show();
@@ -16,7 +17,14 @@
         {
             evt.preventDefault();
             $('.adv').toggle('blind', 500); 
-            $(this).text($(this).text() == 'Show advanced search' ? 'Hide advanced search' : 'Show advanced search');
+            if ( $(this).text() == 'Show advanced search' ) {
+              $(this).text('Hide advanced search')
+              $('#adv').val("true");
+            }
+            else {
+              $(this).text('Show advanced search')
+              $('#adv').val("false");
+            }
             $(this).toggleClass('active');
         });
         
@@ -28,16 +36,11 @@
             {
                 $.getJSON(CONTEXT_PATH + "/search/autocomplete", request, function(data) 
                 {
-                    response($.map(data.hits.hits, function(item)
-                                                   {
-						                                return item.fields.title.value;
-						                            }));
+                    response($.map(data.hits.hits, function(item) { return item.fields.title.value; }));
                 });
             },
             select: function(event, ui) 
             { 
-                //alert(JSON.stringify(ui.item));
-            
                 $.getJSON(CONTEXT_PATH + '/search/count?q=' + ui.item.value + '&studyMode=' + $('select[name=studyMode] option:selected').val() + '&qualification=' + $('select[name=qualification] option:selected').val() + '&location=' + $('input[name=location]').val() + '&distance=' + $('select[name=distance] option:selected').val(), function(data) 
                 {
                     updateCount(data);
@@ -100,6 +103,7 @@
   <body>
     <h1>Discover course information...</h1>
     <g:form action="index" method="get">
+        <g:hiddenField name="adv" value="" id="adv"/>
         <div class="searchCounter default">
         <ul>
 	        <li>
@@ -116,7 +120,12 @@
     		  <input id="q" name="q" type="text" class="large" value="${params.q}" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" onkeyup="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}"/>
     		  <div class="inline-spinner" style="display:none;">Searching</div>        
     		</li>
-    		<li class="adv" style="display:none">
+                <g:if test="${params.adv==true}">
+    		  <li class="adv">
+                </g:if>
+                <g:else>
+    		  <li class="adv" style="display:none">
+                </g:else>
               <label for="provider">Providers</label>
     		  <g:select name="provider" onchange="${remoteFunction(action: 'count', params: 'getQString()', onSuccess: 'updateCount(data)', onFailure:'failCount(errorThrown)', method: 'GET' )}" from="${search_config.provider}" optionKey="value" optionValue="key" class="large"/>
     		</li>
