@@ -419,6 +419,8 @@ class SearchController {
     
     db.providers.findOne(identifier:term);
     // log.debug("looked up ${prov}");
+
+    mongo.close();
   }
   
   def autocomplete() {
@@ -483,8 +485,8 @@ class SearchController {
       db.providers.find().each {
           provider.(it.label) = it.identifier
       }
-      
-      
+
+      mongo.close();
       
       return provider
   }
