@@ -8,7 +8,11 @@ class MongoService {
 
   @javax.annotation.PostConstruct
   def startup() {
-    mongo = new com.gmongo.GMongo();
+    def options = new com.mongodb.MongoOptions()
+    options.socketKeepAlive = true
+    options.autoConnectRetry = true
+    options.slaveOk = true
+    mongo = new com.gmongo.GMongo('localhost', options);
   }
 
   @javax.annotation.PreDestroy
