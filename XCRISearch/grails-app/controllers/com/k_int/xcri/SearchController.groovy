@@ -10,6 +10,7 @@ class SearchController {
 
   def ESWrapperService
   def gazetteerService
+  def mongoService
 
   // Map the parameter names we use in the webapp with the ES fields
   def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
@@ -22,8 +23,7 @@ class SearchController {
     def result = [:]
 
     // Get hold of some services we might use ;)
-    def mongo = new com.gmongo.GMongo();
-    def db = mongo.getDB("xcri")
+    def db = mongoService.getMongo().getDB("xcri")
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
@@ -213,7 +213,6 @@ class SearchController {
     }
     finally {
       try {
-        mongo.close();
       }
       catch ( Exception e ) {
         log.error("problem",e);
@@ -412,15 +411,13 @@ class SearchController {
   }
 
   def resolveTermIdentifier(term) {
-    def mongo = new com.gmongo.GMongo();
-    def db = mongo.getDB("xcri")
+    def db = mongoService.getMongo().getDB("xcri")
     // log.debug("Lookup ${term}");
     // log.debug(db.providers.findOne(identifier:term) as JSON)
     
     db.providers.findOne(identifier:term);
     // log.debug("looked up ${prov}");
 
-    mongo.close();
   }
   
   def autocomplete() {
@@ -479,14 +476,11 @@ class SearchController {
   {
       def provider = ['All':'']
       
-      def mongo = new com.gmongo.GMongo();
-      def db = mongo.getDB("xcri")
+      def db = mongoService.getMongo().getDB("xcri")
       
       db.providers.find().each {
           provider.(it.label) = it.identifier
       }
-
-      mongo.close();
       
       return provider
   }
