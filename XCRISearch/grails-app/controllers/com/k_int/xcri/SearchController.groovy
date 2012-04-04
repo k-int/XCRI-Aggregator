@@ -476,8 +476,6 @@ class SearchController {
   {
       def provider = ['All':'']
       
-      def mongo = new com.gmongo.GMongo();
-      mongo.setSocketKeepAlive():
       def db = mongoService.getMongo().getDB("xcri")
       
       db.providers.find().each {

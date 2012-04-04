@@ -16,7 +16,7 @@ class MongoService {
   }
 
   @javax.annotation.PreDestroy
-  dev shutdown() {
+  def shutdown() {
     mongo.close()
   } 
 
