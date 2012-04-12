@@ -16,6 +16,7 @@
     <h1>${feed.feedname}</h1>
     <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
+        <div class="message">For more help, try the <a href="https://github.com/k-int/XCRI-Aggregator/wiki/FAQ">FAQ Page</a></div>
     </g:if>
     <br/>
     <table class="vertical">

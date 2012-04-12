@@ -37,7 +37,7 @@ class FeedController {
         feedInstance.forceHarvest = true
         
         if (!feedInstance.hasErrors() && feedInstance.save(flush: true)) {
-            flash.message = "Feed ${params.id} will be collected in next run"
+            flash.message = "Feed ${params.feedname} has been added to the queue for collection. This step depends on systems and data that are not part of the Aggregator, so it can take several hours (though in most cases it is completed in a matter of minutes)"
             redirect(controller:"home", action: "index")
         }
         else {
