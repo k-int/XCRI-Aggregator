@@ -21,23 +21,20 @@
     <br/>
     <table class="vertical">
         <tr>
-            <th>Short Code</th>
+            <th title="Short code - Used internally, and in the minting of some short-form URLs">Short Code</th>
             <td>${feed.dataProvider}</td>
         </tr>
         <tr>
-            <th>URL</th>
+            <th title="The URL of the DataFeed to harvest">URL</th>
             <td>${feed.baseurl}</td>
         </tr>
-        <tr>
-            <th>Type</th>
-            <td>${feed.feedtype}</td>
-        </tr>
         <g:if test="${feed.resourceIdentifier && feed.resourceIdentifier.length() > 0}">
-	        <tr>
+	        <tr title="collection status of this data feed: if collection has been successful, the date and time of last collection are displayed; if unsuccessful, please follow the guidance provided here">
 	            <th>Harvested</th>
-	            <td>Yes<g:if test="${feed.lastCollect}">, last ran on <g:formatDate format="dd MMMM HH:mm" date="${feed.lastCollect}"/></g:if></td>     
+	            <td>Yes<g:if test="${feed.lastCollect}">, last ran on <g:formatDate format="dd MMMM HH:mm" date="${feed.lastCollect}"/></g:if>
+</td>     
 	        </tr>
-	        <tr>
+	        <tr title="collection status of this data feed: if collection has been successful, the date and time of last collection are displayed; if unsuccessful, please follow the guidance provided here">
 	            <th>Next Check</th>
 	            <td>
 	                <g:if test="${feed.lastCheck && feed.checkInterval}">
@@ -46,24 +43,25 @@
 	        </tr>
 	        <tr>
                 <th>Check Interval</th>
-                <td>
+                <td title="How often this feed is checked for updates">
                     <g:if test="${feed.checkInterval}">
                     ${use(DurationFormatter){TimeCategory.minus(new Date(new Date().getTime() + feed.checkInterval), new Date()).toString()}}
                     </g:if>
                 </td>
             </tr>
-	        <tr>
+	        <tr title="This is the identifier extracted from your XCRI Feed. It is used by the aggregator to detect changes. If you want the aggregator to update your records, rather than simply add new ones each year, it is important that you correctly form your XCRI documents">
                 <th>Resource Identifier</th>
                 <td>${feed.resourceIdentifier}</td>
             </tr>
 	        <tr>
-                <th>Searchable</th>
+                <th title="Tells you if records have actually been harvested from the remote XCRI source and are ready to be reviewed. If so, those records will be searchable in the feed manager for you to verify, but are not made visible in the public interface until you publish them.">Searchable</th>
                 <td>
                     ${feed.totalRecords > 0 ? 'Yes' : 'No'}, there are ${feed.totalRecords} records
                 </td>
             </tr>
+
             <tr>
-                <th>Publication Status</th>
+                <th title="">Publication Status</th>
                 <td>
                 <g:if test="${(feed.publicationStatus != null)}">
 			      <g:if test="${feed.publicationStatus==0}">
@@ -84,15 +82,16 @@
         </g:if>
         <g:else>
 	        <tr>
-	            <th>Harvested</th>
-	            <td>This feed has not been harvested yet. If this is a newly registered feed it should be picked up within the next 5 minutes. If this is an old feed you should check for errors which might be preventing the harvest process.</td>
+	            <th title="collection status of this data feed: if collection has been successful, the date and time of last collection are displayed; if unsuccessful, please follow the guidance provided here">Harvested</th>
+	            <td>
+This data feed has not been collected yet. If you registered it recently, please check back here for updates (these may take a few minutes or hours). If you registered it more than 24 hours ago, it is likely that collection has been prevented by errors. Please look at the <g:link controller="feed" action="console" id="${params.id}">Console Page</g:link> For more information.</td>
 	        </tr>
 	        <tr>
-                <th>Resource Identifier</th>
+                <th title="This is the identifier extracted from your XCRI Feed. It is used by the aggregator to detect changes. If you want the aggregator to update your records, rather than simply add new ones each year, it is important that you correctly form your XCRI documents">Resource Identifier</th>
                 <td>This feed will have an identifier once a harvest has been completed</td>
             </tr>
 	        <tr>
-                <th>Searchable</th>
+                <th  title="Tells you if records have actually been harvested from the remote XCRI source and are ready to be reviewed. If so, those records will be searchable in the feed manager for you to verify, but are not made visible in the public interface until you publish them.">Searchable</th>
                 <td>
                     No
                 </td>
