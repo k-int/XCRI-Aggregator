@@ -1,0 +1,6 @@
+The c# toolkit has been constructed under mono using dmcs to build..
+
+
+Build command line
+
+dmcs...

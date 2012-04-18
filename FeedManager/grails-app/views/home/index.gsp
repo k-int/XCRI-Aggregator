@@ -80,6 +80,7 @@
     <h1>Your Feeds <span class="h-link-small">&lt;<g:link action="index" target="_blank" params="[format:'json']">JSON</g:link>&gt;</span></h1>
     <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
+        <div class="message">For more help, try the <a href="https://github.com/k-int/XCRI-Aggregator/wiki/FAQ">FAQ Page</a></div>
     </g:if>
     <div class="paginateButtons">
       <g:if test="${params.int('offset')}">
