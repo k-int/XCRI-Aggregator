@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog
+	xmlns="http://xcri.org/profiles/1.2/catalog"
+	xmlns:xcriTerms="http://xcri.org/profiles/catalog/terms"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:dcterms="http://purl.org/dc/terms/"
+	xmlns:credit="http://purl.org/net/cm"
+	xmlns:mlo="http://purl.org/net/mlo"
+	xmlns:courseDataProgramme="http://xcri.co.uk"
+	xsi:schemaLocation="http://xcri.org/profiles/1.2/catalog http://www.xcri.co.uk/bindings/xcri_cap_1_2.xsd http://xcri.org/profiles/1.2/catalog/terms  http://www.xcri.co.uk/bindings/xcri_cap_terms_1_2.xsd http://xcri.co.uk  http://www.xcri.co.uk/bindings/coursedataprogramme.xsd"
+	generated="2012-04-01T10:24:00Z">
+	<dc:description xml:lang="en">Recreational courses offered by Wychwolf.com. Updated monthly. Licence: Open Government Licence (OGL)</dc:description>
+	<provider>
+		<dc:identifier>http://www.wychwolf.com/moodle</dc:identifier>
+		<dc:title>Wychwolf.com</dc:title>
+		<mlo:url>http://www.wychwolf.com/moodle</mlo:url>
+		<course>
+			<dc:description xsi:type="courseDataProgramme:metadataKeywords">W101, Creating a webcomic, Short course, Wychwolf.com</dc:description>
+			<dc:description>The web provides a platform for publication that previously required hours sweating over a photcopier and long stapler. This course covers the basics of creating a webcomic, including technical things like hosting, esoteric things like story and character design, and practical things like getting your artwork out of a sketchbook and onto the web.</dc:description>
+			<dc:identifier>http://www.wychwolf.com/moodle/course/view.php?id=5</dc:identifier>
+			<dc:subject>Webcomics</dc:subject>
+			<dc:title>Creating a webcomic</dc:title>
+			<mlo:url>http://www.wychwolf.com/moodle/course/view.php?id=5</mlo:url>
+			<abstract>This course covers the basics of creating a webcomic.</abstract>
+			<mlo:assessment><xhtml:div>
+				<xhtml:p>No assessment</xhtml:p>
+				</xhtml:div>
+			</mlo:assessment>
+			<mlo:prerequisite>There are no entry requirements but as this is an online course you should feel comfortable using a computer and accessing the internet.</mlo:prerequisite>
+			<presentation>
+				<dc:identifier>http://www.wychwolf.com/moodle/course/view.php?id=5</dc:identifier>
+				<dc:title>Creating a webcomic</dc:title>
+				<mlo:url>http://www.wychwolf.com/moodle/course/view.php?id=5</mlo:url>
+				<mlo:start dtf="2012-08-01">1 Aug 2012</mlo:start>
+				<end dtf="2012-08-31">31 August 2011</end>
+				<mlo:duration interval="P4M">1 month (approx)</mlo:duration>
+				<applyFrom dtf="2012-04-02">2 April 2012</applyFrom>
+				<applyUntil dtf="2012-08-01">1 August 2012</applyUntil>
+				<applyTo>http://www.wychwolf.com/contact</applyTo>
+				<studyMode identifier="PT">Part time</studyMode>
+				<attendanceMode identifier="DS">Distance without attendance</attendanceMode>
+				<mlo:languageOfInstruction>en</mlo:languageOfInstruction>
+				<mlo:cost>free</mlo:cost>
+			</presentation>
+		</course>
+		<mlo:location>
+			<mlo:postcode>RH10 4NS</mlo:postcode>
+			<mlo:address>1 Chapel Row</mlo:address>
+			<mlo:address>North Street</mlo:address>
+			<mlo:address>West Sussex</mlo:address>
+			<mlo:phone>07507 013798</mlo:phone>
+			<mlo:email>rob.englebright+xcri@gmail.com</mlo:email>
+		</mlo:location>
+	</provider>
+</catalog>
