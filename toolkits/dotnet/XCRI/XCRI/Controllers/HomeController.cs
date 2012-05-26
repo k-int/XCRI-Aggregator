@@ -8,11 +8,14 @@ using System.Net;
 using System.Globalization;
 using System.IO;
 using System.Web.Script.Serialization;
+
 // using System.Runtime.CompilerServices.DynamicAttribute;
 	
 
 // http://weblogs.asp.net/hajan/archive/2010/07/23/javascriptserializer-dictionary-to-json-serialization-and-deserialization.aspx
 // http://www.nikhilk.net/CSharp-Dynamic-Programming-JSON.aspx
+// http://procbits.com/2011/04/21/quick-json-serializationdeserialization-in-c/
+
 
 namespace Controllers
 {
@@ -33,6 +36,12 @@ namespace Controllers
 				// JavaScriptSerializer jss = new JavaScriptSerializer();
                 // dynamic data = jss.Deserialize<dynamic>(jsonResponse);
    			    // ViewData ["esresponse"] = data;
+				
+                // var jss = new JavaScriptSerializer();
+                // var dict = jss.Deserialize<dynamic>(jsonResponse);
+                // Console.WriteLine(dict);
+
+				// Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
    			    ViewData ["esresponse"] = jsonResponse;
 			}
 			
