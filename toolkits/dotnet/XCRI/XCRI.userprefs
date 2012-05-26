@@ -1,0 +1,19 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="XCRI/Controllers/HomeController.cs">
+    <Files>
+      <File FileName="XCRI/Default.aspx" Line="1" Column="1" />
+      <File FileName="XCRI/Default.aspx.cs" Line="1" Column="1" />
+      <File FileName="XCRI/Default.aspx.designer.cs" Line="21" Column="1" />
+      <File FileName="XCRI/Global.asax.cs" Line="1" Column="1" />
+      <File FileName="XCRI/web.config" Line="1" Column="1" />
+      <File FileName="XCRI/Global.asax" Line="1" Column="1" />
+      <File FileName="XCRI/Controllers/HomeController.cs" Line="1" Column="1" />
+      <File FileName="XCRI/Views/Home/Index.aspx" Line="12" Column="30" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
