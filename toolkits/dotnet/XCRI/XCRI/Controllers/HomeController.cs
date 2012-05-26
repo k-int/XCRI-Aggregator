@@ -12,7 +12,8 @@ namespace Controllers
 	{
 		public ActionResult Index ()
 		{
-			ViewData ["Message"] = "Welcome to ASP.NET MVC on Mono!";
+			System.Diagnostics.Debug.WriteLine("HomeController::Index");
+			ViewData ["Message"] = "XCRI Demo";
 			return View ();
 		}
 	}
