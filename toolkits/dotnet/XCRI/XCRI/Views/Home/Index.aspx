@@ -8,7 +8,9 @@
 	<div>
 		<%= Html.Encode(ViewData["Message"]) %>
 			
-		<%= Html.Encode(ViewData["esresponse"]) %>
+		<% if( ViewData["esresponse"] != null ) { %>
+			 <%= Html.Encode(ViewData["esresponse"]) %> 
+		<% }  %>
 		
 			<% using (Html.BeginForm()){ %>
 <p>

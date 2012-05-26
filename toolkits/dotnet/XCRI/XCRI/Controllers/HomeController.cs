@@ -30,13 +30,11 @@ namespace Controllers
             using (StreamReader sr = new StreamReader(es_response.GetResponseStream())) {
                 jsonResponse = sr.ReadToEnd();
 				
-				// JsonReader jsonReader = new JsonReader(jsonText);
-                // dynamic jsonObject = jsonReader.ReadValue();
-				
-				JavaScriptSerializer jss = new JavaScriptSerializer();
-                dynamic data = jss.Deserialize<dynamic>(jsonResponse);
-   			    ViewData ["esresponse"] = data;
-            }
+				// JavaScriptSerializer jss = new JavaScriptSerializer();
+                // dynamic data = jss.Deserialize<dynamic>(jsonResponse);
+   			    // ViewData ["esresponse"] = data;
+   			    ViewData ["esresponse"] = jsonResponse;
+			}
 			
 			ViewData ["Message"] = "XCRI Demo";
 			
