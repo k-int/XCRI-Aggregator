@@ -8,7 +8,8 @@
 	<div>
 		<%= Html.Encode(ViewData["Message"]) %>
 			
-			
+		<%= Html.Encode(ViewData["esresponse"]) %>
+		
 			<% using (Html.BeginForm()){ %>
 <p>
 <label for="FirstName">Course Name:</label>
