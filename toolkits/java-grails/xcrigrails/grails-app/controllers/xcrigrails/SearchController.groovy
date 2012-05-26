@@ -23,12 +23,14 @@ class SearchController {
   def index() { 
     def result = [:]
     if ( params.coursename ) {
-      def result.hits = ESQry(params.coursename)
+      result.hits = ESQry(params.coursename)
     }
     result
   }
 
   def ESQry(coursename) {
+
+    def result = null;
 
     es_endpoint.request(GET, groovyx.net.http.ContentType.JSON) { request ->
       uri.path = 'courses/course/_search'
@@ -43,11 +45,13 @@ class SearchController {
         log.debug( "Server Type: ${resp.getFirstHeader('Server')}" )
         log.debug( "content type: ${resp.headers.'Content-Type'}" )
 
-        json.hits.hits.each { doc ->
-          log.debug("Hit... ${doc}");
-        }
+        result = json
+        // json.hits.hits.each { doc ->
+        //   log.debug("Hit... ${doc}");
+        // }
       }
     }
+    result
   }
 
 }
