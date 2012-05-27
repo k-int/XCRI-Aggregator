@@ -7,22 +7,8 @@
 <body>
 	<div>
 		<%= Html.Encode(ViewData["Message"]) %>
-			
-		<% if( ViewData["esresponse"] != null ) { 
-		  Dictionary<String,object> hitsinfo = (Dictionary<String,object>) ViewData["esresponse"];
-		  Dictionary<String,object> h2 = (Dictionary<String,object>) hitsinfo["hits"];
-		  %>
-			 Response: <%= ViewData["esresponse"] %> <br/>
-		
-			 Hitcount: <%= h2["total"] %> <br/>
-		<% 
-		    foreach(KeyValuePair<String,object> entry in hitsinfo) {
-		      %> <%=entry.Key%> <br/> <%
-            }
-		  }  
-		%>
-		
-			<% using (Html.BeginForm()){ %>
+
+	    <% using (Html.BeginForm()){ %>
 <p>
 <label for="FirstName">Course Name:</label>
 <%= Html.TextBox("Course Name") %>
@@ -31,6 +17,24 @@
 <input type="submit" value="Register" />
 </p>
 <%}%>
+
+		
+		<% if( ViewData["esresponse"] != null ) { 
+		  dynamic esresp = (dynamic) ViewData["esresponse"];
+		  %>
+		             Hits: <%= esresp.hits.total %> <br/>
+		  <% 
+		  
+		    foreach ( dynamic hit in esresp.hits.hits ) {
+		      %>
+		        Course Title: <%= hit._source.title %> <br/>
+		        Course Provider: <%= hit._source.provtitle %> <br/>
+		        <hr/>
+		      <%
+		    }
+		  }  
+		%>
+		
 	</div>
 </body>
 

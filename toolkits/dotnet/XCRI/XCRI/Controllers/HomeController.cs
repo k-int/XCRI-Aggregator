@@ -33,18 +33,10 @@ namespace Controllers
             string jsonResponse = string.Empty;
             using (StreamReader sr = new StreamReader(es_response.GetResponseStream())) {
                 jsonResponse = sr.ReadToEnd();
-				
-				// JavaScriptSerializer jss = new JavaScriptSerializer();
-                // dynamic data = jss.Deserialize<dynamic>(jsonResponse);
-   			    // ViewData ["esresponse"] = data;
-				
-                // var jss = new JavaScriptSerializer();
-                // var dict = jss.Deserialize<dynamic>(jsonResponse);
-                // Console.WriteLine(dict);
+								
+				var jsonSerializer = new JsonSerializer();
+                dynamic eshits = jsonSerializer.Deserialize(new JsonTextReader(new StringReader(jsonResponse)));
 
-				// Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
-				// Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-				Dictionary<string, object> eshits = deserializeToDictionary(jsonResponse);
    			    ViewData ["esresponse"] = eshits;
 			}
 			
