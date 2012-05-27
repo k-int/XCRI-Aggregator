@@ -8,6 +8,7 @@ using System.Net;
 using System.Globalization;
 using System.IO;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 // using System.Runtime.CompilerServices.DynamicAttribute;
 	
@@ -42,13 +43,32 @@ namespace Controllers
                 // Console.WriteLine(dict);
 
 				// Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
-   			    ViewData ["esresponse"] = jsonResponse;
+				// Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+				Dictionary<string, object> eshits = deserializeToDictionary(jsonResponse);
+   			    ViewData ["esresponse"] = eshits;
 			}
 			
 			ViewData ["Message"] = "XCRI Demo";
 			
 			return View ();
 		}
-	}
-}
+	
+	    private Dictionary<string, object> deserializeToDictionary(string jo){
+                        Dictionary<string, object> values = JsonConvert.DeserializeObject<Dictionary<string, object>>(jo);
+                        Dictionary<string, object> values2 = new Dictionary<string, object>();
+                        foreach (KeyValuePair<string, object> d in values)
+                        {
+                            if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))
+                            {
+                                values2.Add(d.Key, deserializeToDictionary(d.Value.ToString()));
+                            }
+                            else
+                            {
+                                values2.Add(d.Key, d.Value);
+                            }
 
+                        }
+                        return values2;
+        }
+    }
+}
