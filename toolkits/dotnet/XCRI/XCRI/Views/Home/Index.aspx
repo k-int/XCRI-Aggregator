@@ -8,9 +8,19 @@
 	<div>
 		<%= Html.Encode(ViewData["Message"]) %>
 			
-		<% if( ViewData["esresponse"] != null ) { %>
-			 <%= Html.Encode(ViewData["esresponse"]) %> 
-		<% }  %>
+		<% if( ViewData["esresponse"] != null ) { 
+		  Dictionary<String,object> hitsinfo = (Dictionary<String,object>) ViewData["esresponse"];
+		  Dictionary<String,object> h2 = (Dictionary<String,object>) hitsinfo["hits"];
+		  %>
+			 Response: <%= ViewData["esresponse"] %> <br/>
+		
+			 Hitcount: <%= h2["total"] %> <br/>
+		<% 
+		    foreach(KeyValuePair<String,object> entry in hitsinfo) {
+		      %> <%=entry.Key%> <br/> <%
+            }
+		  }  
+		%>
 		
 			<% using (Html.BeginForm()){ %>
 <p>
