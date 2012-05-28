@@ -18,6 +18,7 @@ class CourseController {
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
     try {
+     log.debug("Look up course with id ${params.id}");
   
       if ( params.id != null ) {
         // Form passed in a query
@@ -30,13 +31,14 @@ class CourseController {
         }
   
         if ( course != null ) {
+          log.debug("Located course...");
           result.course = course.response
           // def caj = course as JSON
           // log.debug("Got course ${caj}");
           
         }
         else {
-          log.error("Id search matched ${search.response.hits.totalHits} items.");
+          log.error("es-get for ${params.id} matched ${search.response.hits.totalHits} items.");
           render(view:'notfound',model:result)
         }
   
