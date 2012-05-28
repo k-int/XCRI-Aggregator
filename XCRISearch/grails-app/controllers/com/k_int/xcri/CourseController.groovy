@@ -21,6 +21,7 @@ class CourseController {
   
       if ( params.id != null ) {
         // Form passed in a query
+        log.debug("Do lookup on course code ${params.id}");
   
   
         def course = esclient.get {
@@ -30,6 +31,10 @@ class CourseController {
         }
   
         if ( course != null ) {
+          log.debug("course: ${course}");
+          log.debug("course: ${course.response}");
+          log.debug("course: ${course.response.source}");
+
           result.course = course.response
           // def caj = course as JSON
           // log.debug("Got course ${caj}");
