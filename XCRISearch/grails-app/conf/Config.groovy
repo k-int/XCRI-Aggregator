@@ -122,10 +122,12 @@ search = [
                             'Phd':'phd'],
          order: ['Distance (Closest)':'distance',
                  'Relevance':'relevance'],
-         distance: ['25km':'25km',
-                    '50km':'50km',
-                    '100km':'100km',
-                    '250km':'250km']
+         distance: ['25':'25',
+                    '50':'50',
+                    '100':'100',
+                    '250':'250'],
+         dunit: ['Miles':'miles',
+                 'Kilometers':'km']
          ]
          
 

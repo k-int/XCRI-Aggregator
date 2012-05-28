@@ -76,7 +76,7 @@
   </head>
 
   <body>
-<h1>Course Data Feed Manager</h1>
+<h1>XCRI Data Feed Manager</h1>
 <div class="paginateButtons">
   <g:if test="${params.int('offset')}">
        Showing Feeds <em>${params.int('offset') + 1} - ${feedsTotal < (params.int('max') + params.int('offset')) ? feedsTotal : (params.int('max') + params.int('offset'))}</em> of <em>${feedsTotal}</em>

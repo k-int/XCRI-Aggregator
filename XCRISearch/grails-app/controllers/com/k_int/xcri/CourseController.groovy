@@ -5,6 +5,7 @@ import grails.converters.*
 class CourseController {
 
   def ESWrapperService
+  def mongoService
 
   def index() { 
     log.debug("Course controller, params.id=${params.id}")
@@ -12,8 +13,7 @@ class CourseController {
     def result = [:]
 
     // Get hold of some services we might use ;)
-    def mongo = new com.gmongo.GMongo();
-    def db = mongo.getDB("xcri")
+    def db = mongoService.getMongo().getDB("xcri")
     org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
     org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
@@ -63,7 +63,6 @@ class CourseController {
     catch ( Exception e ) {
     }
     finally {
-      mongo.close();
     }
   }
 }

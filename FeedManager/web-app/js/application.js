@@ -74,4 +74,21 @@ $(document).ready(function()
         success: $.noop, // Odd workaround for errorPlacement not firing!		
 	});
 
+        $('*[title]:not(.complex-msg)').qtip(
+           {
+              position:
+              {
+                 my: 'top center',  // Position my top right...
+                 at: 'bottom center', // at the top center of...
+              },
+              style:
+              {
+                 classes: 'ui-tooltip-rounded ui-tooltip-dark'
+              },
+              hide:
+              {
+                 fixed: true
+              }
+           });
+
 });
