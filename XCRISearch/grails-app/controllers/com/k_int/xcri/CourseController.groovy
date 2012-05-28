@@ -31,10 +31,6 @@ class CourseController {
         }
   
         if ( course != null ) {
-          log.debug("course: ${course}");
-          log.debug("course: ${course.response}");
-          log.debug("course: ${course.response.source}");
-
           result.course = course.response
           // def caj = course as JSON
           // log.debug("Got course ${caj}");
