@@ -221,7 +221,7 @@ class FeedRunnerService {
           indices "courses"
           types "course"
           query {
-              query_string (query: "provid:\"${provid}\"")
+              query_string (query: "provid:${provid}")
           }
       }
 
