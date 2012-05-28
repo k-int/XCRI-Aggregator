@@ -67,6 +67,7 @@ class FeedRunnerService {
       running_feeds.remove(feed_definition_id)
       
       //count records stored in elastic search
+      log.debug("refresh total record count");
       feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);   
       feed_definition.save(flush:true);
     }
@@ -209,8 +210,10 @@ class FeedRunnerService {
     result
   }
   
-  def getRecordCount(provid)
-  {
+  def getRecordCount(provid) {
+
+      log.debug("getRecordCount ${provid}");
+
       org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
       org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
       
@@ -221,6 +224,10 @@ class FeedRunnerService {
               query_string (query: "* AND provid:\"" + provid + "\"")
           }
       }
+
+     log.debug("Result of count: ${search}");
+     log.debug("Result of count: ${search.response}");
+     log.debug("Result of count: ${search.response.count}");
  
      return search.response.count
   }
