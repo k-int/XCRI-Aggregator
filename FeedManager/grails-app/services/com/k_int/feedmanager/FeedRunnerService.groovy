@@ -221,12 +221,12 @@ class FeedRunnerService {
           indices "courses"
           types "course"
           query {
-              query_string (query: "* AND provid:\"" + provid + "\"")
+              query_string (query: "provid:\"${provid}\"")
           }
       }
 
-     log.debug("Result of count: ${search}");
-     log.debug("Result of count: ${search.response}");
+     // log.debug("Result of count: ${search}");
+     // log.debug("Result of count: ${search.response}");
      log.debug("Result of count: ${search.response.count}");
  
      return search.response.count
