@@ -19,16 +19,6 @@ class BootStrap {
   
       def user = ShiroUser.findByUsername("admin")
 
-      if ( ApplicationHolder.application.config.feedmanager.default.aggr ) {
-        def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
-        if ( !aggr ) {
-          def aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
-                                                 identity:'admin',
-                                                 credentials:'password',
-                                                 owner:user).save();
-        }
-      }
-     
       if ( user == null ) {
 		  
 	log.error("${ApplicationHolder.application.config.locations}")
@@ -60,9 +50,21 @@ class BootStrap {
         log.debug("Admin user verified");
         
         user.addToRoles(adminRole)
-        user.save()
+        user.save(flush:true)
       }
 
+      // If a default aggregator is declared
+      if ( ApplicationHolder.application.config.feedmanager.default.aggr ) {
+        // Make sure we have the appropriate record in the database
+        def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
+        if ( !aggr ) {
+          def aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
+                                                 identity:ApplicationHolder.application.config.feedmanager.default.user,
+                                                 credentials:ApplicationHolder.application.config.feedmanager.default.pass,
+                                                 owner:user).save();
+        }
+      }
+     
       log.debug("Bootstrap completed");
     }
 
