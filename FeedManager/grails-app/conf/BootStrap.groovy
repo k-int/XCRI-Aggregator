@@ -54,13 +54,13 @@ class BootStrap {
       }
 
       // If a default aggregator is declared
-      if ( ApplicationHolder.application.config.feedmanager.default.aggr ) {
+      if ( ApplicationHolder.application.config.feedmanager.deflt.aggr ) {
         // Make sure we have the appropriate record in the database
-        def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
+        def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.deflt.aggr)
         if ( !aggr ) {
-          aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
-                                        identity:ApplicationHolder.application.config.feedmanager.default.user,
-                                        credentials:ApplicationHolder.application.config.feedmanager.default.pass,
+          aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.deflt.aggr,
+                                        identity:ApplicationHolder.application.config.feedmanager.deflt.user,
+                                        credentials:ApplicationHolder.application.config.feedmanager.deflt.pass,
                                         owner:user).save();
         }
         else {
