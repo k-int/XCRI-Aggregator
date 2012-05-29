@@ -59,10 +59,16 @@ class BootStrap {
         def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
         if ( !aggr ) {
           aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
-                                                 identity:ApplicationHolder.application.config.feedmanager.default.user,
-                                                 credentials:ApplicationHolder.application.config.feedmanager.default.pass,
-                                                 owner:user).save();
+                                        identity:ApplicationHolder.application.config.feedmanager.default.user,
+                                        credentials:ApplicationHolder.application.config.feedmanager.default.pass,
+                                        owner:user).save();
         }
+        else {
+          log.debug("Existing aggregator lookup : ${aggr}");
+        }
+      }
+      else {
+        log.debug("No default aggr defined in config");
       }
      
       log.debug("Bootstrap completed");
