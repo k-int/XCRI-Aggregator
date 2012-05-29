@@ -58,10 +58,20 @@ class BootStrap {
         // Make sure we have the appropriate record in the database
         def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.deflt.aggr)
         if ( !aggr ) {
+          log.debug("Creating new aggr service record");
           aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.deflt.aggr,
                                         identity:ApplicationHolder.application.config.feedmanager.deflt.user,
                                         credentials:ApplicationHolder.application.config.feedmanager.deflt.pass,
-                                        owner:user).save();
+                                        owner:user)
+          if ( aggr.save() ) {
+            log.debug("Saved new aggr OK");
+          }
+          else {
+            log.debug("problem saving aggr: ${aggr}");
+            aggr.errors.each { e ->
+              log.debug("problem saving aggr: ${e}");
+            }
+          }
         }
         else {
           log.debug("Existing aggregator lookup : ${aggr}");
