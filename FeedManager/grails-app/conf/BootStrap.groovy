@@ -58,7 +58,7 @@ class BootStrap {
         // Make sure we have the appropriate record in the database
         def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
         if ( !aggr ) {
-          def aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
+          aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
                                                  identity:ApplicationHolder.application.config.feedmanager.default.user,
                                                  credentials:ApplicationHolder.application.config.feedmanager.default.pass,
                                                  owner:user).save();
