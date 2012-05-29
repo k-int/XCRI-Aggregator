@@ -27,7 +27,7 @@ class ESWrapperService {
 
     def clus_nm = ApplicationHolder.application.config.aggr.es.cluster ?: "aggr"
 
-    log.info("Using ${clus_nm} as cluster name...");
+    log.info("[xcri discover ES wrapper] Using ${clus_nm} as cluster name...");
 
 
     def nodeBuilder = new org.elasticsearch.groovy.node.GNodeBuilder()
