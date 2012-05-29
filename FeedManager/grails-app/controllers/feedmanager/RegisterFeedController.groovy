@@ -12,8 +12,8 @@ class RegisterFeedController {
 		ShiroUser userInstance = ShiroUser.findByUsername(SecurityUtils.subject?.principal);
 		
         //set defaults
-		params.owner = userInstance
-		params.target = AggregationService.get(1)
+	params.owner = userInstance
+	params.target = AggregationService.get(1)
         params.active = true //set true, this should mean that it almost immediately gets picked up for harvesting
         params.forceHarvest = false
         params.status = 1

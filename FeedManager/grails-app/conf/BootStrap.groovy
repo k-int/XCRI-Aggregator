@@ -18,34 +18,25 @@ class BootStrap {
       }
   
       def user = ShiroUser.findByUsername("admin")
+
+      if ( ApplicationHolder.application.config.feedmanager.default.aggr ) {
+        def aggr = AggregationService.findByBaseurl(ApplicationHolder.application.config.feedmanager.default.aggr)
+        if ( !aggr ) {
+          def aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
+                                                 identity:'admin',
+                                                 credentials:'password',
+                                                 owner:user).save();
+        }
+      }
      
       if ( user == null ) {
 		  
-		log.error("${ApplicationHolder.application.config.locations}")
+	log.error("${ApplicationHolder.application.config.locations}")
         log.debug("admin user not found.. creating default");
         user = new ShiroUser(username: "admin", name: "Mr Administrator", passwordHash: new Sha256Hash("password").toHex(), email: "email@somedomain.com", verified: Boolean.TRUE, active: Boolean.TRUE)
         user.addToPermissions("*:*")
         user.addToRoles(adminRole)
         user.save()
-
-        // If there is a default feed manager set up, use it to set up a default config
-        if ( ApplicationHolder.application.config.feedmanager?.default?.aggr != null ) {
-
-          log.debug("Validating default feeds for testing... Aggr is ${ApplicationHolder.application.config.feedmanager.default.aggr}");
-
-          def test_aggr = new AggregationService(baseurl:ApplicationHolder.application.config.feedmanager.default.aggr,
-                                                 identity:'admin',
-                                                 credentials:'password',
-                                                 owner:user);
-
-		  if(test_aggr.save(flush: true))
-		  {
-			  log.debug("AggregationService Save Success");
-		  }
-		  else
-		  {
-			  log.error("AggregationService Save Failed ${test_aggr.errors}");
-		  }
 
           // XXP Feeds via /services/service.asmx/getXCRI?strUKPRN=strin.. 
           def feeds = [
@@ -64,11 +55,6 @@ class BootStrap {
             [name:'Higher York', url:'http://www.xxp.org/getHYCourses.html',dp:'HY']
           ]
 
-          // validate(feeds,user,test_aggr);
-        }
-        else {
-          log.debug("No default aggr configured for this system");
-        }
       }
       else {
         log.debug("Admin user verified");
