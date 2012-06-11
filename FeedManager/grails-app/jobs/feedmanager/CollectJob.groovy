@@ -27,21 +27,29 @@ class CollectJob {
       }
     }
 
+
     if ( !already_running ) {
-      def feeds = com.k_int.feedmanager.SingleFileDatafeed.findAll()
-      feeds.each { feed ->
-        log.debug("Checking ${feed.baseurl}");
-        if ( ( feed.active ) &&
-             ( ( feed.forceHarvest ) ||
-               ( feed.lastCheck == null ) ||
-               ( feed.lastCheck == 0 ) || 
-               ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
-          log.debug("Collecting......");
-          feedRunnerService.collect(false, feed.id)
+      try {
+        def feeds = com.k_int.feedmanager.SingleFileDatafeed.findAll()
+        feeds.each { feed ->
+          log.debug("Checking ${feed.baseurl}");
+          if ( ( feed.active ) &&
+               ( ( feed.forceHarvest ) ||
+                 ( feed.lastCheck == null ) ||
+                 ( feed.lastCheck == 0 ) || 
+                 ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
+            log.debug("Collecting......");
+            feedRunnerService.collect(false, feed.id)
+          }
         }
       }
-      log.debug("Collect job completed");
-      running = false;
+      catch (Exception e) {
+        log.error("Problem in collect job",e);
+      }
+      finally {
+        log.debug("Collect job completed");
+        running = false;
+      }
     }
     else {
       log.debug("Feed collector job already running, not starting a second thread");

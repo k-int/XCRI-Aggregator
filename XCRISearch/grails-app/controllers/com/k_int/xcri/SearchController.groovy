@@ -260,10 +260,10 @@ class SearchController {
         }
     else
       sw.write("*:*")
-      
+
     //ensure search is always on public
     sw.write(" AND recstatus:\"public\"")
-
+      
     reversemap.each { mapping ->
 
       // log.debug("testing ${mapping.key}");
