@@ -12,11 +12,18 @@ class HomeController {
 	  
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
 	
+    def user_id = userInstance.id
+    
+    if(userInstance.roles.contains("Administrator"))
+    {
+        user_id = "*" //we want to return all feeds
+    }
+    
 	def results = com.k_int.feedmanager.Datafeed.createCriteria().list(max: params.max, offset: params.offset)
 	{
 		and
 		{
-			eq("owner.id", userInstance.id)
+            eq("owner.id", user_id)
 			if(params.sort && params.order) { order(params.sort, params.order)}
 		}
 	}
