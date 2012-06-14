@@ -9,7 +9,8 @@ class HomeController {
   def index() {
       
     ShiroUser userInstance = ShiroUser.findByUsername(SecurityUtils.subject?.principal);
-    
+    def adminRole = ShiroRole.findByName("Administrator")
+
     params.max = Math.min(params.max ? params.int('max') : 10, 100)
   
     def user_id = userInstance.id
@@ -20,7 +21,7 @@ class HomeController {
     
     def results = com.k_int.feedmanager.Datafeed.createCriteria().list(max: params.max, offset: params.offset) {
       and {
-        if ( userInstance.roles.contains("Administrator") ) {
+        if ( userInstance.roles.contains(adminRole) ) {
           // no restriction
         }
         else {
