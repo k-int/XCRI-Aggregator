@@ -49,13 +49,13 @@
           ${presentation.description}<br/>
           </g:if>
           <ul>   
-                <li>Running from ${presentation.start} until ${presentation.end} <g:if test="(${presentation.duration}">(${presentation.duration})</g:if></li>
-                <li>Apply for this course between ${presentation.applicationsOpen} and ${presentation.applicationsClose}</li>
+                <li>Running<g:if test="${presentation.start}"> from ${presentation.start}</g:if><g:if test="${presentation.end}"> until ${presentation.end}</g:if> <g:if test="${presentation.duration}">(${presentation.duration})</g:if></li>
+                <g:if test="${presentation.applicationsOpen && presentation.applicationsClose}"><li>Apply for this course between ${presentation.applicationsOpen} and ${presentation.applicationsClose}</li></g:if>
                 <g:if test="${presentation.applyTo}"> <li>Applications can be submitted to ${presentation.applyTo}</li></g:if>
                 <g:if test="${presentation.enquireTo}"><li>Enquiries can be made to ${presentation.enquireTo}</li></g:if>
-                <g:if test="${presentation.cost}"><li>The cost of this course is ${presentation.cost}</li></g:if>
+                <g:if test="${presentation.cost}"><li>The cost of this course is £<g:formatNumber number="${presentation.cost}" format="0.00"/></li></g:if>
                 <g:if test="${presentation.venue}">
-                <li>Taught at ${presentation.venue.name}, ${presentation.venue.street}, ${presentation.venue.town}, ${presentation.venue.postcode}</li>
+                <li>Taught at ${presentation.venue.name},<g:if test="${presentation.venue.street}"> ${presentation.venue.street},</g:if><g:if test="${presentation.venue.town}"> ${presentation.venue.town},</g:if><g:if test="${presentation.venue.postcode}"> ${presentation.venue.postcode}</g:if></li>
                 </g:if>
           </ul>
           <br/>
