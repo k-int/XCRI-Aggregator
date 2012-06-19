@@ -42,6 +42,9 @@ class CollectJob {
             log.debug("Collecting......");
             feedRunnerService.collect(false, feed.id)
           }
+          else {
+            log.debug("Not collecting");
+          }
         }
       }
       catch (Exception e) {
