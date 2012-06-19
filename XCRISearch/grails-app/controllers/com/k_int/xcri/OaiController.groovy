@@ -110,6 +110,89 @@ class OaiController {
 
       if ( components.length == 3 ) {
         from = new Long(Long.parseLong(components[1]))
+        log.debug("From is ${from} (${formatter.format(new Date(from))}) components were ${components}");
+      }
+      else {
+        log.error("Could not parse resumption token");
+      }
+      resp = findFor(from, null, esclient);
+    }
+    else {
+      log.debug("Processing first request");
+      // This OAI Service only supports the metadata prefix XCRICourseInstance
+      //from = processDate(params.from)
+      //until = processDate(params.from)
+      resp = findFor(from, until, esclient);
+    }
+
+    def recs_to_send = new List();
+    def first_rec_next_page = null;
+
+    recs_to_send.addAll(resp?.hits)
+    if ( recs_to_send.size() == 51 ) {
+      first_rec_next_page = recs_to_send.remove(50);
+    }
+
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb,
+              'from':params.from,
+              'until':params.to,
+              'set':params.set,
+              'resumptionToken':params.resumptionToken,
+              'metadataPrefix':params.metadataPrefix) {
+      }
+      listRecords {
+        recs_to_send.each { hit ->
+          record {
+            header {
+              identifier(hit.source._id)
+              dateStamp(formatter.format(new Date(hit.source.lastModified)))
+            }
+            metadata {
+              course {
+                recordAsXML(xml,hit.source)
+              }
+            }
+          }
+        }
+      }
+      if ( first_rec_next_page ) {
+        resumptionToken("rt;${first_rec_next_page.source.lastModified};${first_rec_next_page.source._id}");
+      }
+    }
+
+    log.debug("Render...");
+    render(contentType:"application/xml", text: writer.toString())
+  }
+
+  def doListIdentifiers(params, esclient) {
+    log.debug('List Identifiers');
+
+    def writer = new StringWriter()
+
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+
+    def resp;
+    def last_rec = null;
+
+    Long from = null;
+    from = params.from != null ? new Long ( formatter.parse(params.from).getTime() ) : null;
+
+    Long until = null;
+    until = params.until != null ? new Long ( formatter.parse(params.to).getTime() ) : null;
+
+    if ( params.resumptionToken != null ) {
+      log.debug("Processing resumption token ${params.resumptionToken}");
+
+      String[] components = params.resumptionToken.split(';');
+
+      if ( components.length == 3 ) {
+        from = new Long(Long.parseLong(components[1]))
         log.debug("From is ${from} components were ${components}");
       }
       else {
@@ -136,17 +219,12 @@ class OaiController {
               'resumptionToken':params.resumptionToken,
               'metadataPrefix':params.metadataPrefix) {
       }
-      listRecords {
+      listIdentifiers {
         resp?.hits.each { hit ->
           record {
             header {
               identifier(hit.source._id)
               dateStamp(formatter.format(new Date(hit.source.lastModified)))
-            }
-            metadata {
-              course {
-                recordAsXML(xml,hit.source)
-              }
             }
           }
         }
@@ -241,16 +319,19 @@ class OaiController {
     log.debug("findFor ${from} ${until}..");
     StringWriter sw = new StringWriter();
 
-    sw.write("*");
+    // sw.write("*");
 
     if ( ( from != null ) && ( until == null ) ) {
-      sw.write("AND lastModified:[${from} TO *]")
+      //sw.write("AND lastModified:[${from} TO *]")
+      sw.write("lastModified:[${from} TO *]")
     }
     else if ( ( from == null ) && ( until != null ) ) {
-      sw.write("AND lastModified:[* TO ${until}]")
+      // sw.write("AND lastModified:[* TO ${until}]")
+      sw.write("lastModified:[* TO ${until}]")
     }
     else if ( ( from != null ) && ( until != null ) ) {
-      sw.write("AND lastModified:[${from} TO ${until}]")
+      // sw.write("AND lastModified:[${from} TO ${until}]")
+      sw.write("lastModified:[${from} TO ${until}]")
     }
 
     def qry = sw.toString();

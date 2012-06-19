@@ -35,7 +35,7 @@ class GazetteerService {
       // Step 1 : See if the input place name matches a fully qualified place name
       println "exact match q params: ${query_input}"
   
-      def result = search(esclient, "fqn.orig:\"${query_input}\"", 0, 10);
+      def result = search(esclient, "fqn:\"${query_input}\"", 0, 10);
   
       if ( result?.response?.hits?.totalHits == 1 ) {
         log.debug("Exact match on fqn for ${query_input}");
@@ -50,7 +50,7 @@ class GazetteerService {
       }
       else {
         log.debug("No exact fqn match for ${query_input}, try sub match");
-        result = search(esclient, "fqn:\"${query_input}\"", 0, 10);
+        result = search(esclient, "fqn:${query_input}", 0, 10);
         // result = disMaxSearch(esclient, "fqn:\"${query_input}\"", 0, 10);
         log.debug("Got ${result.response.hits} hits...");
         if ( result?.response?.hits?.totalHits > 0 ) {
