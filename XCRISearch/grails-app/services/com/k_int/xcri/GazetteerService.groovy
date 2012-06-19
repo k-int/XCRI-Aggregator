@@ -50,7 +50,7 @@ class GazetteerService {
       }
       else {
         log.debug("No exact fqn match for ${query_input}, try sub match");
-        result = search(esclient, "fqn:${query_input}", 0, 10);
+        result = search(esclient, "fqn:${query_input} OR alias:${query_input}", 0, 10);
         // result = disMaxSearch(esclient, "fqn:\"${query_input}\"", 0, 10);
         log.debug("Got ${result.response.hits} hits...");
         if ( result?.response?.hits?.totalHits > 0 ) {
