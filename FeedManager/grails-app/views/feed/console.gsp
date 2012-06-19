@@ -6,7 +6,7 @@
     function filterLogs()
     {
         var error_level = $('#logs-filter option:selected').val();
-        alert(error_level);
+
         if(error_level && error_level.length > 0)
         {
             $('tr.error-level-' + error_level).show();
