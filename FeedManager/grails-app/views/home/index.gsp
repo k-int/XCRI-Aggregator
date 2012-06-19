@@ -55,7 +55,7 @@
 	
 	function splitMessage(fullString)
 	{
-        var messages = fullString.split("/");    
+        var messages = fullString.split(" / ");    
 	      
         var tip = $('<dl class="parallel"></dl>');
 	       

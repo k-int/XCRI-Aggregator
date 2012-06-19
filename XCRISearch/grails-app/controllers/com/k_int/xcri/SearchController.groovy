@@ -14,6 +14,7 @@ class SearchController {
 
   // Map the parameter names we use in the webapp with the ES fields
   def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
+  def non_analyzed_fields = ['provid','subject','subject.subject','level','studyMode','qual.level','presentations.start','presentations.startText','presentations.studyMode','presentations.end','presentations.endText','presentations.applyTo','presentations.applyToText','presentations.enquireTo','presentations.enquireToText']
   
   def index() { 
     // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
@@ -68,7 +69,7 @@ class SearchController {
               
         def query_str = buildQuery(params)
         log.debug("query: ${query_str}");
-  
+          
         def geo = false;
         def g_lat = null;
         def g_lon = null;
@@ -274,7 +275,15 @@ class SearchController {
                 sw.write(" AND ")
                 sw.write(mapping.value)
                 sw.write(":")
-                sw.write("\"${p}\"")
+                
+                if(non_analyzed_fields.contains(mapping.value))
+                {
+                    sw.write("${p}")
+                }
+                else
+                {
+                    sw.write("\"${p}\"")
+                }
           }
         }
         else {
@@ -284,7 +293,15 @@ class SearchController {
             sw.write(" AND ")
             sw.write(mapping.value)
             sw.write(":")
-            sw.write("\"${params[mapping.key]}\"")
+            
+            if(non_analyzed_fields.contains(params[mapping.key]))
+            {
+                sw.write("${params[mapping.key]}")
+            }
+            else
+            {
+                sw.write("\"${params[mapping.key]}\"")
+            }
           }
         }
       }

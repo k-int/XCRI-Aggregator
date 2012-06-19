@@ -829,7 +829,7 @@ h4 em
 {
 	height:16px;
 	width:16px;
-	vertical-align: sub;
+	vertical-align: middle;
 	display:inline-block;
 	background: transparent url(../images/icons/feed.png) center center no-repeat;  
 }
