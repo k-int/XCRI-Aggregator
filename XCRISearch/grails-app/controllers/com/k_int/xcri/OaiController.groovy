@@ -162,6 +162,78 @@ class OaiController {
     render(contentType:"application/xml", text: writer.toString())
   }
 
+  def doListIdentifiers(params, esclient) {
+    log.debug('List Identifiers');
+
+    def writer = new StringWriter()
+
+    def xml = new MarkupBuilder(writer)
+    xml.setOmitEmptyAttributes(true);
+    xml.setOmitNullAttributes(true);
+
+    def resp;
+    def last_rec = null;
+
+    Long from = null;
+    from = params.from != null ? new Long ( formatter.parse(params.from).getTime() ) : null;
+
+    Long until = null;
+    until = params.until != null ? new Long ( formatter.parse(params.to).getTime() ) : null;
+
+    if ( params.resumptionToken != null ) {
+      log.debug("Processing resumption token ${params.resumptionToken}");
+
+      String[] components = params.resumptionToken.split(';');
+
+      if ( components.length == 3 ) {
+        from = new Long(Long.parseLong(components[1]))
+        log.debug("From is ${from} components were ${components}");
+      }
+      else {
+        log.error("Could not parse resumption token");
+      }
+      resp = findFor(from, null, esclient);
+    }
+    else {
+      log.debug("Processing first request");
+      // This OAI Service only supports the metadata prefix XCRICourseInstance
+      //from = processDate(params.from)
+      //until = processDate(params.from)
+      resp = findFor(from, until, esclient);
+    }
+
+    xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
+                  'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                  'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
+      responseDate(formatter.format(new Date()))
+      request('verb':params.verb,
+              'from':params.from,
+              'until':params.to,
+              'set':params.set,
+              'resumptionToken':params.resumptionToken,
+              'metadataPrefix':params.metadataPrefix) {
+      }
+      listIdentifiers {
+        resp?.hits.each { hit ->
+          record {
+            header {
+              identifier(hit.source._id)
+              dateStamp(formatter.format(new Date(hit.source.lastModified)))
+            }
+          }
+        }
+      }
+      if ( resp?.hits != null ) {
+        if ( resp.hits.hits.length == 51 ) {
+          resumptionToken("rt;${resp.hits.getAt(50).source.lastModified};${resp.hits.getAt(50).source._id}");
+        }
+      }
+    }
+
+    log.debug("Render...");
+    render(contentType:"application/xml", text: writer.toString())
+  }
+
   def doListMetadataFormats() {
     def writer = new StringWriter()
     def xml = new MarkupBuilder(writer)
