@@ -31,7 +31,7 @@ class CourseController {
             id params.id
         }
   
-        if ( course != null ) {
+        if ( ( course != null ) && ( course.source != null ) ) {
           result.course = course.response
           // def caj = course as JSON
           // log.debug("Got course ${caj}");
