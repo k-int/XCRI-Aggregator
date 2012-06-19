@@ -82,14 +82,14 @@ class FeedRunnerService {
       log.debug("Read bytes as UTF-8. Good!");
     }
     catch ( Exception e ) {
-      log.debug("Unable to parse bytes as XML.. Maybe there is a charset encoding issue. Trying ISO-8859-1 Instead");
-      byte_array = new String(byte_array,"ISO-8859-1").getBytes("UTF-8")
+      log.error("Unable to parse bytes as XML.. Maybe there is a charset encoding issue. Trying ISO-8859-1 Instead",e);
+      result = new String(byte_array,"ISO-8859-1").getBytes("UTF-8")
 
       // Set the source charset so we know for next time.
       feed_definition.sourceCharset = 'ISO-8859-1';
     }
 
-    byte_array
+    result
   }
 
   def uploadStream(force_process,input_stream,target_service,feed_definition) {
@@ -103,8 +103,14 @@ class FeedRunnerService {
         resource_to_deposit = new String(input_stream.getBytes(),feed_definition.sourceCharset).getBytes();
       }
       else {
-        log.debug("No explicit conversion, continue...");
+        log.debug("No explicit conversion, continue with quick validation...");
         resource_to_deposit = quickValidation(input_stream.getBytes(), feed_definition)
+        if ( resource_to_deposit ) {
+          log.debug("Quick validation completed. have resource");
+        }
+        else {
+          throw new RuntimeException("Attempting charset conversion failed...");
+        }
       }
 
       // Compute MD5 Sum for resource
