@@ -205,6 +205,7 @@
                       uniqueLink.addAll(params."${facet.key}")
                       uniqueLink.remove(fe.term.toString())
                       ops."${facet.key}" = uniqueLink
+                      ops.offset = 0
                     %>
                   <li>
                     <g:link class="active" params='${ops}' title="${fe.display}">
@@ -226,6 +227,7 @@
                      def uniqueLink = ["${fe.term}"]
                      uniqueLink.addAll(params."${facet.key}")                                 
                      ops."${facet.key}" = uniqueLink
+                     ops.offset = 0
                     %>
                   <g:link params='${ops}' title="${fe.display}">
                     <span>
