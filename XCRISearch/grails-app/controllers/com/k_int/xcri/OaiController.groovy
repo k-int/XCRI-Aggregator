@@ -110,7 +110,7 @@ class OaiController {
 
       if ( components.length == 3 ) {
         from = new Long(Long.parseLong(components[1]))
-        log.debug("From is ${from} components were ${components}");
+        log.debug("From is ${from} (${formatter.format(new Date(from))}) components were ${components}");
       }
       else {
         log.error("Could not parse resumption token");
@@ -125,6 +125,14 @@ class OaiController {
       resp = findFor(from, until, esclient);
     }
 
+    def recs_to_send = new List();
+    def first_rec_next_page = null;
+
+    recs_to_send.addAll(resp?.hits)
+    if ( recs_to_send.size() == 51 ) {
+      first_rec_next_page = recs_to_send.remove(50);
+    }
+
     xml.'OAI-PMH'('xmlns':'http://www.openarchives.org/OAI/2.0/',
                   'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
                   'xsi:schemaLocation':'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd') {
@@ -137,7 +145,7 @@ class OaiController {
               'metadataPrefix':params.metadataPrefix) {
       }
       listRecords {
-        resp?.hits.each { hit ->
+        recs_to_send.each { hit ->
           record {
             header {
               identifier(hit.source._id)
@@ -151,10 +159,8 @@ class OaiController {
           }
         }
       }
-      if ( resp?.hits != null ) {
-        if ( resp.hits.hits.length == 51 ) {
-          resumptionToken("rt;${resp.hits.getAt(50).source.lastModified};${resp.hits.getAt(50).source._id}");
-        }
+      if ( first_rec_next_page ) {
+        resumptionToken("rt;${first_rec_next_page.source.lastModified};${first_rec_next_page.source._id}");
       }
     }
 
@@ -313,16 +319,19 @@ class OaiController {
     log.debug("findFor ${from} ${until}..");
     StringWriter sw = new StringWriter();
 
-    sw.write("*");
+    // sw.write("*");
 
     if ( ( from != null ) && ( until == null ) ) {
-      sw.write("AND lastModified:[${from} TO *]")
+      //sw.write("AND lastModified:[${from} TO *]")
+      sw.write("lastModified:[${from} TO *]")
     }
     else if ( ( from == null ) && ( until != null ) ) {
-      sw.write("AND lastModified:[* TO ${until}]")
+      // sw.write("AND lastModified:[* TO ${until}]")
+      sw.write("lastModified:[* TO ${until}]")
     }
     else if ( ( from != null ) && ( until != null ) ) {
-      sw.write("AND lastModified:[${from} TO ${until}]")
+      // sw.write("AND lastModified:[${from} TO ${until}]")
+      sw.write("lastModified:[${from} TO ${until}]")
     }
 
     def qry = sw.toString();
