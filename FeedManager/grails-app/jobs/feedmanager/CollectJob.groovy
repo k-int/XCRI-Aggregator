@@ -32,12 +32,13 @@ class CollectJob {
       try {
         def feeds = com.k_int.feedmanager.SingleFileDatafeed.findAll()
         feeds.each { feed ->
-          log.debug("Checking ${feed.baseurl}");
+          def ms_since_last_check = System.currentTimeMillis() - feed.lastCheck;
+          log.debug("Checking ${feed.baseurl}, force=${feed.forceHarvest}, lastCheck=${feed.lastCheck}, interval=${feed.checkInterval}, MS since last check: ${ms_since_last_check}");
           if ( ( feed.active ) &&
                ( ( feed.forceHarvest ) ||
                  ( feed.lastCheck == null ) ||
                  ( feed.lastCheck == 0 ) || 
-                 ( System.currentTimeMillis() - feed.lastCheck > feed.checkInterval ) ) ) {
+                 ( ms_since_last_check > feed.checkInterval ) ) ) {
             log.debug("Collecting......");
             feedRunnerService.collect(false, feed.id)
           }
