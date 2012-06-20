@@ -125,7 +125,7 @@ class OaiController {
       resp = findFor(from, until, esclient);
     }
 
-    def recs_to_send = new java.util.ArrayList();
+    def recs_to_send = [];
     def first_rec_next_page = null;
 
     recs_to_send.addAll(resp?.hits)
