@@ -30,19 +30,21 @@ class CourseController {
             type "course"
             id params.id
         }
-  
-        if ( ( course != null ) && ( course.source != null ) ) {
-          result.course = course.response
-          // def caj = course as JSON
-          // log.debug("Got course ${caj}");
-          
+         
+        def caj = course as JSON
+        log.debug("Got course ${caj}");
+                  
+        if ( ( course != null ) && ( course.response != null ) ) {
+          result.course = [:]
+          result.course.source = course.response.source
         }
         else {
+            log.debug(course)
           log.error("es-get for ${params.id} matched ${search.response.hits.totalHits} items.");
           render(view:'notfound',model:result)
         }
   
-        result
+        //result
         
         withFormat {
             html {
@@ -62,9 +64,12 @@ class CourseController {
       }
   
     }
-    catch ( Exception e ) {
+    catch ( Exception e ) 
+    {
+        log.warn(e)
     }
-    finally {
+    finally 
+    {
     }
   }
 }
