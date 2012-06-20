@@ -28,18 +28,14 @@ class CourseController {
         def course = esclient.get {
             index "courses"
             type "course"
-            id params.id
+            id "${params.id}"
         }
-         
-        def caj = course as JSON
-        log.debug("Got course ${caj}");
-                  
-        if ( ( course != null ) && ( course.response != null ) ) {
-          result.course = [:]
-          result.course.source = course.response.source
+  
+        if ( ( course != null ) && 
+             ( course.response != null ) ) {
+          result.course = course.response
         }
         else {
-            log.debug(course)
           log.error("es-get for ${params.id} matched ${search.response.hits.totalHits} items.");
           render(view:'notfound',model:result)
         }
