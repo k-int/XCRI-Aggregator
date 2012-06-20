@@ -174,6 +174,12 @@ class SearchController {
         // println "Search returned $search.response.hits.totalHits total hits"
         // println "First hit course is $search.response.hits[0]"
         result.hits = search.response.hits
+        
+        if(search.response.hits.maxScore == Float.NaN)//we cannot parse NaN to json so set to zero...
+        {
+            search.response.hits.maxScore = 0;
+        }
+        
         result.resultsTotal = search.response.hits.totalHits
 
         // We pre-process the facet response to work around some translation issues in ES
