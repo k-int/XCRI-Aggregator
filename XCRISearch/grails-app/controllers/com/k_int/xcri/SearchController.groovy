@@ -86,12 +86,19 @@ class SearchController {
               log.debug("Using lat/lon ${g_lat},${g_lon} distance unit is ${dunit}");
             }
             else {
+                result.flash = [:]
+              result.flash.message = "Something went wrong with the Geocoding, is your Postcode correct?"
               log.error("Something badly wrong with geocoding");
             }
           }
+          else
+          {
+              result.flash = [:]
+              result.flash.message = "Postcode was not recognised"
+          }
         }
         else {
-          log.debug("No spatial");
+            log.debug("No spatial");
         }
   
         def filters = geo;  // For adding more filters later.

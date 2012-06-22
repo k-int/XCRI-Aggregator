@@ -108,6 +108,9 @@
   </head>
   <body>
     <h1>Discover course information...</h1>
+    <g:if test="${flash.message}">
+        <div class="message">${flash.message}</div>
+    </g:if>
     <g:form action="index" method="get">
         <g:hiddenField name="adv" value="" id="adv"/>
         <div class="searchCounter default">

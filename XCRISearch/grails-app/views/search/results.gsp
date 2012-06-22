@@ -104,6 +104,9 @@
   </head>
 
   <body>
+   <g:if test="${flash.message}">
+        <div class="message">${flash.message}</div>
+   </g:if>
    <div class="searchForm">
    <g:form action="index" method="get">
       <g:hiddenField name="adv" value="${params.adv}" id="adv"/>
