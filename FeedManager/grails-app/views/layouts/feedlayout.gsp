@@ -60,9 +60,9 @@
                 <li><g:link controller="feed" action="dashboard" id="${id}" class="dashboard"><span>Dashboard</span></g:link></li>
                 <li><g:link controller="feed" action="edit" id="${id}" class="edit"><span>Edit</span></g:link></li>    
                 <g:if test="${feed.status > 1 && feed.resourceIdentifier && feed.resourceIdentifier.trim().length() > 0 && feed.totalRecords > 0}">
-                <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>       
-                <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
+                <li><g:link controller="feed" action="search" id="${id}" class="search"><span>Search</span></g:link></li>              
                 </g:if>
+                <li><g:link controller="feed" action="console" id="${id}" class="console"><span>Console</span></g:link></li>
             </ul>
             <shiro:hasRole name="Administrator">
             <ul>

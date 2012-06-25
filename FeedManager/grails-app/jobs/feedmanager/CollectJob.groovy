@@ -40,7 +40,7 @@ class CollectJob {
                  ( feed.lastCheck == 0 ) || 
                  ( ms_since_last_check > feed.checkInterval ) ) ) {
             log.debug("Collecting......");
-            feedRunnerService.collect(false, feed.id)
+            feedRunnerService.collect(feed.forceHarvest, feed.id)
           }
           else {
             log.debug("Not collecting");

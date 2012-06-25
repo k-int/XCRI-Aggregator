@@ -40,7 +40,7 @@ class CourseController {
           render(view:'notfound',model:result)
         }
   
-        result
+        //result
         
         withFormat {
             html {
@@ -60,9 +60,12 @@ class CourseController {
       }
   
     }
-    catch ( Exception e ) {
+    catch ( Exception e ) 
+    {
+        log.warn(e)
     }
-    finally {
+    finally 
+    {
     }
   }
 }
