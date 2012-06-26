@@ -138,6 +138,7 @@ class FeedRunnerService {
             case 0:
               log.debug("Feed publication status == private");
               multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
+              multipart_entity.addPart( "ulparam_force", new StringBody( "${force_process}", "text/plain", Charset.forName( "UTF-8" )))
               break;
             case 1:
               log.debug("Publish");
@@ -147,6 +148,7 @@ class FeedRunnerService {
               break;
             case 2:
               log.debug("Feed publication status == public");
+              multipart_entity.addPart( "ulparam_force", new StringBody( "${force_process}", "text/plain", Charset.forName( "UTF-8" )))
               multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
               break;
             case 3:
