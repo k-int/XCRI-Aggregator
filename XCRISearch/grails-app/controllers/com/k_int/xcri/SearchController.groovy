@@ -319,7 +319,7 @@ class SearchController {
             sw.write(":")
             
             // Couldn't be more wrong as it was: non_analyzed_fields.contains(params[mapping.key]) Should be checking mapped property, not source
-            if(non_analyzed_fields.contains(params[mapping.value]))
+            if(non_analyzed_fields.contains(mapping.value))
             {
                 sw.write("${params[mapping.key]}")
             }
@@ -521,7 +521,7 @@ class SearchController {
       def db = mongoService.getMongo().getDB("xcri")
       
       db.providers.find().each {
-          provider.(it.label) = it.identifier
+        provider.(it.label) = it.identifier
       }
       
       return provider

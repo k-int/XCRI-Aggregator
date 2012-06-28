@@ -16,7 +16,10 @@ class FeedController {
   
   def ESWrapperService
   
-  def reversemap = ['subject':'subject','provider':'provid']
+  def reversemap = ['subject':'subject',
+                    'provider':'provid']
+
+  def non_indexed_fields = [ 'provid' ];
 
   def index() {
     log.debug("index")
@@ -155,24 +158,49 @@ class FeedController {
    else
      sw.write("*:*")
 
+
+
+    // For each reverse mapping
     reversemap.each { mapping ->
 
-      log.debug("testing ${mapping.key}");
+      // log.debug("testing ${mapping.key}");
 
+      // If the query string supplies a value for that mapped parameter
       if ( params[mapping.key] != null ) {
+
+        // If we have a list of values, rather than a scalar
         if ( params[mapping.key].class == java.util.ArrayList) {
-          params[mapping.key].each { p ->  
+          params[mapping.key].each { p ->
                 sw.write(" AND ")
                 sw.write(mapping.value)
                 sw.write(":")
-                sw.write("\"${p}\"")
+
+                if(non_analyzed_fields.contains(mapping.value)) {
+                    sw.write("${p}")
+                }
+                else {
+                    sw.write("\"${p}\"")
+                }
           }
         }
         else {
-          sw.write(" AND ")
-          sw.write(mapping.value)
-          sw.write(":")
-          sw.write("\"${params[mapping.key]}\"")
+          // We are dealing with a single value, this is "a good thing" (TM)
+          // Only add the param if it's length is > 0 or we end up with really ugly URLs
+          // II : Changed to only do this if the value is NOT an *
+          if ( params[mapping.key].length() > 0 && ! ( params[mapping.key].equalsIgnoreCase('*') ) ) {
+            sw.write(" AND ")
+            // Write out the mapped field name, not the name from the source
+            sw.write(mapping.value)
+            sw.write(":")
+
+            // Couldn't be more wrong as it was: non_analyzed_fields.contains(params[mapping.key]) Should be checking mapped property, not source
+            if(non_analyzed_fields.contains(mapping.value)) {
+                sw.write("${params[mapping.key]}")
+            }
+            else {
+                sw.write("\"${params[mapping.key]}\"")
+            }
+          }
         }
       }
     }
