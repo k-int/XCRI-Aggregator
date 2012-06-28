@@ -32,7 +32,6 @@ class CourseController {
         }
   
         if ( course?.response?.source ) {
-          log.error("es-get for ${params.id} matched ${search.response.hits.totalHits} items.");
           result.course = course.response
         }
         else {
