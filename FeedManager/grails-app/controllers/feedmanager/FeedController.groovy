@@ -173,7 +173,7 @@ class FeedController {
                 sw.write(mapping.value)
                 sw.write(":")
 
-                if(non_analyzed_fields.contains(mapping.value)) {
+                if(non_indexed_fields.contains(mapping.value)) {
                     sw.write("${p}")
                 }
                 else {
@@ -192,7 +192,7 @@ class FeedController {
             sw.write(":")
 
             // Couldn't be more wrong as it was: non_analyzed_fields.contains(params[mapping.key]) Should be checking mapped property, not source
-            if(non_analyzed_fields.contains(mapping.value)) {
+            if(non_indexed_fields.contains(mapping.value)) {
                 sw.write("${params[mapping.key]}")
             }
             else {
