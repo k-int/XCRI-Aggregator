@@ -196,55 +196,57 @@
         <h1 class="open"><a href="">${facet.key == 'level' ? 'qualification level' : facet.key}</a></h1>
             <ul>
               <g:each in="${facet.value}" var="fe">
-                      <% def ops = [:]
+                  <% def ops = [:]
                     params.each 
                     {
                         ops."$it.key" = it.value
                     }
                   %>
-                <g:if test="${params[facet.key] && params[facet.key].contains(fe.term.toString())}">  
-                  <%   
-                      def uniqueLink = []
-                      uniqueLink.addAll(params."${facet.key}")
-                      uniqueLink.remove(fe.term.toString())
-                      ops."${facet.key}" = uniqueLink
-                      ops.offset = 0
-                    %>
-                  <li>
-                    <g:link class="active" params='${ops}' title="${fe.display}">
-                    <span>
-                      <g:if test="${fe.display.length() > 16}"> 
-                        ${fe.display.substring(0,13)}...
-                      </g:if>
-                      <g:else>
-                        ${fe.display}
-                      </g:else>
-                    </span>
-                    <span> ${fe.count}</span>
-                    </g:link>
-                  </li>
+                <g:if test="${fe.display.length() > 0}"> 
+	                <g:if test="${params[facet.key] && params[facet.key].contains(fe.term.toString())}">  
+	                  <%   
+	                      def uniqueLink = []
+	                      uniqueLink.addAll(params."${facet.key}")
+	                      uniqueLink.remove(fe.term.toString())
+	                      ops."${facet.key}" = uniqueLink
+	                      ops.offset = 0
+	                    %>
+	                  <li>
+	                    <g:link class="active" params='${ops}' title="${fe.display}">
+	                    <span>
+	                      <g:if test="${fe.display.length() > 16}"> 
+	                        ${fe.display.substring(0,13)}...
+	                      </g:if>
+	                      <g:else>
+	                        ${fe.display}
+	                      </g:else>
+	                    </span>
+	                    <span> ${fe.count}</span>
+	                    </g:link>
+	                  </li>
+	                </g:if>
+	                <g:else>
+	                <li>
+	                   <% 
+	                     def uniqueLink = ["${fe.term}"]
+	                     uniqueLink.addAll(params."${facet.key}")                                 
+	                     ops."${facet.key}" = uniqueLink
+	                     ops.offset = 0
+	                    %>
+	                  <g:link params='${ops}' title="${fe.display}">
+	                    <span>
+	                      <g:if test="${fe.display.length() > 18}"> 
+	                        ${fe.display.substring(0,15)}...
+	                      </g:if>
+	                      <g:else>
+	                        ${fe.display}
+	                      </g:else>
+	                    </span>
+	                    <span> ${fe.count}</span>
+	                  </g:link>
+	                </li>
+	                </g:else>  
                 </g:if>
-                <g:else>
-                <li>
-                   <% 
-                     def uniqueLink = ["${fe.term}"]
-                     uniqueLink.addAll(params."${facet.key}")                                 
-                     ops."${facet.key}" = uniqueLink
-                     ops.offset = 0
-                    %>
-                  <g:link params='${ops}' title="${fe.display}">
-                    <span>
-                      <g:if test="${fe.display.length() > 18}"> 
-                        ${fe.display.substring(0,15)}...
-                      </g:if>
-                      <g:else>
-                        ${fe.display}
-                      </g:else>
-                    </span>
-                    <span> ${fe.count}</span>
-                  </g:link>
-                </li>
-                </g:else>  
               </g:each>
             </ul>
           </div>
