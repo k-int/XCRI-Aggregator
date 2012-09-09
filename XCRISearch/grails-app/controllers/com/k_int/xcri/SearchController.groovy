@@ -425,7 +425,7 @@ class SearchController {
     result
   }
 
-  def count_closure = {
+  def count() {
       
     def result = [:]
     // Get hold of some services we might use ;)
