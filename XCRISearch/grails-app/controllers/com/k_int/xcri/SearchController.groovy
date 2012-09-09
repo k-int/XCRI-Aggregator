@@ -205,14 +205,14 @@ class SearchController {
               if ( facet.key == 'provider' ) {
                 def term = resolveTermIdentifier(fe.term)
                 if ( term != null ) {
-                  facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+                  facet_values.add([term: fe.term,display:term.label,count:"${fe?.count}"])
                 }
                 else {
-                  facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+                  facet_values.add([term: fe.term,display:fe.term,count:"${fe?.count}"])
                 }
               }
               else {
-                facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+                facet_values.add([term: fe.term,display:fe.term,count:"${fe?.count}"])
               }
   
             }
@@ -425,7 +425,7 @@ class SearchController {
     result
   }
 
-  def count = {
+  def count_closure = {
       
     def result = [:]
     // Get hold of some services we might use ;)
