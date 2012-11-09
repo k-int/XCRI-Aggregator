@@ -31,12 +31,11 @@ class CourseController {
             id "${params.id}"
         }
   
-        if ( ( course != null ) && 
-             ( course.response != null ) ) {
+        if ( course?.response?.source ) {
           result.course = course.response
         }
         else {
-          log.error("es-get for ${params.id} matched ${search.response.hits.totalHits} items.");
+          log.error("No record found");
           render(view:'notfound',model:result)
         }
   

@@ -13,7 +13,11 @@ class SearchController {
   def mongoService
 
   // Map the parameter names we use in the webapp with the ES fields
-  def reversemap = ['subject':'subject', 'provider':'provid', 'studyMode':'presentations.studyMode','qualification':'qual.type','level':'qual.level' ]
+  def reversemap = ['subject':'subjectKw', 
+                    'provider':'provid', 
+                    'studyMode':'presentations.studyMode',
+                    'qualification':'qual.type',
+                    'level':'qual.level' ]
   def non_analyzed_fields = ['provid','subject','subject.subject','level','studyMode','qual.level','presentations.start','presentations.startText','presentations.studyMode','presentations.end','presentations.endText','presentations.applyTo','presentations.applyToText','presentations.enquireTo','presentations.enquireToText']
   
   def index() { 
@@ -201,14 +205,14 @@ class SearchController {
               if ( facet.key == 'provider' ) {
                 def term = resolveTermIdentifier(fe.term)
                 if ( term != null ) {
-                  facet_values.add([term: fe.term,display:term.label,count:"${fe.count}"])
+                  facet_values.add([term: fe.term,display:term.label,count:"${fe?.count}"])
                 }
                 else {
-                  facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+                  facet_values.add([term: fe.term,display:fe.term,count:"${fe?.count}"])
                 }
               }
               else {
-                facet_values.add([term: fe.term,display:fe.term,count:"${fe.count}"])
+                facet_values.add([term: fe.term,display:fe.term,count:"${fe?.count}"])
               }
   
             }
@@ -278,11 +282,16 @@ class SearchController {
     //ensure search is always on public
     sw.write(" AND recstatus:\"public\"")
       
+
+    // For each reverse mapping
     reversemap.each { mapping ->
 
       // log.debug("testing ${mapping.key}");
 
+      // If the query string supplies a value for that mapped parameter
       if ( params[mapping.key] != null ) {
+
+        // If we have a list of values, rather than a scalar
         if ( params[mapping.key].class == java.util.ArrayList) {
           params[mapping.key].each { p ->  
                 sw.write(" AND ")
@@ -300,14 +309,17 @@ class SearchController {
           }
         }
         else {
+          // We are dealing with a single value, this is "a good thing" (TM)
           // Only add the param if it's length is > 0 or we end up with really ugly URLs
           // II : Changed to only do this if the value is NOT an *
           if ( params[mapping.key].length() > 0 && ! ( params[mapping.key].equalsIgnoreCase('*') ) ) {
             sw.write(" AND ")
+            // Write out the mapped field name, not the name from the source
             sw.write(mapping.value)
             sw.write(":")
             
-            if(non_analyzed_fields.contains(params[mapping.key]))
+            // Couldn't be more wrong as it was: non_analyzed_fields.contains(params[mapping.key]) Should be checking mapped property, not source
+            if(non_analyzed_fields.contains(mapping.value))
             {
                 sw.write("${params[mapping.key]}")
             }
@@ -413,7 +425,7 @@ class SearchController {
     result
   }
 
-  def count = {
+  def count() {
       
     def result = [:]
     // Get hold of some services we might use ;)
@@ -509,7 +521,7 @@ class SearchController {
       def db = mongoService.getMongo().getDB("xcri")
       
       db.providers.find().each {
-          provider.(it.label) = it.identifier
+        provider.(it.label) = it.identifier
       }
       
       return provider

@@ -53,8 +53,29 @@
                 <g:if test="${presentation.applicationsOpen && presentation.applicationsClose}"><li>Apply for this course between ${presentation.applicationsOpen} and ${presentation.applicationsClose}</li></g:if>
                 <g:if test="${presentation.applyTo}"> <li>Applications can be submitted to ${presentation.applyTo}</li></g:if>
                 <g:if test="${presentation.enquireTo}"><li>Enquiries can be made to ${presentation.enquireTo}</li></g:if>
-                <g:if test="${presentation.cost}"><li>The cost of this course is £<g:formatNumber number="${presentation.cost}" format="0.00"/></li></g:if>
-                <g:if test="${presentation.venue}">
+                <g:if test="${presentation.cost}">
+                    <li>The cost of this course is 
+                    <%
+                        def isNumeric = true
+                
+                        try
+                        { 
+                            Double.parseDouble(presentation.cost) 
+                        }
+                        catch(NumberFormatException nfe)
+                        { 
+                            isNumeric = false
+                        }
+                     %>
+                    <g:if test="${isNumeric}">
+                        <g:formatNumber number="${presentation.cost}" format="0.00"/> GBP
+                    </g:if>
+                    <g:else>
+                        ${presentation.cost}
+                    </g:else> 
+                    </li>        
+                </g:if>       
+                <g:if test="${presentation.venue && presentation.venue.name}">
                 <li>Taught at ${presentation.venue.name},<g:if test="${presentation.venue.street}"> ${presentation.venue.street},</g:if><g:if test="${presentation.venue.town}"> ${presentation.venue.town},</g:if><g:if test="${presentation.venue.postcode}"> ${presentation.venue.postcode}</g:if></li>
                 </g:if>
           </ul>
