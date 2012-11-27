@@ -14,6 +14,7 @@ import java.security.MessageDigest
 class FeedRunnerService {
 
   def ESWrapperService
+  def ConfigService
   def running_feeds = [:]
 
   def collect(force_process, feed_definition_id) {
