@@ -75,6 +75,10 @@ class ConfigService
                 provloc {
                   type = 'geo_point'
                 }
+                geoCounty {
+                  type = 'string'
+                  index = 'not_analyzed'
+                }
                 level {
                   type = 'string'
                   index = 'not_analyzed'
