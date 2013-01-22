@@ -129,6 +129,14 @@ class ConfigService
                       type = 'string'
                       index = 'not_analyzed'
                     }
+                    attendanceMode {
+                      type = 'string'
+                      index = 'not_analyzed'
+                    }
+                    studyMode {
+                      type = 'string'
+                      index = 'not_analyzed'
+                    }
                   }
                 }
               }
