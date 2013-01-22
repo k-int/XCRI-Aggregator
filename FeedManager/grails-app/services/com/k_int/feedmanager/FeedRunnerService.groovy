@@ -46,6 +46,7 @@ class FeedRunnerService {
         log.debug("Processing single file datafeed. ${feed_definition.baseurl}");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
         java.net.URLConnection url_conn = resource.openConnection();
+        url_conn.setConnectTimeout(4000);
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
         uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
@@ -55,7 +56,7 @@ class FeedRunnerService {
       }
     }
     catch ( Exception e ) {
-      log.warn("Unhandled Exception trying to collect feed",e)
+      log.error("Unhandled Exception trying to collect feed",e)
       feed_definition.status=4
       feed_definition.statusMessage=e.message
     }
@@ -212,7 +213,7 @@ class FeedRunnerService {
     log.debug("Looking up data feed ${id}");
     def result = running_feeds[id]
     if ( result == null ) {
-      log.debug("Looking up feed from db");
+      log.debug("feed not currently active, get from db");
       result = Datafeed.get(id)
     }
 

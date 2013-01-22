@@ -12,6 +12,10 @@ class CollectJob {
   }
 
   static Boolean running = false;
+  static int processed_counter = 0;
+  static int pending_counter = 0;
+  static long current_feed_id = 0;
+  static long feed_start_time=0;
 
   def group = "CollectJobGroup"
 
@@ -29,11 +33,17 @@ class CollectJob {
 
 
     if ( !already_running ) {
+      pending_counter=0;
+      processed_counter=0;
       try {
         def feeds = com.k_int.feedmanager.SingleFileDatafeed.findAll()
+        pending_counter=feeds.size()
         feeds.each { feed ->
-          def ms_since_last_check = System.currentTimeMillis() - feed.lastCheck;
+          current_feed_id = feed.id;
+          feed_start_time = System.currentTimeMillis();
+          def ms_since_last_check = feed_start_time - feed.lastCheck;
           log.debug("Checking ${feed.baseurl}, force=${feed.forceHarvest}, lastCheck=${feed.lastCheck}, interval=${feed.checkInterval}, MS since last check: ${ms_since_last_check}");
+          log.debug("About to try feed ${processed_counter++} out of ${pending_counter}");
           if ( ( feed.active ) &&
                ( ( feed.forceHarvest ) ||
                  ( feed.lastCheck == null ) ||
@@ -56,7 +66,8 @@ class CollectJob {
       }
     }
     else {
-      log.debug("Feed collector job already running, not starting a second thread");
+      log.debug("Feed collector job already running, not starting a second thread. Current thread on feed ${processed_counter} out of ${pending_counter}.");
+      log.debug("  -> feedid ${current_feed_id} - Started processing at ${feed_start_time}, giving ${System.currentTimeMillis()-feed_start_time} elasped");
     }
   }
 }
