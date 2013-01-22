@@ -98,6 +98,10 @@
     </footer>
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 
+    <div id="SupportTab">
+      <a href="mailto:support@k-int.com?subject=XCRI Aggregator Support Issue"></i>Request Support</a>
+    </div>
+
     <g:javascript library="application"/>
     <r:layoutResources />
 </body>

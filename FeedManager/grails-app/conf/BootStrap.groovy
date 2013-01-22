@@ -78,7 +78,7 @@ class BootStrap {
         }
       }
       else {
-        log.debug("No default aggr defined in config");
+        log.warn("No default aggr defined in config.. MAKE SURE YOU HAVE ONE SET SOMEWHERE!!");
       }
      
       log.debug("Bootstrap completed");
