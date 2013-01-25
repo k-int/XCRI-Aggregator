@@ -56,7 +56,6 @@ class FeedRunnerService {
       }
     }
     catch ( Exception e ) {
-      log.error("Unhandled Exception trying to collect feed",e)
       log.warn("Invalid URL: ${feed_definition.baseurl}")
       feed_definition.status=4
       feed_definition.statusMessage=e.message
