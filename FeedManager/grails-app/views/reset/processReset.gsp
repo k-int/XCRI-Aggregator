@@ -11,8 +11,12 @@
   </head>
 
   <body>
-		<h1>Registration Complete</h1>
-		<p>Thank you for registering with the XCRI-CAP Aggregator. An email should arrive in your inbox shortly to allow you to activate your account.</p>
+  	<h1>Password Reset</h1>
+  	<g:if test="${flash.message}">
+  		<p>${flash.message}</p>
+	</g:if>
+	<g:else>
+		<p>For some unknown reason the password reset procedure failed. Please try again later or contact us for more information.</p>
+	</g:else>
   </body>
 </html>
-

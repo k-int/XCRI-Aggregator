@@ -30,7 +30,8 @@
           <label>Remember me?</label>
           <g:checkBox name="rememberMe" value="${rememberMe}" />
 		</li>
-		<li><input type="submit" value="Sign in" class="button-link" /></li>   
+		<li><input type="submit" value="Sign in" class="button-link" /></li>
+                <li><g:link controller="reset" action="index" class="login"><span>Forgot your password?</span></g:link></li>
     </ul>
   </g:form>
 </body>
