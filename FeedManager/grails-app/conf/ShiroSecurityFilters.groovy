@@ -10,7 +10,7 @@ class ShiroSecurityFilters {
                 if (!controllerName) return true
 
                 // Some controllers run unauthenticated
-                if (controllerName in ['register','frontpage'] ) return true
+                if (controllerName in ['register','frontpage','reset'] ) return true
 
                 // Access control by convention.
                 accessControl()
