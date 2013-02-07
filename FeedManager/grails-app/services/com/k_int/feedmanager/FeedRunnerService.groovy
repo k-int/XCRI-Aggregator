@@ -31,7 +31,9 @@ class FeedRunnerService {
   }
 
   def doCollectFeed(force_process, feed_definition_id) {
+
     log.debug("starting doCollectFeed ${feed_definition_id}");
+
     def feed_definition = com.k_int.feedmanager.SingleFileDatafeed.get(feed_definition_id)
     running_feeds[feed_definition_id] = feed_definition;
     feed_definition.status=2
@@ -49,7 +51,16 @@ class FeedRunnerService {
         url_conn.setConnectTimeout(4000);
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
-        uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
+        def upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
+        feed_definition.refresh()
+        feed_definition.jsonResponse=upload_result.jsonResponse
+        feed_definition.status=upload_result.status
+        feed_definition.statusMessage=upload_result.statusMessage
+        feed_definition.resourceIdentifier=upload_result.resourceIdentifier
+        feed_definition.checksum=upload_result.checksum
+        feed_definition.publicationStatus=upload_result.publicationStatus
+        feed_definition.save(flish:true)
+
       }
       else {
         log.warn("Unhandled feed type");
@@ -57,10 +68,13 @@ class FeedRunnerService {
     }
     catch ( Exception e ) {
       log.warn("Invalid URL: ${feed_definition.baseurl}")
+      feed_definition.refresh()
       feed_definition.status=4
       feed_definition.statusMessage=e.message
+      feed_definition.save(flish:true)
     }
     finally {
+      feed_definition.refresh()
       feed_definition.lastCheck = System.currentTimeMillis()
       feed_definition.lastCollect = feed_definition.lastCheck
       feed_definition.forceHarvest = false
@@ -95,6 +109,14 @@ class FeedRunnerService {
   }
 
   def uploadStream(force_process,input_stream,target_service,feed_definition) {
+
+    def result = [:]
+    result.jsonResponse = null;
+    result.status=-1
+    result.statusMessage=null;
+    result.resourceIdentifier=null;
+    result.checksum=null;
+    result.publicationStatus=null;
 
     log.debug("About to make post request");
 
@@ -146,7 +168,7 @@ class FeedRunnerService {
               log.debug("Publish");
               multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "public", "text/plain", Charset.forName( "UTF-8" )))
               multipart_entity.addPart( "ulparam_force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
-              feed_definition.publicationStatus = 2
+              result.publicationStatus = 2
               break;
             case 2:
               log.debug("Feed publication status == public");
@@ -157,7 +179,7 @@ class FeedRunnerService {
               log.debug("Unpublish");
               multipart_entity.addPart( "ulparam_feedStatus", new StringBody( "private", "text/plain", Charset.forName( "UTF-8" )))
               multipart_entity.addPart( "ulparam_force", new StringBody( "true", "text/plain", Charset.forName( "UTF-8" )))
-              feed_definition.publicationStatus = 0
+              result.publicationStatus = 0
               break;
             default:
               log.warn("Unhandled feed publication status ${feed_definition.publicationStatus}");
@@ -173,19 +195,19 @@ class FeedRunnerService {
             log.debug("response status: ${resp.statusLine}")
             log.debug("Response data code: ${data?.code}");
             log.debug("Assigning json response to database object");
-            feed_definition.jsonResponse = data as JSON
-            feed_definition.status=3
-            feed_definition.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
+            result.jsonResponse = data as JSON
+            result.status=3
+            result.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
             if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) )
-              feed_definition.resourceIdentifier=data.resource_identifier
-            feed_definition.checksum = md5sumHex
+              result.resourceIdentifier=data.resource_identifier
+            result.checksum = md5sumHex
             // assert resp.statusLine.statusCode == 200
           }
 
           response.failure = { resp ->
             log.error("Failure - ${resp}");
-            feed_definition.status=4
-            feed_definition.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
+            result.status=4
+            result.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
             // assert resp.status >= 400
           }
         }
@@ -193,20 +215,19 @@ class FeedRunnerService {
       else {
         log.debug("No action, checksum match");
         //no action so reset to successful completion
-        feed_definition.status=3
+        result.status=3
       }
     }
     catch ( Exception e ) {
       log.error("Unexpected exception trying to read remote stream",e)
-      feed_definition.status=4
-      feed_definition.statusMessage="Error trying to read feed: ${e.message}"
+      result.status=4
+      result.statusMessage="Error trying to read feed: ${e.message}"
     }
     finally {
       log.debug("uploadStream try block completed");
-       
-      feed_definition.save(flush:true);
     }
     log.debug("uploadStream completed");
+    result
   }
 
   def getDatafeed(id) {
