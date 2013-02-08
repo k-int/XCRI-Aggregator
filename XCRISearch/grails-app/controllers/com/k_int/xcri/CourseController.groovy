@@ -26,7 +26,7 @@ class CourseController {
   
   
         def course = esclient.get {
-            index "courses"
+            index "priv_courses"
             type "course"
             id "${params.id}"
         }
