@@ -249,7 +249,7 @@ class FeedRunnerService {
       org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
       
       def search = esclient.count{
-          indices "courses"
+          indices "priv_courses"
           types "course"
           query {
               query_string (query: "provid:${provid}")

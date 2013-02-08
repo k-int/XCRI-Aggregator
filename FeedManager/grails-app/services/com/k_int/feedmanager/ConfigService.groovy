@@ -27,7 +27,7 @@ class ConfigService
     
         // Create an index if none exists
         def future = index_admin_client.create {
-          index 'courses'
+          index 'priv_courses'
         }
     
         // use http://localhost:9200/_all/_mapping to list all installed mappings
@@ -35,7 +35,7 @@ class ConfigService
         // Declare a mapping of type "course" that explains to ES how it should index course elements
         log.debug("Attempting to put a mapping for course...");
         future = index_admin_client.putMapping {
-          indices 'courses'
+          indices 'priv_courses'
           type 'course'
           source {
             course {       // Think this is the name of the mapping within the type
@@ -144,16 +144,16 @@ class ConfigService
         def db = mongo.getDB("oda")
         
         // Store a definition of the searchable part of the resource in mongo
-        def courses_aggregation = db.aggregations.findOne(identifier: 'uri:aggr:cld:courses')
+        def courses_aggregation = db.aggregations.findOne(identifier: 'uri:aggr:cld:priv_courses')
     
         if ( courses_aggregation == null ) {
           // Create a definition of a course CLD
           courses_aggregation = [:]
         }
     
-        courses_aggregation.identifier = 'uri:aggr:cld:courses'
+        courses_aggregation.identifier = 'uri:aggr:cld:priv_courses'
         courses_aggregation.type = 'es'
-        courses_aggregation.indexes = ['courses']
+        courses_aggregation.indexes = ['priv_courses']
         courses_aggregation.types = ['course']
         courses_aggregation.title = 'All UK Courses'
         courses_aggregation.description = 'An searchable aggregation of course descriptions from institutions in the UK'

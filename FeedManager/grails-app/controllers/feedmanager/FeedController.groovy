@@ -119,7 +119,7 @@ class FeedController {
     log.debug("FeedManager qry : ${search_query_str}");
       
     def search = esclient.search {
-      indices "courses"
+      indices "priv_courses"
       types "course"
       source {
         from = params.offset
