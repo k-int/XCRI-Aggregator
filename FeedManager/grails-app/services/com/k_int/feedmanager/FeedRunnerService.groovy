@@ -62,10 +62,10 @@ class FeedRunnerService {
         feed_definition.publicationStatus=upload_result.publicationStatus
         // WTAF: feed_definition.save(flish:true)
         if ( feed_definition.save(flush:true) ) {
-          log.debug("updated feed saved, result status value is ${upload.result.status}");
+          log.debug("updated feed saved, result status value is ${upload_result.status}");
         }
         else {
-          log.error("updated feed not saved, result status value is ${upload.result.status}");
+          log.error("updated feed not saved, result status value is ${upload_result.status}");
         }
 
       }
