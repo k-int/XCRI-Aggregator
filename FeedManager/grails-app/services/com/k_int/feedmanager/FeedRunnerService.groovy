@@ -48,7 +48,7 @@ class FeedRunnerService {
         log.debug("Processing single file datafeed. ${feed_definition.baseurl}");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
         java.net.URLConnection url_conn = resource.openConnection();
-        url_conn.setConnectTimeout(4000);
+        url_conn.setConnectTimeout(6000);
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
         def upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
