@@ -162,7 +162,8 @@ class FeedRunnerService {
            ( feed_definition.checksum == null ) ||
            ( feed_definition.checksum != md5sumHex ) ) {
 
-        target_service.request(POST,JSON) {request ->
+        // target_service.request(POST,JSON) {request ->
+        target_service.request(POST) {request ->
           requestContentType = 'multipart/form-data'
 
           // Much help taken from http://evgenyg.wordpress.com/2010/05/01/uploading-files-multipart-post-apache/
@@ -203,8 +204,8 @@ class FeedRunnerService {
           request.entity = multipart_entity;
           
           response.success = { resp, data ->
+            log.debug("response data: ${resp}")
             log.debug("response status: ${resp.statusLine}")
-            log.debug("Response data code: ${data?.code}");
             log.debug("Assigning json response to database object");
             result.jsonResponse = data as JSON
             result.status=3
