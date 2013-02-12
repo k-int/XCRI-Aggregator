@@ -59,7 +59,7 @@ class FeedRunnerService {
         feed_definition.statusMessage=upload_result.statusMessage
         feed_definition.resourceIdentifier=upload_result.resourceIdentifier
         feed_definition.checksum=upload_result.checksum
-        feed_definition.publicationStatus=upload_result.publicationStatus
+        // feed_definition.publicationStatus=upload_result.publicationStatus
         // WTAF: feed_definition.save(flish:true)
         if ( feed_definition.save(flush:true) ) {
           log.debug("updated feed saved, result status value is ${upload_result.status}");
@@ -123,7 +123,7 @@ class FeedRunnerService {
     result.statusMessage=null;
     result.resourceIdentifier=null;
     result.checksum=null;
-    result.publicationStatus=-1;
+    result.publicationStatus=feed_definition.publicationStatus;
 
     log.debug("About to make post request");
 
