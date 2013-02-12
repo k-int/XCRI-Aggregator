@@ -52,14 +52,21 @@ class FeedRunnerService {
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
         def upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
+        log.debug("Refresh feed definition ${feed_definition.id}");
         feed_definition.refresh()
         feed_definition.jsonResponse=upload_result.jsonResponse
-        feed_definition.status=upload_result.status
+        feed_definition.status = upload_result.status
         feed_definition.statusMessage=upload_result.statusMessage
         feed_definition.resourceIdentifier=upload_result.resourceIdentifier
         feed_definition.checksum=upload_result.checksum
         feed_definition.publicationStatus=upload_result.publicationStatus
-        feed_definition.save(flish:true)
+        // WTAF: feed_definition.save(flish:true)
+        if ( feed_definition.save(flush:true) ) {
+          log.debug("updated feed saved, result status value is ${result.status}");
+        }
+        else {
+          log.error("updated feed not saved, result status value is ${result.status}");
+        }
 
       }
       else {
@@ -67,11 +74,11 @@ class FeedRunnerService {
       }
     }
     catch ( Exception e ) {
-      log.warn("Invalid URL: ${feed_definition.baseurl}")
+      log.error("Invalid URL: ${feed_definition.baseurl}",e)
       feed_definition.refresh()
       feed_definition.status=4
       feed_definition.statusMessage=e.message
-      feed_definition.save(flish:true)
+      feed_definition.save(flush:true)
     }
     finally {
       feed_definition.refresh()
@@ -226,7 +233,8 @@ class FeedRunnerService {
     finally {
       log.debug("uploadStream try block completed");
     }
-    log.debug("uploadStream completed");
+
+    log.debug("uploadStream completed. result is ${result}");
     result
   }
 
