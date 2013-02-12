@@ -48,7 +48,7 @@ class FeedRunnerService {
         log.debug("Processing single file datafeed. ${feed_definition.baseurl}");
         java.net.URL resource = new java.net.URL(feed_definition.baseurl)
         java.net.URLConnection url_conn = resource.openConnection();
-        url_conn.setConnectTimeout(6000);
+        url_conn.setConnectTimeout(10000);
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
         def upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
@@ -59,6 +59,7 @@ class FeedRunnerService {
         feed_definition.statusMessage=upload_result.statusMessage
         feed_definition.resourceIdentifier=upload_result.resourceIdentifier
         feed_definition.checksum=upload_result.checksum
+        log.debug("after upload stream, resource identifier returned is ${upload_result.resourceIdentifier}");
         // feed_definition.publicationStatus=upload_result.publicationStatus
         // WTAF: feed_definition.save(flish:true)
         if ( feed_definition.save(flush:true) ) {
@@ -94,6 +95,8 @@ class FeedRunnerService {
       feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);   
       feed_definition.save(flush:true);
     }
+
+    log.debug("Exiting doCollectFeed for feed ${feed_definition_id}");
   }
 
   def quickValidation(byte_array, feed_definition) {
@@ -158,7 +161,7 @@ class FeedRunnerService {
            ( feed_definition.checksum == null ) ||
            ( feed_definition.checksum != md5sumHex ) ) {
 
-        target_service.request(POST) {request ->
+        target_service.request(POST,JSON) {request ->
           requestContentType = 'multipart/form-data'
 
           // Much help taken from http://evgenyg.wordpress.com/2010/05/01/uploading-files-multipart-post-apache/
@@ -205,14 +208,18 @@ class FeedRunnerService {
             result.jsonResponse = data as JSON
             result.status=3
             result.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
-            if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) )
+            if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) ) {
               result.resourceIdentifier=data.resource_identifier
+            }
+            else {
+              log.error("Handler seems not to have returned a resource identifier");
+            }
             result.checksum = md5sumHex
             // assert resp.statusLine.statusCode == 200
           }
 
           response.failure = { resp ->
-            log.error("Failure - ${resp}");
+            log.error("Failure - ${resp} status:${resp.status}");
             result.status=4
             result.statusMessage="Error uploading to aggregator. ${resp.status}. N.B. Any status code here refers to the aggregator, and not the XCRI-CAP source URL"
             // assert resp.status >= 400
@@ -251,7 +258,7 @@ class FeedRunnerService {
   
   def getRecordCount(provid) {
 
-      log.debug("getRecordCount ${provid}");
+      log.debug("getRecordCount for providerId:\"${provid}\"");
 
       org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
       org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
