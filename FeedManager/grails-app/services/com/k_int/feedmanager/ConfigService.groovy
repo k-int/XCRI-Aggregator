@@ -113,6 +113,14 @@ class ConfigService
                       type = 'string'
                       index = 'not_analyzed'
                     }
+                    applicationsOpen {
+                      type = 'string'
+                      index = 'not_analyzed'
+                    }
+                    applicationsClose {
+                      type = 'string'
+                      index = 'not_analyzed'
+                    }
                     applyTo {
                       type = 'string'
                       index = 'not_analyzed'
