@@ -74,7 +74,7 @@ class FeedRunnerService {
       }
     }
     catch ( Exception e ) {
-      log.error("Invalid URL: ${feed_definition.baseurl}",e)
+      log.error("Invalid URL or other exception: ${feed_definition.baseurl}",e)
       feed_definition.refresh()
       feed_definition.status=4
       feed_definition.statusMessage=e.message
