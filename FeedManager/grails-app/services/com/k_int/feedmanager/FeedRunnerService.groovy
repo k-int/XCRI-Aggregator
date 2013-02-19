@@ -38,7 +38,8 @@ class FeedRunnerService {
     running_feeds[feed_definition_id] = feed_definition;
     feed_definition.status=2
     feed_definition.save(flush:true)
-
+    def upload_result = null;
+    
     try {
       log.debug("Assemble http client to ${feed_definition.target.baseurl} - ${feed_definition.target.identity}/${feed_definition.target.credentials} for feed ${feed_definition.baseurl}");
       def aggregator_service = new HTTPBuilder( feed_definition.target.baseurl )
@@ -52,14 +53,17 @@ class FeedRunnerService {
         url_conn.setReadTimeout(1200000); // 20mins
         url_conn.connect();
         log.debug("url connection reports content encoding as : ${url_conn.getContentEncoding()}");
-        def upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
+        upload_result = uploadStream(force_process, url_conn.getInputStream(),aggregator_service,feed_definition)
         log.debug("Refresh feed definition ${feed_definition.id}");
+        
         feed_definition.refresh()
         feed_definition.jsonResponse=upload_result.jsonResponse
         feed_definition.status = upload_result.status
         feed_definition.statusMessage=upload_result.statusMessage
-        feed_definition.resourceIdentifier=upload_result.resourceIdentifier
+        if ( upload_result?.feedUpdated ) {
+        feed_definition.resourceIdentifier= upload_result.resourceIdentifier
         feed_definition.checksum=upload_result.checksum
+        }
         log.debug("after upload stream, resource identifier returned is ${upload_result.resourceIdentifier}");
         // feed_definition.publicationStatus=upload_result.publicationStatus
         // WTAF: feed_definition.save(flish:true)
@@ -93,7 +97,9 @@ class FeedRunnerService {
       
       //count records stored in elastic search
       log.debug("refresh total record count");
-      feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);   
+      if ( upload_result?.feedUpdated ) {
+        feed_definition.totalRecords = getRecordCount(feed_definition.resourceIdentifier);   
+      }
       feed_definition.save(flush:true);
     }
 
@@ -207,11 +213,13 @@ class FeedRunnerService {
             log.debug("response data: ${resp}")
             log.debug("response status: ${resp.statusLine}")
             log.debug("Assigning json response to database object");
+            log.debug("Here's my data: ${data}");
             result.jsonResponse = data as JSON
             result.status=3
             result.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
             if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) ) {
               result.resourceIdentifier=data.resource_identifier
+              result.feedUpdated=true
             }
             else {
               log.error("Handler seems not to have returned a resource identifier");
