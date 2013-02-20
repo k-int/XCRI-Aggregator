@@ -11,6 +11,11 @@ import java.util.concurrent.TimeUnit
  * feed if it's currently being executed. This allows easy access to the "Console".
  */
 class FeedController {
+    
+  static final int PUBLISHED_STATUS=2
+  static final int PRIVATE_STATUS=0
+  static final int PENDING_PUBLISH=1
+  static final int PENDING_PRIVATE=3
 
   def feedRunnerService
   
@@ -267,17 +272,17 @@ class FeedController {
     log.debug("publish, current status is ${feedInstance.publicationStatus}");
 
     switch ( feedInstance.publicationStatus ) {
-      case 0:
-        feedInstance.publicationStatus = 1;
+      case PRIVATE_STATUS:
+        feedInstance.publicationStatus = PENDING_PUBLISH;
         break;
-      case 1:
-        feedInstance.publicationStatus = 0;
+      case PENDING_PUBLISH:
+        feedInstance.publicationStatus = PRIVATE_STATUS;
         break;
-      case 2:
-        feedInstance.publicationStatus = 3;
+      case PUBLISHED_STATUS:
+        feedInstance.publicationStatus = PENDING_PRIVATE;
         break;
-      case 3:
-        feedInstance.publicationStatus = 2;
+      case PENDING_PRIVATE:
+        feedInstance.publicationStatus = PUBLISHED_STATUS;
         break;
       default:
         break;
@@ -289,7 +294,7 @@ class FeedController {
       redirect(action: "dashboard", id: feedInstance.id)
     }
 
-    render(view: "dashboard", model: [feed: feedInstance, id:params.id])
+    render(view: "/feed/dashboard", model: [feed: feedInstance, id:params.id])
   }
   
   

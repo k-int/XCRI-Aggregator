@@ -71,7 +71,7 @@
 			        pending publication, to cancel and return to private (unpublished), click <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
 			      <g:if test="${feed.publicationStatus==2}">
-			        public (published). Request withdrawl from the public search interface by clicking <g:link controller="feed" action="publish" id="${id}">here</g:link>
+			        public (published). Request withdrawal from the public search interface by clicking <g:link controller="feed" action="publish" id="${id}">here</g:link>
 			      </g:if>
 			      <g:if test="${feed.publicationStatus==3}">
 			        pending removal from the public search interface. To cancel and return to "Published", click <g:link controller="feed" action="publish" id="${id}">here</g:link>

@@ -122,8 +122,10 @@
             <g:else>---</g:else>
           </td>
           <td>
-            <g:if test="${feed.publicationStatus == 2 || feed.publicationStatus == 3}"><g:img dir="images/table" file="true.png"/></g:if>
-            <g:else><g:img dir="images/table" file="false.png"/></g:else>
+          <g:if test="${feed.publicationStatus == 2}"><g:img dir="images/table" file="true.png" title="Public"/></g:if>
+          <g:if test="${feed.publicationStatus == 0}"><g:img dir="images/table" file="false.png" title="Private"/></g:if>
+          <g:if test="${feed.publicationStatus == 1}"><g:img dir="images/table" file="status-2.png" title="Pending Public"/></g:if>
+          <g:if test="${feed.publicationStatus == 3}"><g:img dir="images/table" file="status-2.png" title="Pending Private"/></g:if>
           </td>
           <td>
              ${feed.totalRecords}
