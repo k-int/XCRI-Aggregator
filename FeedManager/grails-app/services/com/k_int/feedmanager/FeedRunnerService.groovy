@@ -13,10 +13,10 @@ import java.security.MessageDigest
 
 class FeedRunnerService {
     
-  static final int PUBLISHED_STATUS=2
-  static final int PRIVATE_STATUS=0
-  static final int PENDING_PUBLISH=1
-  static final int PENDING_PRIVATE=3
+    static final int PUBLISHED_STATUS=2
+    static final int PRIVATE_STATUS=0
+    static final int PENDING_PUBLISH=1
+    static final int PENDING_PRIVATE=3
 
     def ESWrapperService
     def ConfigService
