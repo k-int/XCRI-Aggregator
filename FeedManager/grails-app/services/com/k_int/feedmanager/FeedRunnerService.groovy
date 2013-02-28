@@ -221,7 +221,7 @@ class FeedRunnerService {
                         log.debug("response data: ${resp}")
                         log.debug("response status: ${resp.statusLine}")
                         log.debug("Assigning json response to database object");
-                        log.debug("Here's my data: ${data}");
+                        // log.debug("Here's my data: ${data}");
                         result.jsonResponse = data as JSON
                         result.status=3
                         result.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
@@ -260,7 +260,7 @@ class FeedRunnerService {
             log.debug("uploadStream try block completed");
         }
 
-        log.debug("uploadStream completed. result is ${result}");
+        // log.debug("uploadStream completed. result is ${result}");
         result
     }
 
