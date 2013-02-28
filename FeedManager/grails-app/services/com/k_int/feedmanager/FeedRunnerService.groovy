@@ -282,8 +282,11 @@ class FeedRunnerService {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
       
-        def f = esclient.admin.indices.refresh {};
-        
+        def refresh = esclient.admin.indices.refresh {
+            indices "priv_courses"
+        };
+        refresh.get();
+ 
         def search = esclient.count{
             indices "priv_courses"
             types "course"
