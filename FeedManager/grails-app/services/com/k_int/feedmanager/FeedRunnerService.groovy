@@ -139,7 +139,7 @@ class FeedRunnerService {
         result.resourceIdentifier=null;
         result.checksum=null;
         result.publicationStatus=feed_definition.publicationStatus;
-        result.feedUpdated=true
+        
 
         log.debug("About to make post request");
 
@@ -227,10 +227,11 @@ class FeedRunnerService {
                         result.statusMessage="Deposit:OK / Code:${data?.code} / Status:${data.status} / Message:${data.message}";
                         if ( ( data.resource_identifier != null ) && ( data.resource_identifier.length() > 0 ) ) {
                             result.resourceIdentifier=data.resource_identifier
+                            result.feedUpdated=true
                         }
                         else {
                             log.error("Handler seems not to have returned a resource identifier");
-                            result.feedUpdated=false
+                            
                         }
                         result.checksum = md5sumHex
                         // assert resp.statusLine.statusCode == 200
@@ -281,6 +282,8 @@ class FeedRunnerService {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
       
+        def f = esclient.admin.indices.refresh {};
+        
         def search = esclient.count{
             indices "priv_courses"
             types "course"
