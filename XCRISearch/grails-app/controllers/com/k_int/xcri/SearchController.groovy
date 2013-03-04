@@ -536,10 +536,9 @@ class SearchController {
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
         def term_as_pojo = [:]
 
-        Date date = new Date(System.currentTimeMillis());
-        DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                
-        term_as_pojo.date = formatter.format(date);
+        Date date = new Date();
+        
+        term_as_pojo.date = date
         term_as_pojo.term = query
         term_as_pojo.action = "Search"
                 
