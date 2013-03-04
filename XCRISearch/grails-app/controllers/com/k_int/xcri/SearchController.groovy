@@ -4,7 +4,6 @@ import grails.converters.*
 import org.elasticsearch.groovy.common.xcontent.*
 import groovy.xml.MarkupBuilder
 import com.gmongo.GMongo
-import xcrisearch.KeywordActivity
 import java.text.SimpleDateFormat
 import java.text.DateFormat
 
