@@ -17,7 +17,7 @@ nav li
     font-size: 15px;
     font-family: arial;
     line-height: 28px;
-    
+
     /*ie 7 fix */
     zoom:1;
     *display: inline;
@@ -29,23 +29,23 @@ nav li a
     /*ie 7 fix */
     zoom:1;
     *display: inline;
-    
+
     padding: 0;
-        
+
     background-color: #2e2e2e;
     background:-moz-linear-gradient(#666b74,#292b2e 70%);
     background:-webkit-linear-gradient(#666b74,#292b2e 70%);
     background:-o-linear-gradient(#666b74,#292b2e 70%);
     background:linear-gradient(#666b74,#292b2e 70%);
-    
+
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#666b74, endColorstr=#292b2e);
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#666b74, endColorstr=#292b2e)";
-    
+
     color: #d6d6d6 !important;
     font-weight: bold;
     text-decoration:none;
     border: 1px solid #000;
-    
+
     -web-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
     -moz-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
     box-shadow:      inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
@@ -63,13 +63,13 @@ nav li a:hover
 {
     color: #ffffff;
 }
-    
+
 nav li:first-child a, nav li:first-child span
 {
     -moz-border-radius-topleft: 5px;
     -webkit-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
-    
+
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-radis-bottomleft: 5px;
     border-bottom-left-radius: 5px;
@@ -80,7 +80,7 @@ nav li:last-child a, nav li:last-child span
     -moz-border-radius-topright: 5px;
     -webkit-border-radius-topright: 5px;
     border-top-right-radius: 5px;
-    
+
     -moz-border-radius-bottomright: 5px;
     -webkit-border-radis-bottomright: 5px;
     border-bottom-right-radius: 5px;
@@ -99,25 +99,25 @@ nav a:hover span
 
 nav li span.principal
 {
-	color: #d6d6d6 !important;
+    color: #d6d6d6 !important;
     font-weight: bold;
     text-decoration:none;
     border: 1px solid #000;
-    
+
     -web-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
     -moz-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
     box-shadow:      inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
-    
+
     -moz-border-radius-topleft: 5px;
     -webkit-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
-    
+
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-radis-bottomleft: 5px;
     border-bottom-left-radius: 5px;
-        
+
     padding: 5px 10px 5px 30px;
-    
+
     background:url(../images/icons/user.png) 10px no-repeat, -moz-linear-gradient(#0188e0,#014779);
     background:url(../images/icons/user.png) 10px no-repeat, -webkit-linear-gradient(#0188e0,#014779);
     background:url(../images/icons/user.png) 10px no-repeat, -o-linear-gradient(#0188e0,#014779);
@@ -158,7 +158,7 @@ nav .users span.count
     color:#161719;
     font-size: 11px;
     margin-left: 8px;
-    
+
     -web-box-shadow: inset 0 1px 0 #710000;
     -moz-box-shadow: inset 0 1px 0 #710000;
     box-shadow:      inset 0 1px 0 #710000;

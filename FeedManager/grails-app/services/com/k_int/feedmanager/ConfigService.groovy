@@ -27,7 +27,7 @@ class ConfigService
     
         // Create an index if none exists
         def future = index_admin_client.create {
-          index 'priv_courses'
+            index 'priv_courses'
         }
     
         // use http://localhost:9200/_all/_mapping to list all installed mappings
@@ -35,121 +35,121 @@ class ConfigService
         // Declare a mapping of type "course" that explains to ES how it should index course elements
         log.debug("Attempting to put a mapping for course...");
         future = index_admin_client.putMapping {
-          indices 'priv_courses'
-          type 'course'
-          source {
-            course {       // Think this is the name of the mapping within the type
-              properties {
-                provid {
-                  type = 'string'
-                  store = 'yes'
-                  index = 'not_analyzed'
+            indices 'priv_courses'
+            type 'course'
+            source {
+                course {       // Think this is the name of the mapping within the type
+                    properties {
+                        provid {
+                            type = 'string'
+                            store = 'yes'
+                            index = 'not_analyzed'
+                        }
+                        title { // We declare a multi_field mapping so we can have a default "title" search with stemming, and an untouched title via origtitle
+                            type = 'multi_field'
+                            fields {
+                                title {
+                                    type = 'string'
+                                    analyzer = 'snowball'
+                                }
+                                origtitle {
+                                    type = 'string'
+                                    store = 'yes'
+                                }
+                            }
+                        }
+                        subject {
+                            type = 'multi_field'
+                            fields {
+                                subject {
+                                    type = 'string'
+                                    store = 'yes'
+                                    index = 'not_analyzed'
+                                }
+                                subjectKw {
+                                    type = 'string'
+                                    analyzer = 'snowball'
+                                }
+                            }
+                        }
+                        provloc {
+                            type = 'geo_point'
+                        }
+                        geoCounty {
+                            type = 'string'
+                            index = 'not_analyzed'
+                        }
+                        level {
+                            type = 'string'
+                            index = 'not_analyzed'
+                        }
+                        studyMode {
+                            type = 'string'
+                            index = 'not_analyzed'
+                        }
+                        qual {
+                            properties {
+                                level {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                            }
+                        }
+                        presentations {
+                            properties {
+                                start {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                startText {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                end {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                endText {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                applicationsOpen {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                applicationsClose {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                applyTo {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                applyToText {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                enquireTo {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                enquireToText {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                attendanceMode {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                                studyMode {
+                                    type = 'string'
+                                    index = 'not_analyzed'
+                                }
+                            }
+                        }
+                    }
                 }
-                title { // We declare a multi_field mapping so we can have a default "title" search with stemming, and an untouched title via origtitle
-                  type = 'multi_field'
-                  fields {
-                    title {
-                      type = 'string'
-                      analyzer = 'snowball'
-                    }
-                    origtitle {
-                      type = 'string'
-                      store = 'yes'
-                    }
-                  }
-                }
-                subject {
-                  type = 'multi_field'
-                  fields {
-                    subject {
-                      type = 'string'
-                      store = 'yes'
-                      index = 'not_analyzed'
-                    }
-                    subjectKw {
-                      type = 'string'
-                      analyzer = 'snowball'
-                    }
-                  }
-                }
-                provloc {
-                  type = 'geo_point'
-                }
-                geoCounty {
-                  type = 'string'
-                  index = 'not_analyzed'
-                }
-                level {
-                  type = 'string'
-                  index = 'not_analyzed'
-                }
-                studyMode {
-                  type = 'string'
-                  index = 'not_analyzed'
-                }
-                qual {
-                  properties {
-                    level {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                  }
-                }
-                presentations {
-                  properties {
-                    start {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    startText {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    end {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    endText {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    applicationsOpen {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    applicationsClose {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    applyTo {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    applyToText {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    enquireTo {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    enquireToText {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    attendanceMode {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                    studyMode {
-                      type = 'string'
-                      index = 'not_analyzed'
-                    }
-                  }
-                }
-              }
             }
-          }
         }
         log.debug("Installed course mapping ${future}");
         
@@ -163,8 +163,8 @@ class ConfigService
         def courses_aggregation = db.aggregations.findOne(identifier: 'uri:aggr:cld:priv_courses')
     
         if ( courses_aggregation == null ) {
-          // Create a definition of a course CLD
-          courses_aggregation = [:]
+            // Create a definition of a course CLD
+            courses_aggregation = [:]
         }
     
         courses_aggregation.identifier = 'uri:aggr:cld:priv_courses'
@@ -174,9 +174,9 @@ class ConfigService
         courses_aggregation.title = 'All UK Courses'
         courses_aggregation.description = 'An searchable aggregation of course descriptions from institutions in the UK'
         courses_aggregation.access_points = [
-                                        [ field:'identifier', label:'Identifier' ],
-                                        [ field:'title', label:'Title' ],
-                                        [ field:'descriptions', label:'Description' ] ]
+            [ field:'identifier', label:'Identifier' ],
+            [ field:'title', label:'Title' ],
+            [ field:'descriptions', label:'Description' ] ]
         db.aggregations.save(courses_aggregation);
         
         log.debug("Finished Initialising Mongo");

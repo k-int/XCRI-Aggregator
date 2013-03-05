@@ -7,9 +7,9 @@ class RegisterFeedController {
 
     def index = { }
 		
-	def save = {
+    def save = {
 		
-		ShiroUser userInstance = ShiroUser.findByUsername(SecurityUtils.subject?.principal);
+        ShiroUser userInstance = ShiroUser.findByUsername(SecurityUtils.subject?.principal);
 		
         //set defaults
 	params.owner = userInstance
@@ -30,14 +30,14 @@ class RegisterFeedController {
         }
         else
         {	
-    		if (feedInstance.save(flush: true)) {
-    			flash.message = "${message(code: 'default.created.message', args: [message(code: 'datafeed.label', default: 'Feed'), feedInstance.id])}"
-    			redirect(controller: "home", action: "index", id: feedInstance.id)
-    		}
-    		else {
-    			flash.message = "Save Failed ${feedInstance.errors}"
-    			render(view: "index", model: [feed: feedInstance])
-    		}
+            if (feedInstance.save(flush: true)) {
+                flash.message = "${message(code: 'default.created.message', args: [message(code: 'datafeed.label', default: 'Feed'), feedInstance.id])}"
+                redirect(controller: "home", action: "index", id: feedInstance.id)
+            }
+            else {
+                flash.message = "Save Failed ${feedInstance.errors}"
+                render(view: "index", model: [feed: feedInstance])
+            }
         }
-	}
+    }
 }

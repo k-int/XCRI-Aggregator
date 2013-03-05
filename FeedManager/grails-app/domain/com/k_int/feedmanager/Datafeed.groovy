@@ -35,18 +35,18 @@ class Datafeed {
     int status = 1
 
     static constraints = {
-      jsonResponse(maxSize:1000000,nullable:true,blank:true)
-      statusMessage(maxSize:512,nullable:true,blank:true)
-      lastCheck(nullable:true)
-      lastCollect(nullable:true)
-      checkInterval(nullable:true)
-      resourceIdentifier(nullable:true)
-      sourceCharset(nullable:true)
-      providerUrl(nullable:true)
-      providerTechnicalContact(nullable:true)
-      providerEmail(nullable:true)
-      iconUrl(nullable:true)
-      publicationStatus(nullable:true)
-      totalRecords(nullable:false)
+        jsonResponse(maxSize:1000000,nullable:true,blank:true)
+        statusMessage(maxSize:512,nullable:true,blank:true)
+        lastCheck(nullable:true)
+        lastCollect(nullable:true)
+        checkInterval(nullable:true)
+        resourceIdentifier(nullable:true)
+        sourceCharset(nullable:true)
+        providerUrl(nullable:true)
+        providerTechnicalContact(nullable:true)
+        providerEmail(nullable:true)
+        iconUrl(nullable:true)
+        publicationStatus(nullable:true)
+        totalRecords(nullable:false)
     }
 }

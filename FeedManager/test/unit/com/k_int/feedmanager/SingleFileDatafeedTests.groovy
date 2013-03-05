@@ -12,6 +12,6 @@ import org.junit.*
 class SingleFileDatafeedTests {
 
     void testSomething() {
-       fail "Implement me"
+        fail "Implement me"
     }
 }

@@ -2,14 +2,14 @@ package com.k_int.feedmanager
 
 class AggregationService {
 
-  static belongsTo = [owner:ShiroUser]
+    static belongsTo = [owner:ShiroUser]
 
-  String baseurl
+    String baseurl
 
-  String identity
-  String credentials
+    String identity
+    String credentials
 
-  static constraints = {
-  }
+    static constraints = {
+    }
 
 }
