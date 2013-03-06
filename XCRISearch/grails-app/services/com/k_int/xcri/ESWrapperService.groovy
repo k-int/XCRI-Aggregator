@@ -9,84 +9,84 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
 
 class ESWrapperService {
 
-  static transactional = false
+    static transactional = false
 
 
-  def gNode = null;
+    def gNode = null;
 
-  @javax.annotation.PostConstruct
-  def init() {
-    log.debug("Init");
+    @javax.annotation.PostConstruct
+    def init() {
+        log.debug("Init");
 
-    // System.setProperty("java.net.preferIPv4Stack","true");
-    // log.debug("Attempting to create a transport client...");
-    // Map<String,String> m = new HashMap<String,String>();
-    // m.put("cluster.name","aggr");
-    // Settings s = ImmutableSettings.settingsBuilder() .put(m).build();
-    // TransportClient client = new TransportClient(s);
+        // System.setProperty("java.net.preferIPv4Stack","true");
+        // log.debug("Attempting to create a transport client...");
+        // Map<String,String> m = new HashMap<String,String>();
+        // m.put("cluster.name","aggr");
+        // Settings s = ImmutableSettings.settingsBuilder() .put(m).build();
+        // TransportClient client = new TransportClient(s);
 
-    def clus_nm = ApplicationHolder.application.config.aggr.es.cluster ?: "aggr"
+        def clus_nm = ApplicationHolder.application.config.aggr.es.cluster ?: "aggr"
 
-    log.info("[xcri discover ES wrapper] Using ${clus_nm} as cluster name...");
+        log.info("[xcri discover ES wrapper] Using ${clus_nm} as cluster name...");
 
 
-    def nodeBuilder = new org.elasticsearch.groovy.node.GNodeBuilder()
+        def nodeBuilder = new org.elasticsearch.groovy.node.GNodeBuilder()
 
-    log.debug("Construct node settings");
+        log.debug("Construct node settings");
 
-    nodeBuilder.settings {
-      node {
-        client = true
-      }
-      cluster {
-        name = clus_nm
-      }
-      http {
-        enabled = false
-      }
-      discovery {
-        zen {
-          minimum_master_nodes=1
-          ping {
-            unicast {
-              hosts = [ "localhost" ] 
+        nodeBuilder.settings {
+            node {
+                client = true
             }
-          }
+            cluster {
+                name = clus_nm
+            }
+            http {
+                enabled = false
+            }
+            discovery {
+                zen {
+                    minimum_master_nodes=1
+                    ping {
+                        unicast {
+                            hosts = [ "localhost" ] 
+                        }
+                    }
+                }
+            }
         }
-      }
+
+        log.debug("Constructing node...");
+        gNode = nodeBuilder.node()
+
+        // log.debug("Sending record to es");
+        // def future = gNode.client.index {
+        //   index "courses"
+        //   type "course"
+        //   id "1"
+        //   source {
+        //     test = "value"
+        //     value1 = "value1"
+        //     value2 = "value2"
+        //   }
+        // }
+        // log.debug("waiting for response...");
+
+        // log.debug("Indexed $future.response.index/$future.response.type/$future.response.id")
+
+        log.debug("Init completed");
     }
 
-    log.debug("Constructing node...");
-    gNode = nodeBuilder.node()
+    @javax.annotation.PreDestroy
+    def destroy() {
+        log.debug("Destroy");
+        gNode.close()
+        log.debug("Destroy completed");
+    }
 
-    // log.debug("Sending record to es");
-    // def future = gNode.client.index {
-    //   index "courses"
-    //   type "course"
-    //   id "1"
-    //   source {
-    //     test = "value"
-    //     value1 = "value1"
-    //     value2 = "value2"
-    //   }
-    // }
-    // log.debug("waiting for response...");
-
-    // log.debug("Indexed $future.response.index/$future.response.type/$future.response.id")
-
-    log.debug("Init completed");
-  }
-
-  @javax.annotation.PreDestroy
-  def destroy() {
-    log.debug("Destroy");
-    gNode.close()
-    log.debug("Destroy completed");
-  }
-
-  def getNode() {
-    log.debug("getNode()");
-    gNode
-  }
+    def getNode() {
+        log.debug("getNode()");
+        gNode
+    }
 
 }

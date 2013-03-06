@@ -2,8 +2,8 @@
 // config files can either be Java properties files or ConfigSlurper scripts
 
 grails.config.locations = [ // "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
+    //                             "classpath:${appName}-config.groovy",
+    //                             "file:${userHome}/.grails/${appName}-config.properties",
                              "file:${userHome}/.grails/${appName}-config.groovy"]
 
 // if (System.properties["${appName}.config.location"]) {
@@ -15,18 +15,18 @@ grails.project.groupId = appName // change this to alter the default package nam
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
-                      xml: ['text/xml', 'application/xml'],
-                      text: 'text/plain',
-                      js: 'text/javascript',
-                      rss: 'application/rss+xml',
-                      atom: 'application/atom+xml',
-                      css: 'text/css',
-                      csv: 'text/csv',
-                      all: '*/*',
-                      json: ['application/json','text/json'],
-                      form: 'application/x-www-form-urlencoded',
-                      multipartForm: 'multipart/form-data'
-                    ]
+    xml: ['text/xml', 'application/xml'],
+    text: 'text/plain',
+    js: 'text/javascript',
+    rss: 'application/rss+xml',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    all: '*/*',
+    json: ['application/json','text/json'],
+    form: 'application/x-www-form-urlencoded',
+    multipartForm: 'multipart/form-data'
+]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -106,11 +106,11 @@ log4j = {
 }
 
 search = [
-         studyMode : ['Any':'*',
+    studyMode : ['Any':'*',
                       'Full Time':'Full Time', 
                       'Part Time':'Part Time'
-                      ],
-         qualification : [  'All':'*',
+    ],
+    qualification : [  'All':'*',
                             'Apprenticeship':'apprenticeship',
                             'BA':'ba',
                             'Bsc':'bsc',
@@ -120,14 +120,14 @@ search = [
                             'MRes':'mres',
                             'Msc':'msc',
                             'Phd':'phd'],
-         order: ['Distance (Closest)':'distance',
+    order: ['Distance (Closest)':'distance',
                  'Relevance':'relevance'],
-         distance: ['25':'25',
+    distance: ['25':'25',
                     '50':'50',
                     '100':'100',
                     '250':'250'],
-         dunit: ['Miles':'miles',
+    dunit: ['Miles':'miles',
                  'Kilometers':'km']
-         ]
+]
          
 

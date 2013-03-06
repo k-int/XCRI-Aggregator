@@ -1,127 +1,127 @@
 nav ul
 {
-	zoom: 1;
-	list-style: none;
-	display: inline;
-	height: 100%;
-	padding-right: 10px;
+    zoom: 1;
+    list-style: none;
+    display: inline;
+    height: 100%;
+    padding-right: 10px;
 }
 
 nav li
 {
-	list-style: none;
-	display: inline-block;
-	padding: 5px 0px;
-	margin: 0 -5px 0 0;
-	color: #f3f5f8;
-	font-size: 15px;
-	font-family: arial;
-	line-height: 28px;
-	
-	/*ie 7 fix */
-	zoom:1;
-	*display: inline;
+    list-style: none;
+    display: inline-block;
+    padding: 5px 0px;
+    margin: 0 -5px 0 0;
+    color: #f3f5f8;
+    font-size: 15px;
+    font-family: arial;
+    line-height: 28px;
+
+    /*ie 7 fix */
+    zoom:1;
+    *display: inline;
 }
 
 nav li a
 {
-	display: inline-block;
-	/*ie 7 fix */
-	zoom:1;
-	*display: inline;
-	
-	padding: 0;
-		
-	background-color: #2e2e2e;
-	background:-moz-linear-gradient(#666b74,#292b2e 70%);
-	background:-webkit-linear-gradient(#666b74,#292b2e 70%);
-	background:-o-linear-gradient(#666b74,#292b2e 70%);
-	background:linear-gradient(#666b74,#292b2e 70%);
-	
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#666b74, endColorstr=#292b2e);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#666b74, endColorstr=#292b2e)";
-	
-	color: #d6d6d6 !important;
-	font-weight: bold;
-	text-decoration:none;
-	border: 1px solid #000;
-	
-	-web-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
-	-moz-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
-	box-shadow:		 inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
+    display: inline-block;
+    /*ie 7 fix */
+    zoom:1;
+    *display: inline;
+
+    padding: 0;
+
+    background-color: #2e2e2e;
+    background:-moz-linear-gradient(#666b74,#292b2e 70%);
+    background:-webkit-linear-gradient(#666b74,#292b2e 70%);
+    background:-o-linear-gradient(#666b74,#292b2e 70%);
+    background:linear-gradient(#666b74,#292b2e 70%);
+
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#666b74, endColorstr=#292b2e);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#666b74, endColorstr=#292b2e)";
+
+    color: #d6d6d6 !important;
+    font-weight: bold;
+    text-decoration:none;
+    border: 1px solid #000;
+
+    -web-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
+    -moz-box-shadow: inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
+    box-shadow:		 inset 0 1px 0 #797e8a, 0px 1px 0px #02749a;
 
 }
 
 nav li a.active span
 {	
-	-web-box-shadow: inset 0 1px 4px #000000;
-	-moz-box-shadow: inset 0 1px 4px #000000;
-	box-shadow:		 inset 0 1px 4px #000000;
+    -web-box-shadow: inset 0 1px 4px #000000;
+    -moz-box-shadow: inset 0 1px 4px #000000;
+    box-shadow:		 inset 0 1px 4px #000000;
 }
 
 nav li a:hover
 {
-	color: #ffffff;
+    color: #ffffff;
 }
-	
+
 nav li:first-child a, nav li:first-child span
 {
-	-moz-border-radius-topleft: 5px;
-	-webkit-border-radius-topleft: 5px;
-	border-top-left-radius: 5px;
-	
-	-moz-border-radius-bottomleft: 5px;
-	-webkit-border-radis-bottomleft: 5px;
-	border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-radis-bottomleft: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 nav li:last-child a, nav li:last-child span
 {
-	-moz-border-radius-topright: 5px;
-	-webkit-border-radius-topright: 5px;
-	border-top-right-radius: 5px;
-	
-	-moz-border-radius-bottomright: 5px;
-	-webkit-border-radis-bottomright: 5px;
-	border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-radius-topright: 5px;
+    border-top-right-radius: 5px;
+
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-radis-bottomright: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 nav a span
 {
-	padding: 5px 10px 5px 32px;
-	color: #d6d6d6;
+    padding: 5px 10px 5px 32px;
+    color: #d6d6d6;
 }
 
 nav a:hover span
 {
-	color:white;
+    color:white;
 }
 
 nav li span.principal
 {
-	color: #d6d6d6 !important;
-	font-weight: bold;
-	text-decoration:none;
-	border: 1px solid #000;
-	
-	-web-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
-	-moz-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
-	box-shadow:		 inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
-	
-	-moz-border-radius-topleft: 5px;
-	-webkit-border-radius-topleft: 5px;
-	border-top-left-radius: 5px;
-	
-	-moz-border-radius-bottomleft: 5px;
-	-webkit-border-radis-bottomleft: 5px;
-	border-bottom-left-radius: 5px;
-	
-	background:url(../images/icons/user.png) 10px no-repeat, -moz-linear-gradient(#0188e0,#014779);
-	background:url(../images/icons/user.png) 10px no-repeat, -webkit-linear-gradient(#0188e0,#014779);
-	background:url(../images/icons/user.png) 10px no-repeat, -o-linear-gradient(#0188e0,#014779);
-	background:url(../images/icons/user.png) 10px no-repeat, linear-gradient(#0188e0,#014779);
-	
-	padding: 5px 10px 5px 30px;
+    color: #d6d6d6 !important;
+    font-weight: bold;
+    text-decoration:none;
+    border: 1px solid #000;
+
+    -web-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+    -moz-box-shadow: inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+    box-shadow:		 inset 0 1px 0 #039ed2, 0px 1px 0px #02749a;
+
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-radis-bottomleft: 5px;
+    border-bottom-left-radius: 5px;
+
+    background:url(../images/icons/user.png) 10px no-repeat, -moz-linear-gradient(#0188e0,#014779);
+    background:url(../images/icons/user.png) 10px no-repeat, -webkit-linear-gradient(#0188e0,#014779);
+    background:url(../images/icons/user.png) 10px no-repeat, -o-linear-gradient(#0188e0,#014779);
+    background:url(../images/icons/user.png) 10px no-repeat, linear-gradient(#0188e0,#014779);
+
+    padding: 5px 10px 5px 30px;
 }
 
 nav .console span { background: transparent url(../images/icons/console.png) 10px no-repeat; }
