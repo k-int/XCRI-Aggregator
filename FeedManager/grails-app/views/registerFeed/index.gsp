@@ -29,6 +29,7 @@
       </ul>
     </g:form>
     <g:javascript>  
+
         $(document).ready(function()
         {
             $("#addFeedForm").validate(
@@ -38,7 +39,7 @@
                     oForm.submit();
                 },
                 rules: {
-                    baseurl: { required: true },
+                    baseurl: { required: true, url: true},
                     feedname: { required: true },
                     dataProvider: { required: true }
                 }           
