@@ -25,7 +25,6 @@ class SearchController {
     def index() { 
         // log.debug("Search Index, params.coursetitle=${params.coursetitle}, params.coursedescription=${params.coursedescription}, params.freetext=${params.freetext}")
         log.debug("Search Index, params.q=${params.q}, format=${params.format}")
-
         def pagename = 'index'
         def result = [:]
 
@@ -46,7 +45,7 @@ class SearchController {
             result.search_config.provider = list_providers()
       
             if ( params.q && params.q.length() > 0) {
-  
+                params.q = params.q.replace('"',"'")
                 params.max = Math.min(params.max ? params.int('max') : 10, 100)
                 params.offset = params.offset ? params.int('offset') : 0
                 
@@ -436,7 +435,7 @@ class SearchController {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-    
+        params.q = params.q.replace('"',"'")
         if ( params.q && params.q.length() > 0)
         {
             def query_str = buildQuery(params)
@@ -473,7 +472,7 @@ class SearchController {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-          
+        params.term = params.term.replace('"',"'")  
         log.debug("autcomplete called for val " + params.term)
 
         if ( params.term ) {
