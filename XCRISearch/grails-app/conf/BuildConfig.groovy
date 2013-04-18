@@ -35,8 +35,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'mysql:mysql-connector-java:5.1.18'
         runtime 'com.gmongo:gmongo:1.0' 
-        runtime 'org.elasticsearch:elasticsearch-lang-groovy:1.1.0'
+        runtime 'org.elasticsearch:elasticsearch-lang-groovy:1.3.0'
         runtime 'org.apache.tika:tika-core:0.9'
+        runtime 'org.xerial.snappy:snappy-java:1.1.0-M3'
         // runtime (group:'org.apache.solr',name:'solr-solrj',version:'3.5.0', transitive:false)  // This seems to work!
         runtime (group:'org.apache.solr',name:'solr-solrj',version:'3.5.0') {
             excludes([group:'org.slf4j',name:'slf4j-api',version:'1.5.8'],

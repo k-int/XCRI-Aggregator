@@ -42,7 +42,7 @@
     {
     $.getJSON(CONTEXT_PATH + "/search/autocomplete", request, function(data) 
     {
-    response($.map(data.hits.hits, function(item) { return item.fields.title.value; }));
+    response(data);
     });
     },
     select: function(event, ui) 

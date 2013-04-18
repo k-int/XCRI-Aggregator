@@ -435,9 +435,8 @@ class SearchController {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-        params.q = params.q.replace('"',"'")
-        if ( params.q && params.q.length() > 0)
-        {
+        if ( params.q && params.q.length() > 0) {
+            params.q = params.q.replace('"',"'")
             def query_str = buildQuery(params)
             log.debug("count query: ${query_str}");
                        
@@ -448,7 +447,6 @@ class SearchController {
                     query_string (query: query_str)
                 }
             }
-        
             result.hits = search.response.count
         }
     
@@ -466,54 +464,40 @@ class SearchController {
     }
   
     def autocomplete() {
-
-        def results = [:]
-      
+        
+        List results = new ArrayList();
+        
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
         params.term = params.term.replace('"',"'")  
         log.debug("autcomplete called for val " + params.term)
 
-        if ( params.term ) {
-      
-            params.q = params.term
-            // params.q = '*' + params.q + '*'
-      
-            if ( params.q && params.q.length() > 0) {
+        if ( params.term && params.term.length() > 0) {
             
-                // params.q = '*' + params.q + '*'
-                def query_str = buildQuery(params)
-            
-                def search = esclient.search{
-                    indices "courses"
-                    types "course"
-                    source {
-                        from = "0"
-                        size = "20"
-                        query {
-                            query_string (query: query_str, analyze_wildcard: true)
-                        }
-                        fields = ["title"]
+            def search = esclient.search{
+                indices "courses"
+                types "course"
+                source {
+                    from = "0"
+                    size = "30"
+                    fields = ["provtitle","title"]
+                    query {
+                        term (title: params.term)
                     }
                 }
-            
-                results.hits = search.response.hits;
             }
-
-            if ( results.hits.maxScore ) {
-                log.debug("results.hits.maxscore: ${results.hits.maxScore}");
-                if ( results.hits.maxScore == Float.NaN ) {
-                    results.hits.maxScore = -1;
+            search.response.hits.each { hit ->
+                
+                def searchTerm = hit.fields.title.values.toString().replace('[','');
+                searchTerm = searchTerm.replace(']','');
+            
+                if(!results.contains(searchTerm)){
+                    results.add(searchTerm);
+                
                 }
             }
-      
-            try {
-                render results as JSON
-            }
-            catch ( Exception e ) {
-                log.error("Problem...",e);
-            }
+            render results as JSON
         }
     }
   
