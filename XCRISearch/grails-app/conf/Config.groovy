@@ -1,4 +1,5 @@
-// locations to search for config files that get merged into the main config
+import org.apache.log4j.*
+// // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
 grails.config.locations = [ // "classpath:${appName}-config.properties",
@@ -70,16 +71,12 @@ environments {
     }
 }
 
-// log4j configuration
+catalinaBase = System.properties.getProperty('catalina.base')
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+
     appenders {
-        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        console name: "stdout", threshold: org.apache.log4j.Level.WARN
+        appender new RollingFileAppender(name:"discover", maxFileSize:10485760, fileName:"${catalinaBase}/logs/discover.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
     }
 
 
@@ -95,14 +92,13 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 
-    debug  'grails.app.controllers.com.k_int',
+    debug discover:['grails.app.controllers.com.k_int',
            'grails.app.services.com.k_int',
            'grails.app.domain.com.k_int',
            'grails.app.com.k_int',
            'grails.app.conf',
            'com.k_int',
-           'org.elasticsearch'
-
+           'org.elasticsearch']
 }
 
 search = [

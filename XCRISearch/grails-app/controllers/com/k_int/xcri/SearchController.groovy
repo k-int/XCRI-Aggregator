@@ -46,6 +46,8 @@ class SearchController {
       
             if ( params.q && params.q.length() > 0) {
                 params.q = params.q.replace('"',"'")
+                params.q = params.q.replace('[',"(")
+                params.q = params.q.replace(']',")")
                 params.max = Math.min(params.max ? params.int('max') : 10, 100)
                 params.offset = params.offset ? params.int('offset') : 0
                 
@@ -436,7 +438,9 @@ class SearchController {
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
         if ( params.q && params.q.length() > 0) {
-            params.q = params.q.replace('"',"'")
+                params.q = params.q.replace('"',"'")
+                params.q = params.q.replace('[',"(")
+                params.q = params.q.replace(']',")")
             def query_str = buildQuery(params)
             log.debug("count query: ${query_str}");
                        
@@ -470,7 +474,9 @@ class SearchController {
         org.elasticsearch.groovy.node.GNode esnode = ESWrapperService.getNode()
         org.elasticsearch.groovy.client.GClient esclient = esnode.getClient()
 
-        params.term = params.term.replace('"',"'")  
+                params.term = params.term.replace('"',"'")
+                params.term = params.term.replace('[',"(")
+                params.term = params.term.replace(']',")") 
         log.debug("autcomplete called for val " + params.term)
 
         if ( params.term && params.term.length() > 0) {
