@@ -1,19 +1,12 @@
-// locations to search for config files that get merged into the main config
-// config files can either be Java properties files or ConfigSlurper scripts
-
+import org.apache.log4j.*
 grails.config.locations = [ // "classpath:${appName}-config.properties",
-    //                             "classpath:${appName}-config.groovy",
-    //                             "file:${userHome}/.grails/${appName}-config.properties",
+    // "classpath:${appName}-config.groovy",
+    // "file:${userHome}/.grails/${appName}-config.properties",
                              "file:${userHome}/.grails/${appName}-config.groovy"]
 
 // if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
+// grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
-
-
-
-
-
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -30,9 +23,6 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
     form: 'application/x-www-form-urlencoded',
     multipartForm: 'multipart/form-data'
 ]
-
-
-
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
 
@@ -67,37 +57,27 @@ grails.hibernate.cache.queries = true
 environments {
     development {
         grails.logging.jul.usebridge = true
-	/* this line prevents caching of css for grails 2.0 - MJ */
-	grails.gsp.reload.enable = true		
-	grails.resources.processing.enabled = false	
+        /* this line prevents caching of css for grails 2.0 - MJ */
+        grails.gsp.reload.enable = true	
+        grails.resources.processing.enabled = false	
         grails.resources.debug = true
     }
     production {
         grails.logging.jul.usebridge = false
-        /* this line prevents caching of css for grails 2.0 - MJ */
-        // grails.resources.processing.enabled = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+
     }
 }
 
-// log4j configuration
+catalinaBase = System.properties.getProperty('catalina.base')
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
-
     appenders {
-        //file name:'file', file:'/tmp/FeedManager.log'
-        // file name:'file', file:'/tmp/FeedManager.log', threshold: org.apache.log4j.Level.ALL
-        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        console name: "stdout", threshold: org.apache.log4j.Level.WARN
+        appender new RollingFileAppender(name:"feed", maxFileSize:10485760, fileName:"${catalinaBase}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
     }
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+    error 'org.codehaus.groovy.grails.web.servlet', // controllers
+           'org.codehaus.groovy.grails.web.pages', // GSP
+           'org.codehaus.groovy.grails.web.sitemesh', // layouts
            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
            'org.codehaus.groovy.grails.web.mapping', // URL mapping
            'org.codehaus.groovy.grails.commons', // core / classloading
@@ -107,12 +87,11 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 
-    //debug  'grails.app',
-    debug  'grails.app.controllers',
+    //debug 'grails.app',
+    debug feed:['grails.app.controllers',
            'grails.app.services',
            'grails.app.domain',
-		   'grails.app.conf',
-           'grails.app.jobs'
+           'grails.app.conf',
+           'grails.app.jobs']
 }
-
 
