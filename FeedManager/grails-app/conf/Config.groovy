@@ -72,7 +72,7 @@ catalinaBase = System.properties.getProperty('catalina.base')
 log4j = {
     appenders {
         console name: "stdout", threshold: org.apache.log4j.Level.WARN
-        appender new RollingFileAppender(name:"feed", maxFileSize:10485760, fileName:"${catalinaBase}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
+        appender new RollingFileAppender(name:"feed", maxFileSize:104857600, fileName:"${catalinaBase}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
     }
 
     error 'org.codehaus.groovy.grails.web.servlet', // controllers
