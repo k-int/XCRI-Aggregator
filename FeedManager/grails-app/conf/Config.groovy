@@ -68,11 +68,12 @@ environments {
     }
 }
 
-catalinaBase = System.properties.getProperty('catalina.base')
 log4j = {
     appenders {
-        console name: "stdout", threshold: org.apache.log4j.Level.WARN
-        appender new RollingFileAppender(name:"feed", maxFileSize:104857600, fileName:"${catalinaBase}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
+        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        if(System.properties.getProperty('catalina.base')){
+            appender new RollingFileAppender(name:"feed", maxFileSize:104857600, fileName:"${System.properties.getProperty('catalina.base')}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
+        }
     }
 
     error 'org.codehaus.groovy.grails.web.servlet', // controllers
@@ -94,4 +95,3 @@ log4j = {
            'grails.app.conf',
            'grails.app.jobs']
 }
-
