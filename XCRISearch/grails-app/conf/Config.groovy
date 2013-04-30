@@ -71,12 +71,13 @@ environments {
     }
 }
 
-catalinaBase = System.properties.getProperty('catalina.base')
 log4j = {
 
     appenders {
-        console name: "stdout", threshold: org.apache.log4j.Level.WARN
-        appender new RollingFileAppender(name:"discover", maxFileSize:10485760, fileName:"${catalinaBase}/logs/discover.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
+        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        if(System.properties.getProperty('catalina.base')){
+            appender new RollingFileAppender(name:"discover", maxFileSize:10485760, fileName:"${System.properties.getProperty('catalina.base')}/logs/discover.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
+        }
     }
 
 
@@ -126,4 +127,3 @@ search = [
                  'Kilometers':'km']
 ]
          
-
