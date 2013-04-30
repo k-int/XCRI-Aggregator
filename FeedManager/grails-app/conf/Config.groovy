@@ -70,7 +70,7 @@ environments {
 
 log4j = {
     appenders {
-        console name: "stdout", threshold: org.apache.log4j.Level.ALL
+        console name: "stdout", threshold: org.apache.log4j.Level.WARN
         if(System.properties.getProperty('catalina.base')){
             appender new RollingFileAppender(name:"feed", maxFileSize:104857600, fileName:"${System.properties.getProperty('catalina.base')}/logs/FeedManager.log", layout: pattern(conversionPattern: "[%d{HH:mm:ss:SSS}] %-5p %c{2}: %m%n"))
         }
