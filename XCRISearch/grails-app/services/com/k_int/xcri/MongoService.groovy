@@ -13,7 +13,6 @@ class MongoService {
         options.autoConnectRetry = true
         options.slaveOk = true
         mongo = new com.gmongo.GMongo('127.0.0.1', options);
-        // mongo = new com.gmongo.GMongo();
     }
 
     @javax.annotation.PreDestroy
